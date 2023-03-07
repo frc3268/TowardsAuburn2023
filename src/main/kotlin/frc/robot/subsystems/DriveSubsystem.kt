@@ -50,8 +50,8 @@ class DriveSubsystem : SubsystemBase() {
         // This method will be called once per scheduler run during simulation
     }
 
-    public fun drive(translation: Translation2d, rotation: Double) {
-        val swerveModuleStates: Array<SwerveModuleState> =
+    public fun drive(translation: Translation2d, rotation: Double, isOpenLoop:Boolean, fieldOriented:Boolean) {
+        val swerveModuleStates: Array<SwerveModuleState> = if(fieldOriented) {
                 Constants.Swerve.swerveKinematics.toSwerveModuleStates(
                         ChassisSpeeds.fromFieldRelativeSpeeds(
                                 translation.getX(),
@@ -59,18 +59,25 @@ class DriveSubsystem : SubsystemBase() {
                                 rotation,
                                 getYaw()
                         )
-                )
+                )} else {
+                    Constants.Swerve.swerveKinematics.toSwerveModuleStates(
+                        ChassisSpeeds(
+                                translation.getX(),
+                                translation.getY(),
+                                rotation
+                ))}
 
+                
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.Swerve.maxSpeed)
         for (mod in swerveMods) {
-            mod.setDesiredState(swerveModuleStates[mod.moduleNumber])
+            mod.setDesiredState(swerveModuleStates[mod.moduleNumber], isOpenLoop)
         }
     }
-    public fun setModuleStates(desiredStates: Array<SwerveModuleState>) {
+    public fun setModuleStates(desiredStates: Array<SwerveModuleState>, isOpenLoop:Boolean) {
         SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, Constants.Swerve.maxSpeed)
 
         for (mod in swerveMods) {
-            mod.setDesiredState(desiredStates[mod.moduleNumber])
+            mod.setDesiredState(desiredStates[mod.moduleNumber], isOpenLoop)
         }
     }
 

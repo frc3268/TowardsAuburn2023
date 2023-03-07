@@ -51,18 +51,18 @@ class SwerveModule(moduleNumber: Int, moduleConstants: Constants.SwerveDriveModu
         lastangle = getState().angle
     }
 
-    public fun setDesiredState(desiredState:SwerveModuleState) {
+    public fun setDesiredState(desiredState:SwerveModuleState, isOpenLoop:Boolean) {
         var dState:SwerveModuleState = optimize(desiredState, getState().angle)
+        if(isOpenLoop){
+            setAngle(dState)
+            //percentwanted * max = speedwanted
+            driveMotor.set(dState.speedMetersPerSecond / Constants.Swerve.maxSpeed)
+            return
+        }
         setAngle(dState)
         setSpeed(dState)
     }
 
-    public fun setDesiredStateOpenLoop(desiredState:SwerveModuleState){
-        var dState:SwerveModuleState = optimize(desiredState, getState().angle)
-        setAngle(dState)
-        //percentwanted * max = speedwanted
-        driveMotor.set(dState.speedMetersPerSecond / Constants.Swerve.maxSpeed)
-    }
 
     fun configAngleEncoder() {
         canCoderConfig.absoluteSensorRange = AbsoluteSensorRange.Unsigned_0_to_360
