@@ -108,6 +108,10 @@ class DriveSubsystem : SubsystemBase() {
         return Rotation2d.fromDegrees(gyro.getYaw().toDouble())
     }
 
+    public fun getPitch(): Rotation2d {
+        return Rotation2d.fromDegrees(gyro.getPitch().toDouble())
+    }
+
     public fun resetModulesToAbsolute() {
         for (mod in swerveMods) {
             mod.resetToAbsolute()
