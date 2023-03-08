@@ -11,3 +11,14 @@ Current "Custom" Components:
     - lx = h/Tan(P)
     - ly = lx/Tan(Y)
     - create a translation2d based on those
+
+# Units
+**The base units for all measurements in this codebase are meters (length) and degrees (angle).**
+To avoid confusion, always use the following properties to specify the unit. These are defined in `Units.kt`.
+
+Name       | Conversion factor
+-----------|---------------------
+`.meters`  | 1
+`.inch`    | 0.0254
+`.deg`     | 1
+`.rad`     | ~57.2957795

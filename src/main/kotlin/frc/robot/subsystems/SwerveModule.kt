@@ -16,11 +16,12 @@ import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.math.kinematics.SwerveModuleState
 import edu.wpi.first.math.kinematics.SwerveModulePosition
 import frc.robot.Constants
+import frc.robot.units.*
 
 /** Add your docs here. */
 class SwerveModule(moduleNumber: Int, moduleConstants: Constants.SwerveDriveModuleConstants) {
     public val moduleNumber: Int = moduleNumber
-    private var lastangle: Rotation2d = Rotation2d.fromDegrees(0.0)
+    private var lastangle: Rotation2d = Rotation2d.fromDegrees(0.deg)
     private val angleOffset: Rotation2d = moduleConstants.angleOffset
 
     private val angleMotor: CANSparkMax =
@@ -175,9 +176,9 @@ class SwerveModule(moduleNumber: Int, moduleConstants: Constants.SwerveDriveModu
             )
         var targetSpeed: Double = desiredState.speedMetersPerSecond
         var delta: Double = targetAngle - currentAngle.getDegrees()
-        if(Math.abs(delta) > 90) {
+        if(Math.abs(delta) > 90.deg) {
             targetSpeed *= -1
-            targetAngle += if(delta > 90) { -180 } else { +180 }
+            targetAngle += if(delta > 90.deg) { -180.deg } else { +180.deg }
         }
         return SwerveModuleState(targetSpeed, Rotation2d.fromDegrees(targetAngle))
     }
@@ -191,27 +192,27 @@ class SwerveModule(moduleNumber: Int, moduleConstants: Constants.SwerveDriveModu
         var lowerBound: Double
         var upperBound: Double
         var nAngle: Double = newAngle
-        var lowerOffset: Double = scopeReference % 360
+        var lowerOffset: Double = scopeReference % 360.deg
 
-        if (lowerOffset >= 0) {
+        if (lowerOffset >= 0.deg) {
             lowerBound = scopeReference - lowerOffset
-            upperBound = scopeReference + (360 - lowerOffset)
+            upperBound = scopeReference + (360.deg - lowerOffset)
         } else {
             upperBound = scopeReference - lowerOffset
-            lowerBound = scopeReference - (360 + lowerOffset)
+            lowerBound = scopeReference - (360.deg + lowerOffset)
         }
 
         while (newAngle < lowerBound) {
-            nAngle += 360
+            nAngle += 360.deg
         }
         while (newAngle > upperBound) {
-            nAngle -= 360
+            nAngle -= 360.deg
         }
 
         return nAngle + when {
-            newAngle - scopeReference > +180 -> -360
-            newAngle - scopeReference < -180 -> +360
-            else -> 0
+            newAngle - scopeReference > +180.deg -> -360.deg
+            newAngle - scopeReference < -180.deg -> +360.deg
+            else -> 0.deg
         }
     }
 }
