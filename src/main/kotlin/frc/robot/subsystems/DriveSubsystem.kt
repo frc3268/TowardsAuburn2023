@@ -18,13 +18,8 @@ import frc.robot.Constants
 class DriveSubsystem : SubsystemBase() {
     public val swerveOdom: SwerveDriveOdometry
 
-    public val swerveMods: Array<SwerveModule> =
-        arrayOf(
-            SwerveModule(0, Constants.Swerve.mod0),
-            SwerveModule(1, Constants.Swerve.mod1),
-            SwerveModule(2, Constants.Swerve.mod2),
-            SwerveModule(3, Constants.Swerve.mod3)
-        )
+    public val swerveMods: List<SwerveModule> =
+        Constants.Swerve.swerveMods.mapIndexed { i, swerveMod -> SwerveModule(i, swerveMod) }
     public val gyro: AHRS = AHRS(SPI.Port.kMXP)
 
     init {
@@ -50,7 +45,7 @@ class DriveSubsystem : SubsystemBase() {
         // This method will be called once per scheduler run during simulation
     }
 
-    public fun drive(translation: Translation2d, rotation: Double, isOpenLoop:Boolean, fieldOriented:Boolean) {
+    public fun drive(translation: Translation2d, rotation: Double, isOpenLoop: Boolean, fieldOriented: Boolean) {
         val swerveModuleStates: Array<SwerveModuleState> = Constants.Swerve.swerveKinematics.toSwerveModuleStates(
             if(fieldOriented) {
                 ChassisSpeeds.fromFieldRelativeSpeeds(
@@ -91,21 +86,13 @@ class DriveSubsystem : SubsystemBase() {
     }
 
     public fun getModuleStates(): Array<SwerveModuleState> {
-        return arrayOf(
-            swerveMods[0].getState(),
-            swerveMods[1].getState(),
-            swerveMods[2].getState(),
-            swerveMods[3].getState()
-        )
+        return swerveMods.map { it.getState() }
+            .toTypedArray()
     }
 
     public fun getModulePositions(): Array<SwerveModulePosition> {
-        return arrayOf(
-            swerveMods[0].getPosition(),
-            swerveMods[1].getPosition(),
-            swerveMods[2].getPosition(),
-            swerveMods[3].getPosition()
-        )
+        return swerveMods.map { it.getPosition() }
+            .toTypedArray()
     }
 
     public fun zeroGyro() {
