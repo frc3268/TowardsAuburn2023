@@ -91,11 +91,14 @@ class Constants {
 
         /*Swerve Module Constants */
         //!FIX: ADD REAL CONSTANTS
-        public val mod0: SwerveDriveModuleConstants = SwerveDriveModuleConstants(0, 0, 0, Rotation2d.fromDegrees(0.0))
-        public val mod1: SwerveDriveModuleConstants = SwerveDriveModuleConstants(0, 0, 0, Rotation2d.fromDegrees(0.0))
-        public val mod2: SwerveDriveModuleConstants = SwerveDriveModuleConstants(0, 0, 0, Rotation2d.fromDegrees(0.0))
-        public val mod3: SwerveDriveModuleConstants = SwerveDriveModuleConstants(0, 0, 0, Rotation2d.fromDegrees(0.0))
+        public val swerveMods: List<SwerveDriveModuleConstants> = arrayListOf(
+            SwerveDriveModuleConstants(0, 0, 0, Rotation2d.fromDegrees(0.0)),
+            SwerveDriveModuleConstants(0, 0, 0, Rotation2d.fromDegrees(0.0)),
+            SwerveDriveModuleConstants(0, 0, 0, Rotation2d.fromDegrees(0.0)),
+            SwerveDriveModuleConstants(0, 0, 0, Rotation2d.fromDegrees(0.0))
+        )
     }
+
     data class SwerveDriveModuleConstants(
         val driveMotorID: Int,
         val angleMotorID: Int,
