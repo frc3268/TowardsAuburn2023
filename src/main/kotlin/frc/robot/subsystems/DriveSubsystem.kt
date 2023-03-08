@@ -19,12 +19,12 @@ class DriveSubsystem : SubsystemBase() {
     public val swerveOdom: SwerveDriveOdometry
 
     public val swerveMods: Array<SwerveModule> =
-            arrayOf(
-                    SwerveModule(0, Constants.Swerve.mod0),
-                    SwerveModule(1, Constants.Swerve.mod1),
-                    SwerveModule(2, Constants.Swerve.mod2),
-                    SwerveModule(3, Constants.Swerve.mod3)
-            )
+        arrayOf(
+            SwerveModule(0, Constants.Swerve.mod0),
+            SwerveModule(1, Constants.Swerve.mod1),
+            SwerveModule(2, Constants.Swerve.mod2),
+            SwerveModule(3, Constants.Swerve.mod3)
+        )
     public val gyro: AHRS = AHRS(SPI.Port.kMXP)
 
     init {
@@ -39,7 +39,7 @@ class DriveSubsystem : SubsystemBase() {
         // This method will be called once per scheduler run
         swerveOdom.update(getYaw(), getModulePositions());  
 
-        for(mod:SwerveModule in  swerveMods){
+        for(mod in swerveMods){
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Integrated", mod.getPosition().angle.getDegrees());
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);    
@@ -51,29 +51,30 @@ class DriveSubsystem : SubsystemBase() {
     }
 
     public fun drive(translation: Translation2d, rotation: Double, isOpenLoop:Boolean, fieldOriented:Boolean) {
-        val swerveModuleStates: Array<SwerveModuleState> = if(fieldOriented) {
-                Constants.Swerve.swerveKinematics.toSwerveModuleStates(
-                        ChassisSpeeds.fromFieldRelativeSpeeds(
-                                translation.getX(),
-                                translation.getY(),
-                                rotation,
-                                getYaw()
-                        )
-                )} else {
-                    Constants.Swerve.swerveKinematics.toSwerveModuleStates(
-                        ChassisSpeeds(
-                                translation.getX(),
-                                translation.getY(),
-                                rotation
-                ))}
+        val swerveModuleStates: Array<SwerveModuleState> = Constants.Swerve.swerveKinematics.toSwerveModuleStates(
+            if(fieldOriented) {
+                ChassisSpeeds.fromFieldRelativeSpeeds(
+                    translation.getX(),
+                    translation.getY(),
+                    rotation,
+                    getYaw()
+                )
+            } else {
+                ChassisSpeeds(
+                    translation.getX(),
+                    translation.getY(),
+                    rotation
+                )
+            }
+        )
 
-                
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.Swerve.maxSpeed)
         for (mod in swerveMods) {
             mod.setDesiredState(swerveModuleStates[mod.moduleNumber], isOpenLoop)
         }
     }
-    public fun setModuleStates(desiredStates: Array<SwerveModuleState>, isOpenLoop:Boolean) {
+
+    public fun setModuleStates(desiredStates: Array<SwerveModuleState>, isOpenLoop: Boolean) {
         SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, Constants.Swerve.maxSpeed)
 
         for (mod in swerveMods) {
@@ -91,19 +92,19 @@ class DriveSubsystem : SubsystemBase() {
 
     public fun getModuleStates(): Array<SwerveModuleState> {
         return arrayOf(
-                swerveMods[0].getState(),
-                swerveMods[1].getState(),
-                swerveMods[2].getState(),
-                swerveMods[3].getState()
+            swerveMods[0].getState(),
+            swerveMods[1].getState(),
+            swerveMods[2].getState(),
+            swerveMods[3].getState()
         )
     }
 
     public fun getModulePositions(): Array<SwerveModulePosition> {
         return arrayOf(
-                swerveMods[0].getPosition(),
-                swerveMods[1].getPosition(),
-                swerveMods[2].getPosition(),
-                swerveMods[3].getPosition()
+            swerveMods[0].getPosition(),
+            swerveMods[1].getPosition(),
+            swerveMods[2].getPosition(),
+            swerveMods[3].getPosition()
         )
     }
 

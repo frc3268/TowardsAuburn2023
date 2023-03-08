@@ -24,9 +24,9 @@ class SwerveModule(moduleNumber: Int, moduleConstants: Constants.SwerveDriveModu
     private val angleOffset: Rotation2d = moduleConstants.angleOffset
 
     private val angleMotor: CANSparkMax =
-            CANSparkMax(moduleConstants.angleMotorID, MotorType.kBrushless)
+        CANSparkMax(moduleConstants.angleMotorID, MotorType.kBrushless)
     private val driveMotor: CANSparkMax =
-            CANSparkMax(moduleConstants.driveMotorID, MotorType.kBrushless)
+        CANSparkMax(moduleConstants.driveMotorID, MotorType.kBrushless)
 
     private val driveEncoder: RelativeEncoder = driveMotor.getEncoder()
     private val integratedAngleEncoder: RelativeEncoder = angleMotor.getEncoder()
@@ -38,11 +38,11 @@ class SwerveModule(moduleNumber: Int, moduleConstants: Constants.SwerveDriveModu
     private val canCoderConfig: CANCoderConfiguration = CANCoderConfiguration()
 
     private val feedforward: SimpleMotorFeedforward =
-            SimpleMotorFeedforward(
-                    Constants.Swerve.driveKS,
-                    Constants.Swerve.driveKV,
-                    Constants.Swerve.driveKA
-            )
+        SimpleMotorFeedforward(
+            Constants.Swerve.driveKS,
+            Constants.Swerve.driveKV,
+            Constants.Swerve.driveKA
+        )
 
     init {
         configDriveMotor()
@@ -51,9 +51,9 @@ class SwerveModule(moduleNumber: Int, moduleConstants: Constants.SwerveDriveModu
         lastangle = getState().angle
     }
 
-    public fun setDesiredState(desiredState:SwerveModuleState, isOpenLoop:Boolean) {
-        var dState:SwerveModuleState = optimize(desiredState, getState().angle)
-        if(isOpenLoop){
+    public fun setDesiredState(desiredState: SwerveModuleState, isOpenLoop: Boolean) {
+        var dState: SwerveModuleState = optimize(desiredState, getState().angle)
+        if(isOpenLoop) {
             setAngle(dState)
             //percentwanted * max = speedwanted
             driveMotor.set(dState.speedMetersPerSecond / Constants.Swerve.maxSpeed)
@@ -62,7 +62,6 @@ class SwerveModule(moduleNumber: Int, moduleConstants: Constants.SwerveDriveModu
         setAngle(dState)
         setSpeed(dState)
     }
-
     /*
     The following three methods(configAngleEncoder, configDriveMotor, configAngleMotor) are used to set the config params of the motors and encoders.
     They are required for proper operation of the swerve drive system
@@ -118,10 +117,10 @@ class SwerveModule(moduleNumber: Int, moduleConstants: Constants.SwerveDriveModu
     //setSpeed(): sets the speed of the drive motor of a swerve module based on a desiredState arguement
     fun setSpeed(desiredState: SwerveModuleState) {
         driveController.setReference(
-                desiredState.speedMetersPerSecond,
-                CANSparkMax.ControlType.kVelocity,
-                0,
-                feedforward.calculate(desiredState.speedMetersPerSecond)
+            desiredState.speedMetersPerSecond,
+            CANSparkMax.ControlType.kVelocity,
+            0,
+            feedforward.calculate(desiredState.speedMetersPerSecond)
         )
     }
 
@@ -129,18 +128,18 @@ class SwerveModule(moduleNumber: Int, moduleConstants: Constants.SwerveDriveModu
     fun setAngle(desiredState: SwerveModuleState) {
         var angle: Rotation2d
         // Prevent rotating module if speed is less then 1%. Prevents jittering.
-        if (Math.abs(desiredState.speedMetersPerSecond) <= (Constants.Swerve.maxSpeed * 0.01)) {
-            angle = lastangle
+        angle = if(Math.abs(desiredState.speedMetersPerSecond) <= Constants.Swerve.maxSpeed * 0.01) {
+            lastangle
         } else {
-            angle = desiredState.angle
+            desiredState.angle
         }
 
         angleController.setReference(angle.getDegrees(), CANSparkMax.ControlType.kPosition)
         lastangle = angle
     }
+
     fun resetToAbsolute() {
-        val absolutePosition: Double = getCanCoder().getDegrees() - angleOffset.getDegrees()
-        integratedAngleEncoder.setPosition(absolutePosition)
+        integratedAngleEncoder.setPosition(getCanCoder().getDegrees() - angleOffset.getDegrees())
     }
 
     fun getAngle(): Rotation2d {
@@ -157,7 +156,6 @@ class SwerveModule(moduleNumber: Int, moduleConstants: Constants.SwerveDriveModu
 
     public fun getPosition(): SwerveModulePosition{
         return SwerveModulePosition(driveEncoder.getPosition(), getAngle())
-        
     }
 
     /**
@@ -171,19 +169,15 @@ class SwerveModule(moduleNumber: Int, moduleConstants: Constants.SwerveDriveModu
      */
     fun optimize(desiredState: SwerveModuleState, currentAngle: Rotation2d): SwerveModuleState {
         var targetAngle: Double =
-                placeInAppropriate0To360Scope(
-                        currentAngle.getDegrees(),
-                        desiredState.angle.getDegrees()
-                )
+            placeInAppropriate0To360Scope(
+                currentAngle.getDegrees(),
+                desiredState.angle.getDegrees()
+            )
         var targetSpeed: Double = desiredState.speedMetersPerSecond
         var delta: Double = targetAngle - currentAngle.getDegrees()
-        if (Math.abs(delta) > 90) {
-            targetSpeed = -targetSpeed
-            if (delta > 90) {
-                targetAngle -= 180
-            } else {
-                targetAngle += 180
-            }
+        if(Math.abs(delta) > 90) {
+            targetSpeed *= -1
+            targetAngle += if(delta > 90) { -180 } else { +180 }
         }
         return SwerveModuleState(targetSpeed, Rotation2d.fromDegrees(targetAngle))
     }
@@ -198,6 +192,7 @@ class SwerveModule(moduleNumber: Int, moduleConstants: Constants.SwerveDriveModu
         var upperBound: Double
         var nAngle: Double = newAngle
         var lowerOffset: Double = scopeReference % 360
+
         if (lowerOffset >= 0) {
             lowerBound = scopeReference - lowerOffset
             upperBound = scopeReference + (360 - lowerOffset)
@@ -205,17 +200,18 @@ class SwerveModule(moduleNumber: Int, moduleConstants: Constants.SwerveDriveModu
             upperBound = scopeReference - lowerOffset
             lowerBound = scopeReference - (360 + lowerOffset)
         }
+
         while (newAngle < lowerBound) {
             nAngle += 360
         }
         while (newAngle > upperBound) {
             nAngle -= 360
         }
-        if (newAngle - scopeReference > 180) {
-            nAngle -= 360
-        } else if (newAngle - scopeReference < -180) {
-            nAngle += 360
+
+        return nAngle + when {
+            newAngle - scopeReference > +180 -> -360
+            newAngle - scopeReference < -180 -> +360
+            else -> 0
         }
-        return nAngle
     }
 }
