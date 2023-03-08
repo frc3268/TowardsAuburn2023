@@ -9,6 +9,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry
 import edu.wpi.first.math.kinematics.SwerveModulePosition
 import edu.wpi.first.math.kinematics.SwerveModuleState
+import edu.wpi.first.math.controller.PIDController
 import edu.wpi.first.wpilibj.SPI
 import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
@@ -21,6 +22,15 @@ class DriveSubsystem : SubsystemBase() {
     public val swerveMods: List<SwerveModule> =
         Constants.Swerve.swerveMods.mapIndexed { i, swerveMod -> SwerveModule(i, swerveMod) }
     public val gyro: AHRS = AHRS(SPI.Port.kMXP)
+
+    //PID Controllers
+
+    // PID constants should be tuned per robot
+    val linearP: Double = 0.6
+    val linearD: Double = 0.0
+    public val driveController: PIDController = PIDController(linearP, 0.0, linearD)
+
+
 
     init {
         gyro.calibrate()
@@ -63,10 +73,7 @@ class DriveSubsystem : SubsystemBase() {
             }
         )
 
-        SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.Swerve.maxSpeed)
-        for (mod in swerveMods) {
-            mod.setDesiredState(swerveModuleStates[mod.moduleNumber], isOpenLoop)
-        }
+        setModuleStates(swerveModuleStates, isOpenLoop)
     }
 
     public fun setModuleStates(desiredStates: Array<SwerveModuleState>, isOpenLoop: Boolean) {
