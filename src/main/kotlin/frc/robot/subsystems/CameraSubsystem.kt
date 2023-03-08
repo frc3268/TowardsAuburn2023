@@ -12,8 +12,8 @@ class CameraSubsystem : SubsystemBase() {
     public var frame: PhotonPipelineResult = PhotonPipelineResult()
 
     public fun getTranslationToTarget(
-            target: PhotonTrackedTarget,
-            targetHeightI: Double
+        target: PhotonTrackedTarget,
+        targetHeightI: Double
     ): Translation2d {
         var lengthForward = (targetHeightI - Constants.Camera.camHeightI) / Math.tan(target.pitch - Constants.Camera.cameraAngleD)
         var lengthStafe = lengthForward / Math.tan(target.yaw)

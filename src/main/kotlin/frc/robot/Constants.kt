@@ -2,9 +2,10 @@ package frc.robot
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d
-import edu.wpi.first.math.util.Units
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics
 import com.revrobotics.CANSparkMax.IdleMode;
+import frc.robot.units.*
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -32,16 +33,16 @@ class Constants {
         public val invertGyro: Boolean = false; // Always ensure Gyro is CCW+ CW-
 
         /* Drivetrain Constants */
-        public val trackWidth = Units.inchesToMeters(21.73);
-        public val wheelBase = Units.inchesToMeters(21.73);
-        public val wheelDiameter = Units.inchesToMeters(4.0);
+        public val trackWidth = 21.73.inch;
+        public val wheelBase = 21.73.inch;
+        public val wheelDiameter = 4.inch;
         public val wheelCircumference = wheelDiameter * Math.PI;
 
         public val openLoopRamp: Double = 0.25;
         public val closedLoopRamp: Double = 0.0;
 
-        public val driveGearRatio: Double = (8.14 / 1.0); // 6.75:1
-        public val angleGearRatio: Double = (12.8 / 1.0); // 12.8:1
+        public val driveGearRatio: Double = 8.14 / 1.0; // 6.75:1
+        public val angleGearRatio: Double = 12.8 / 1.0; // 12.8:1
 
         public val swerveKinematics: SwerveDriveKinematics =
             SwerveDriveKinematics(
@@ -78,7 +79,7 @@ class Constants {
         public val driveConversionPositionFactor: Double  =
             (wheelDiameter * Math.PI) / driveGearRatio;
         public val driveConversionVelocityFactor = driveConversionPositionFactor / 60.0;
-        public val angleConversionFactor = 360.0 / angleGearRatio;
+        public val angleConversionFactor = 360.deg / angleGearRatio;
 
         /* Swerve Profiling Values */
         public val maxSpeed = 4.5; // meters per second
@@ -98,10 +99,10 @@ class Constants {
         /*Swerve Module Constants */
         //!FIX: ADD REAL CONSTANTS
         public val swerveMods: List<SwerveDriveModuleConstants> = arrayListOf(
-            SwerveDriveModuleConstants(0, 0, 0, Rotation2d.fromDegrees(0.0)),
-            SwerveDriveModuleConstants(0, 0, 0, Rotation2d.fromDegrees(0.0)),
-            SwerveDriveModuleConstants(0, 0, 0, Rotation2d.fromDegrees(0.0)),
-            SwerveDriveModuleConstants(0, 0, 0, Rotation2d.fromDegrees(0.0))
+            SwerveDriveModuleConstants(0, 0, 0, Rotation2d.fromDegrees(0.deg)),
+            SwerveDriveModuleConstants(0, 0, 0, Rotation2d.fromDegrees(0.deg)),
+            SwerveDriveModuleConstants(0, 0, 0, Rotation2d.fromDegrees(0.deg)),
+            SwerveDriveModuleConstants(0, 0, 0, Rotation2d.fromDegrees(0.deg))
         )
     }
 

@@ -8,3 +8,18 @@ Current "Custom" Components:
 - Camerasubsystem.kt. Interacts with the limelight camera and uses photonvision. includes a distancetotarget method and assoc.
 
 ## What's Next:  
+- Add the camera and create a command to drive to the trajectory described by the target.
+    - lx = h/Tan(P)
+    - ly = lx/Tan(Y)
+    - create a translation2d based on those
+
+# Units
+**The base units for all measurements in this codebase are meters (length) and degrees (angle).**
+To avoid confusion, always use the following properties to specify the unit. These are defined in `Units.kt`.
+
+Name       | Conversion factor
+-----------|---------------------
+`.meters`  | 1
+`.inch`    | 0.0254
+`.deg`     | 1
+`.rad`     | ~57.2957795
