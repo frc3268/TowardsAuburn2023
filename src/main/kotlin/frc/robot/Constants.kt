@@ -22,8 +22,8 @@ class Constants {
 
     object Camera{
         //!FixME
-        public val camHeightI = 10.0;
-        public val cameraAngleD = 45.0;
+        public val camHeight = 10.0.inch;
+        public val cameraAngle = 45.0.deg;
     }
 
     object Swerve {

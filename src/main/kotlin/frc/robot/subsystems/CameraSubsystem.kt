@@ -6,19 +6,24 @@ import frc.robot.Constants
 import org.photonvision.PhotonCamera
 import org.photonvision.targeting.PhotonPipelineResult
 import org.photonvision.targeting.PhotonTrackedTarget
+import frc.robot.units.*
 
 class CameraSubsystem : SubsystemBase() {
     val cam: PhotonCamera = PhotonCamera("CCP BALOON CAMERA")
     public var frame: PhotonPipelineResult = PhotonPipelineResult()
 
     public fun getTranslationToTarget(
-        target: PhotonTrackedTarget,
-        targetHeightI: Double
-    ): Translation2d {
-        var lengthForward = (targetHeightI - Constants.Camera.camHeightI) / Math.tan(target.pitch - Constants.Camera.cameraAngleD)
+        target: PhotonTrackedTarget?,
+        targetHeight: Double
+    ): Translation2d? {
+        if(target != null){
+        var lengthForward = (targetHeight.inch - Constants.Camera.camHeight) / Math.tan(target.pitch - Constants.Camera.cameraAngle)
         var lengthStafe = lengthForward / Math.tan(target.yaw)
 
         return Translation2d(lengthForward, lengthStafe)
+        }
+        return null
+
     }
 
     public fun getTarget(bestTarget: Boolean, index: Int): PhotonTrackedTarget? {
