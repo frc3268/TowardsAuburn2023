@@ -19,6 +19,7 @@ class  JoystickDriveCommand(drive: DriveSubsystem, translationX: DoubleSupplier,
     val fieldOriented:BooleanSupplier = fieldOriented
     init {
         // Use addRequirements() here to declare subsystem dependencies.
+        addRequirements(drive)
     }
 
     // Called when the command is initially scheduled.
