@@ -39,7 +39,7 @@ class DriveSubsystem : SubsystemBase() {
         // This method will be called once per scheduler run
         swerveOdom.update(getYaw(), getModulePositions());  
 
-        for(mod:SwerveModule  swerveMods){
+        for(mod:SwerveModule in  swerveMods){
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Integrated", mod.getPosition().angle.getDegrees());
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);    

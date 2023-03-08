@@ -63,7 +63,10 @@ class SwerveModule(moduleNumber: Int, moduleConstants: Constants.SwerveDriveModu
         setSpeed(dState)
     }
 
-
+    /*
+    The following three methods(configAngleEncoder, configDriveMotor, configAngleMotor) are used to set the config params of the motors and encoders.
+    They are required for proper operation of the swerve drive system
+     */
     fun configAngleEncoder() {
         canCoderConfig.absoluteSensorRange = AbsoluteSensorRange.Unsigned_0_to_360
         canCoderConfig.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition
@@ -112,6 +115,7 @@ class SwerveModule(moduleNumber: Int, moduleConstants: Constants.SwerveDriveModu
         resetToAbsolute()
     }
 
+    //setSpeed(): sets the speed of the drive motor of a swerve module based on a desiredState arguement
     fun setSpeed(desiredState: SwerveModuleState) {
         driveController.setReference(
                 desiredState.speedMetersPerSecond,
@@ -121,7 +125,7 @@ class SwerveModule(moduleNumber: Int, moduleConstants: Constants.SwerveDriveModu
         )
     }
 
-
+    //setAngle(): sets the speed of the angle motor of a swerve module based on a desiredState arguement
     fun setAngle(desiredState: SwerveModuleState) {
         var angle: Rotation2d
         // Prevent rotating module if speed is less then 1%. Prevents jittering.
