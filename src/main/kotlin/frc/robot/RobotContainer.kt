@@ -2,8 +2,11 @@ package frc.robot
 
 import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController
-import edu.wpi.first.wpilibj2.command.button.Trigger
+import edu.wpi.first.wpilibj2.command.button.JoystickButton
+import edu.wpi.first.math.geometry.Translation2d
 import frc.robot.commands.Autos
+import frc.robot.commands.JoystickDriveCommand
+import frc.robot.subsystems.DriveSubsystem
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -13,43 +16,50 @@ import frc.robot.commands.Autos
  */
 class RobotContainer {
     // The robot's subsystems and commands are defined here...
-    //private val exampleSubsystem = ExampleSubsystem()
+    // private val exampleSubsystem = ExampleSubsystem()
 
-    //controllers
-    private val driverController = CommandXboxController(Constants.OperatorConstants.kDriverControllerPort)
-
-
-
-
+    // controllers
+    private val driverController =
+            CommandXboxController(Constants.OperatorConstants.kDriverControllerPort)
 
     
+    /* Driver Buttons */
 
+    // subsystems
+    private val drive: DriveSubsystem = DriveSubsystem()
 
-
-
-
-
-
-    /** The container for the robot. Contains subsystems, OI devices, and commands.  */
+    /** The container for the robot. Contains subsystems, OI devices, and commands. */
     init {
         // Configure the trigger bindings
         configureBindings()
+
+        //set the default command for the drivetrain using the joysticks and buttons on the xbox controller
+        drive.setDefaultCommand(
+            JoystickDriveCommand(
+                drive,
+                {driverController.getLeftY()},
+                {driverController.getLeftX()},
+                {driverController.getRightX()},
+                {driverController.rightBumper().getAsBoolean()}
+            )
+        )
     }
 
     /**
      * Use this method to define your trigger->command mappings. Triggers can be created via the
      * [Trigger#Trigger(java.util.function.BooleanSupplier)] constructor with an arbitrary
-     * predicate, or via the named factories in [edu.wpi.first.wpilibj2.command.button.CommandGenericHID]'s subclasses for
-     * [CommandXboxController]/[edu.wpi.first.wpilibj2.command.button.CommandPS4Controller] controllers
-     * or [edu.wpi.first.wpilibj2.command.button.CommandJoystick].
+     * predicate, or via the named factories in
+     * [edu.wpi.first.wpilibj2.command.button.CommandGenericHID]'s subclasses for
+     * [CommandXboxController]/[edu.wpi.first.wpilibj2.command.button.CommandPS4Controller]
+     * controllers or [edu.wpi.first.wpilibj2.command.button.CommandJoystick].
      */
     private fun configureBindings() {
         // Schedule ExampleCommand when exampleCondition changes to true
-        //Trigger { exampleSubsystem.exampleCondition() }.onTrue(ExampleCommand(exampleSubsystem))
+        // Trigger { exampleSubsystem.exampleCondition() }.onTrue(ExampleCommand(exampleSubsystem))
 
         // Schedule exampleMethodCommand when the Xbox controller's B button is pressed,
         // cancelling on release.
-        //driverController.b().whileTrue(exampleSubsystem.exampleMethodCommand())
+        // driverController.b().whileTrue(exampleSubsystem.exampleMethodCommand())
     }
 
     /**
