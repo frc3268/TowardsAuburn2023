@@ -5,7 +5,7 @@ import edu.wpi.first.math.geometry.Translation2d
 import frc.robot.subsystems.DriveSubsystem
 import frc.robot.subsystems.CameraSubsystem
 
-class DriveToTargetCommand (drive:DriveSubsystem, camera:CameraSubsystem goalDistI:Double): CommandBase() {
+class DriveToTargetCommand (drive:DriveSubsystem, camera:CameraSubsystem goalDistI:Double, targetHeightI:Double, offset:Double): CommandBase() {
     /**
      * Creates a new DriveToTargetCommand.
      */
@@ -13,6 +13,8 @@ class DriveToTargetCommand (drive:DriveSubsystem, camera:CameraSubsystem goalDis
     val camera:CameraSubsystem = camera
     var toTarget:Translation2d = Translation2d(0.0, 0.0)
     val goalDistI:Double = goalDistI
+    val targetHeightI:Double = targetHeightI
+    val offset:Double = offset
     init {
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(drive, camera)
@@ -24,8 +26,8 @@ class DriveToTargetCommand (drive:DriveSubsystem, camera:CameraSubsystem goalDis
 
     // Called every time the scheduler runs while the command is scheduled.
     override fun execute() { 
-        toTarget = camera.getTranslationToTarget(camera.?getTarget(true, 0.0), 10.0)
-        val translation = Translation2d(drive.driveController.calculate(toTarget.getX(), 0.0), drive.driveController.calculate(toTarget.getY(), 0.0))
+        toTarget = camera.getTranslationToTarget(camera.?getTarget(true, 0.0), targetHeightI)
+        val translation = Translation2d(drive.driveController.calculate(toTarget.getX(), goalDistI), drive.driveController.calculate(toTarget.getY(), goalDistI))
         drive.drive(translation, 0.0, true, false)
     }
 
@@ -34,6 +36,6 @@ class DriveToTargetCommand (drive:DriveSubsystem, camera:CameraSubsystem goalDis
 
     // Returns true when the command should end.
     override fun isFinished(): Boolean {
-        return toTarget.getDistance(Translation2d(0.0, 0.0)) < goalDistI
+        return toTarget.getDistance(Translation2d(0.0, 0.0)) < goalDistI+offset
     }
 }

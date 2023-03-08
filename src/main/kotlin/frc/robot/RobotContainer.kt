@@ -6,7 +6,9 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton
 import edu.wpi.first.math.geometry.Translation2d
 import frc.robot.commands.Autos
 import frc.robot.commands.JoystickDriveCommand
+import frc.robot.commands.DriveToTargetCommand
 import frc.robot.subsystems.DriveSubsystem
+import frc.robot.subsystems.CameraSubsystem
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -27,6 +29,7 @@ class RobotContainer {
 
     // subsystems
     private val drive: DriveSubsystem = DriveSubsystem()
+    private val camera: CameraSubsystem = CameraSubsystem()
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     init {
@@ -59,7 +62,7 @@ class RobotContainer {
 
         // Schedule exampleMethodCommand when the Xbox controller's B button is pressed,
         // cancelling on release.
-        // driverController.b().whileTrue(exampleSubsystem.exampleMethodCommand())
+        driverController.b().onTrue(DriveToTargetCommand(drive, camera, 10.0, 10.0, 0.0))
     }
 
     /**

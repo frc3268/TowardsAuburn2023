@@ -15,7 +15,7 @@ class CameraSubsystem : SubsystemBase() {
             target: PhotonTrackedTarget,
             targetHeightI: Double
     ): Translation2d {
-        var lengthForward = (targetHeightI - Constants.Camera.camHeightI) / Math.tan(target.pitch)
+        var lengthForward = (targetHeightI - Constants.Camera.camHeightI) / Math.tan(target.pitch - Constants.Camera.cameraAngleD)
         var lengthStafe = lengthForward / Math.tan(target.yaw)
 
         return Translation2d(lengthForward, lengthStafe)
