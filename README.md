@@ -7,4 +7,5 @@ Current "Custom" Components:
 - DriveTrain.Kt. Defines and configures a swerve drivetrain with 4 swerve modules. includes several public methods to use drivetrain, cheif among them being drive(), which takes in a Translation2d and sets motors accordingly. .    
 
 What's Next:  
-- Balancing. May need to be its own file to sperate from drivetrain, called in drivetrain nevertheless. 
+- Bindings, joystick and buttons
+- Commenting some code
