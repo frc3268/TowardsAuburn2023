@@ -19,6 +19,11 @@ class Constants {
         const val kDriverControllerPort = 0
     }
 
+    object Camera{
+        //!FixME
+        public val camHeightI = 10;
+    }
+
     object Swerve {
         public val stickDeadband = 0.1;
 
