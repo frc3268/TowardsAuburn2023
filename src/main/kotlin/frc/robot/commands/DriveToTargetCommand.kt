@@ -10,18 +10,19 @@ import frc.robot.Constants
 import frc.robot.units.*
 
 class DriveToTargetCommand(
-        drive: DriveSubsystem,
-        camera: CameraSubsystem,
-        goalDist: Double,
-        targetHeight: Double,
-        offset: Double
+    drive: DriveSubsystem,
+    camera: CameraSubsystem,
+    goalDist: Double,
+    targetHeight: Double,
+    offset: Double
 ) : CommandBase() {
     /** Creates a new DriveToTargetCommand. */
     val drive: DriveSubsystem = drive
     val camera: CameraSubsystem = camera
-    val goalDist: Double = goalDist.inch
-    val targetHeight: Double = targetHeight.inch
-    val offset: Double = offset.inch
+    val goalDist: Double = goalDist.inches
+    val targetHeight: Double = targetHeight.inches
+    val offset: Double = offset.inches
+
     init {
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(drive, camera)
@@ -34,15 +35,15 @@ class DriveToTargetCommand(
     override fun execute() {
         // get the translation to the target from the camera
         val translationToTargetDist: Translation2d? =
-                camera.getTranslationToTarget(camera.getTarget(true, 0), targetHeight)
+            camera.getTranslationToTarget(camera.getTarget(true, 0), targetHeight)
         // nullsafe
         if (translationToTargetDist != null) {
             //turn the distances to motor speeds
             val translationToTargetSpeed =
-                    Translation2d(
-                            MathUtil.applyDeadband((drive.driveController.calculate(translationToTargetDist.getX(), goalDist)), Constants.Swerve.stickDeadband),
-                            MathUtil.applyDeadband(drive.driveController.calculate(translationToTargetDist.getY(), goalDist), Constants.Swerve.stickDeadband)
-                    )
+                Translation2d(
+                    MathUtil.applyDeadband((drive.driveController.calculate(translationToTargetDist.getX(), goalDist)), Constants.Swerve.stickDeadband),
+                    MathUtil.applyDeadband(drive.driveController.calculate(translationToTargetDist.getY(), goalDist), Constants.Swerve.stickDeadband)
+                )
             //drive in open-loop mode using the speed
             drive.drive(translationToTargetSpeed, 0.0, true, false)
         }
@@ -54,9 +55,9 @@ class DriveToTargetCommand(
     // Returns true when the command should end.
     override fun isFinished(): Boolean {
         val translationToTarget: Translation2d? =
-                camera.getTranslationToTarget(camera.getTarget(true, 0), targetHeight)
+            camera.getTranslationToTarget(camera.getTarget(true, 0), targetHeight)
         if (translationToTarget != null) {
-            // if we have a target, check distance too it.
+            // if we have a target, check distance to it.
             return translationToTarget.getDistance(Translation2d(0.0, 0.0)) < goalDist + offset
         }
         // if there's no target, exit the command

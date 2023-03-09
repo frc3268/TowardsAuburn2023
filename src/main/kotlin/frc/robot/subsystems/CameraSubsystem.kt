@@ -17,13 +17,12 @@ class CameraSubsystem : SubsystemBase() {
         targetHeight: Double
     ): Translation2d? {
         if(target != null){
-        var lengthForward = (targetHeight.inch - Constants.Camera.camHeight) / Math.tan(target.pitch - Constants.Camera.cameraAngle)
-        var lengthStafe = lengthForward / Math.tan(target.yaw)
+            var lengthForward = (targetHeight.inches - Constants.Camera.camHeight) / Math.tan(target.pitch - Constants.Camera.cameraAngle)
+            var lengthStafe = lengthForward / Math.tan(target.yaw)
 
-        return Translation2d(lengthForward, lengthStafe)
+            return Translation2d(lengthForward, lengthStafe)
         }
         return null
-
     }
 
     public fun getTarget(bestTarget: Boolean, index: Int): PhotonTrackedTarget? {

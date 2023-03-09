@@ -8,14 +8,13 @@ import frc.robot.subsystems.DriveSubsystem
 import frc.robot.units.*
 
 class AutoBalanceCommand(drive: DriveSubsystem) : CommandBase() {
-    /** Creates a new AutoBalanceCommand. */
     val drive: DriveSubsystem = DriveSubsystem()
+    var gyroAngle: Double = 0.rad
 
-    var gyroAngle: Double = 0.0.deg
     init {
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(drive)
-        gyroAngle = drive.getPitch().getDegrees()
+        gyroAngle = drive.getPitch().getRadians()
     }
 
     // Called when the command is initially scheduled.
@@ -23,7 +22,7 @@ class AutoBalanceCommand(drive: DriveSubsystem) : CommandBase() {
 
     // Called every time the scheduler runs while the command is scheduled.
     override fun execute() {
-        gyroAngle = drive.getPitch().getDegrees()
+        gyroAngle = drive.getPitch().getRadians()
         drive.drive(
                 Translation2d(
                         MathUtil.applyDeadband(Math.sin(gyroAngle) * 1.5, 0.0),
@@ -40,6 +39,6 @@ class AutoBalanceCommand(drive: DriveSubsystem) : CommandBase() {
 
     // Returns true when the command should end.
     override fun isFinished(): Boolean {
-        return gyroAngle > 5.0
+        return gyroAngle > 5.deg
     }
 }

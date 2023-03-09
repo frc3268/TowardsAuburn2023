@@ -4,7 +4,7 @@ package frc.robot.units
 inline val Number.meters get() = this as Double
 
 /** Inches */
-inline val Number.inch get() = this as Double * 0.0254
+inline val Number.inches get() = this as Double * 0.0254
 
 /** Degrees */
 inline val Number.deg get() = this as Double

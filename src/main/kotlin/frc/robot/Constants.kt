@@ -22,8 +22,8 @@ class Constants {
 
     object Camera{
         //!FixME
-        public val camHeight = 10.0.inch;
-        public val cameraAngle = 45.0.deg;
+        public val camHeight = 10.inches;
+        public val cameraAngle = 45.deg;
     }
 
     object Swerve {
@@ -33,9 +33,9 @@ class Constants {
         public val invertGyro: Boolean = false; // Always ensure Gyro is CCW+ CW-
 
         /* Drivetrain Constants */
-        public val trackWidth = 21.73.inch;
-        public val wheelBase = 21.73.inch;
-        public val wheelDiameter = 4.inch;
+        public val trackWidth = 21.73.inches;
+        public val wheelBase = 21.73.inches;
+        public val wheelDiameter = 4.inches;
         public val wheelCircumference = wheelDiameter * Math.PI;
 
         public val openLoopRamp: Double = 0.25;
