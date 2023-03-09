@@ -19,9 +19,9 @@ class DriveToTargetCommand(
     /** Creates a new DriveToTargetCommand. */
     val drive: DriveSubsystem = drive
     val camera: CameraSubsystem = camera
-    val goalDist: Double = goalDist.inch
-    val targetHeight: Double = targetHeight.inch
-    val offset: Double = offset.inch
+    val goalDist: Double = goalDist
+    val targetHeight: Double = targetHeight
+    val offset: Double = offset
     init {
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(drive, camera)
