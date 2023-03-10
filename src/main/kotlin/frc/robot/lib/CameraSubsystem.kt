@@ -14,10 +14,9 @@ import org.photonvision.targeting.PhotonTrackedTarget
 import org.photonvision.PhotonPoseEstimator.PoseStrategy
 import org.photonvision.PhotonPoseEstimator
 import org.photonvision.EstimatedRobotPose
-import frc.robot.units.*
 import java.io.IOException
 
-class CameraSubsystem : SubsystemBase() {
+class CameraSubsystem{
     val cam: PhotonCamera = PhotonCamera("CCP BALOON CAMERA")
     public var frame: PhotonPipelineResult = PhotonPipelineResult()
     var poseEstimator: PhotonPoseEstimator? = null
@@ -80,14 +79,5 @@ class CameraSubsystem : SubsystemBase() {
     fun resetPose(pose: Pose2d) {
         poseEstimator ?: return
         poseEstimator?.setReferencePose(pose)
-    }
-
-    override fun periodic() {
-        // This method will be called once per scheduler run
-        frame = cam.getLatestResult()
-    }
-
-    override fun simulationPeriodic() {
-        // This method will be called once per scheduler run during simulation
     }
 }
