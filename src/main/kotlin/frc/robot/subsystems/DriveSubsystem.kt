@@ -19,7 +19,7 @@ import frc.robot.Constants
 import org.photonvision.EstimatedRobotPose
 
 class DriveSubsystem : SubsystemBase() {
-    public val swerveOdom: SwerveDrivePoseEstimator
+    public val swervePoseEstimator: SwerveDrivePoseEstimator
 
     public val swerveMods: List<SwerveModule> =
         Constants.Swerve.swerveMods.mapIndexed { i, swerveMod -> SwerveModule(i, swerveMod) }
@@ -40,18 +40,18 @@ class DriveSubsystem : SubsystemBase() {
     init {
         gyro.calibrate()
         zeroGyro()
-        swerveOdom = SwerveDrivePoseEstimator(Constants.Swerve.swerveKinematics, getYaw(), getModulePositions(), Pose2d(Translation2d(0.0,0.0), getYaw()))
+        swervePoseEstimator = SwerveDrivePoseEstimator(Constants.Swerve.swerveKinematics, getYaw(), getModulePositions(), Pose2d(Translation2d(0.0,0.0), getYaw()))
         Timer.delay(1.0)
         resetModulesToAbsolute()
     }
 
     override fun periodic() {
         // This method will be called once per scheduler run
-        swerveOdom.update(getYaw(), getModulePositions()); 
+        swervePoseEstimator.update(getYaw(), getModulePositions()); 
         
         var visionResult : EstimatedRobotPose? = cam.getEstimatedPose(getPose())
         if(visionResult != null){
-            swerveOdom.addVisionMeasurement(visionResult.estimatedPose.toPose2d(), visionResult.timestampSeconds)
+            swervePoseEstimator.addVisionMeasurement(visionResult.estimatedPose.toPose2d(), visionResult.timestampSeconds)
         }
         
 
@@ -98,11 +98,11 @@ class DriveSubsystem : SubsystemBase() {
     }
 
     public fun getPose(): Pose2d {
-        return swerveOdom.getEstimatedPosition()
+        return swervePoseEstimator.getEstimatedPosition()
     }
 
     public fun resetOdometry(pose: Pose2d) {
-        swerveOdom.resetPosition(getYaw(), getModulePositions(), pose)
+        swervePoseEstimator.resetPosition(getYaw(), getModulePositions(), pose)
     }
 
     public fun getModuleStates(): Array<SwerveModuleState> {
