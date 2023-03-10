@@ -16,8 +16,8 @@ import org.photonvision.PhotonPoseEstimator
 import org.photonvision.EstimatedRobotPose
 import java.io.IOException
 
-class CameraSubsystem{
-    val cam: PhotonCamera = PhotonCamera("CCP BALOON CAMERA")
+class Camera{
+    public val limelight: PhotonCamera = PhotonCamera("CCP BALOON CAMERA")
     public var frame: PhotonPipelineResult = PhotonPipelineResult()
     var poseEstimator: PhotonPoseEstimator? = null
     
@@ -31,7 +31,7 @@ class CameraSubsystem{
                         + "/2023-chargedup.json"
                     ),
                     PoseStrategy.MULTI_TAG_PNP,
-                    cam,
+                    limelight,
                     Transform3d()
                 )
         } catch (e: IOException) {
@@ -54,19 +54,19 @@ class CameraSubsystem{
     }
 
     public fun getTarget(bestTarget: Boolean, index: Int): PhotonTrackedTarget? {
-        cam.pipelineIndex = 0
+        limelight.pipelineIndex = 0
         if (frame.hasTargets()) {
-            cam.pipelineIndex = 1
+            limelight.pipelineIndex = 1
             return null
         }
         if (bestTarget) {
             val target = frame.getBestTarget()
-            cam.pipelineIndex = 1
+            limelight.pipelineIndex = 1
             return target
 
         }
         val target = frame.targets[index]
-        cam.pipelineIndex = 1
+        limelight.pipelineIndex = 1
         return target
     }
 

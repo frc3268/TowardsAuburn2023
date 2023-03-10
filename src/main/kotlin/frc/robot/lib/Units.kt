@@ -1,4 +1,4 @@
-package frc.robot.units
+package frc.robot.lib.units
 
 /** Meters */
 inline val Number.meters get() = this as Double

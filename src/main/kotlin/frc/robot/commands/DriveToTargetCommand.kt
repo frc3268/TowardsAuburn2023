@@ -5,26 +5,24 @@ import edu.wpi.first.math.MathUtil
 import edu.wpi.first.wpilibj2.command.CommandBase
 import frc.robot.subsystems.CameraSubsystem
 import frc.robot.subsystems.DriveSubsystem
+import frc.robot.subsystems.Camera
 import frc.robot.Constants
 
-import frc.robot.units.*
-
 class DriveToTargetCommand(
-    drive: DriveSubsystem,
-    camera: CameraSubsystem,
+    drive: DriveSubsystem
     goalDist: Double,
     targetHeight: Double,
     offset: Double
 ) : CommandBase() {
     /** Creates a new DriveToTargetCommand. */
     val drive: DriveSubsystem = drive
-    val camera: CameraSubsystem = camera
+    val camera: Camera = drive.cam
     val goalDist: Double = goalDist
     val targetHeight: Double = targetHeight
     val offset: Double = offset
     init {
         // Use addRequirements() here to declare subsystem dependencies.
-        addRequirements(drive, camera)
+        addRequirements(drive)
     }
 
     // Called when the command is initially scheduled.

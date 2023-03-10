@@ -10,14 +10,16 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry
 import edu.wpi.first.math.kinematics.SwerveModulePosition
 import edu.wpi.first.math.kinematics.SwerveModuleState
 import edu.wpi.first.math.controller.PIDController
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator
 import edu.wpi.first.wpilibj.SPI
 import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 import frc.robot.Constants
+import org.photonvision.EstimatedRobotPose
 
 class DriveSubsystem : SubsystemBase() {
-    public val swerveOdom: SwerveDriveOdometry
+    public val swerveOdom: SwerveDrivePoseEstimator
 
     public val swerveMods: List<SwerveModule> =
         Constants.Swerve.swerveMods.mapIndexed { i, swerveMod -> SwerveModule(i, swerveMod) }
@@ -30,19 +32,30 @@ class DriveSubsystem : SubsystemBase() {
     val linearD: Double = 0.0
     public val driveController: PIDController = PIDController(linearP, 0.0, linearD)
 
+    //camera
+    public val cam:Camera = Camera()
+
 
 
     init {
         gyro.calibrate()
         zeroGyro()
-        swerveOdom = SwerveDriveOdometry(Constants.Swerve.swerveKinematics, getYaw(), getModulePositions())
+        swerveOdom = SwerveDrivePoseEstimator(Constants.Swerve.swerveKinematics, getYaw(), getModulePositions(), Pose2d(Translation2d(0.0,0.0), getYaw()))
         Timer.delay(1.0)
         resetModulesToAbsolute()
     }
 
     override fun periodic() {
         // This method will be called once per scheduler run
-        swerveOdom.update(getYaw(), getModulePositions());  
+        swerveOdom.update(getYaw(), getModulePositions()); 
+        
+        var visionResult : EstimatedRobotPose? = cam.getEstimatedPose(getPose())
+        if(visionResult != null){
+            swerveOdom.addVisionMeasurement(visionResult.estimatedPose.toPose2d(), visionResult.timestampSeconds)
+        }
+        
+
+        cam.frame = cam.limelight.getLatestResult()
 
         for(mod in swerveMods){
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
@@ -85,7 +98,7 @@ class DriveSubsystem : SubsystemBase() {
     }
 
     public fun getPose(): Pose2d {
-        return swerveOdom.getPoseMeters()
+        return swerveOdom.getEstimatedPosition()
     }
 
     public fun resetOdometry(pose: Pose2d) {
