@@ -16,7 +16,7 @@ import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.math.kinematics.SwerveModuleState
 import edu.wpi.first.math.kinematics.SwerveModulePosition
 import frc.robot.Constants
-import frc.robot.units.*
+import frc.robot.lib.units.*
 
 /** Add your docs here. */
 class SwerveModule(moduleNumber: Int, moduleConstants: Constants.SwerveDriveModuleConstants) {
