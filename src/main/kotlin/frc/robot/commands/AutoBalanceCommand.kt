@@ -5,7 +5,7 @@ import edu.wpi.first.math.geometry.Translation2d
 import edu.wpi.first.wpilibj2.command.CommandBase
 import frc.robot.Constants
 import frc.robot.subsystems.DriveSubsystem
-import frc.robot.units.*
+import frc.robot.lib.units.*
 
 class AutoBalanceCommand(drive: DriveSubsystem) : CommandBase() {
     val drive: DriveSubsystem = DriveSubsystem()
@@ -24,13 +24,13 @@ class AutoBalanceCommand(drive: DriveSubsystem) : CommandBase() {
     override fun execute() {
         gyroAngle = drive.getPitch().getRadians()
         drive.drive(
-                Translation2d(
-                        MathUtil.applyDeadband(Math.sin(gyroAngle) * 1.5, 0.0),
-                        Constants.Swerve.stickDeadband
-                ),
-                0.0,
-                true,
-                false
+            Translation2d(
+                MathUtil.applyDeadband(Math.sin(gyroAngle) * 1.5, 0.0),
+                Constants.Swerve.stickDeadband
+            ),
+            0.0,
+            true,
+            false
         )
     }
 
