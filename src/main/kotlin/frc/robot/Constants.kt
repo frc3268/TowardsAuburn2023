@@ -2,6 +2,7 @@ package frc.robot
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d
+import edu.wpi.first.math.geometry.Pose2d
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics
 import com.revrobotics.CANSparkMax.IdleMode;
 import frc.robot.lib.units.*
@@ -20,6 +21,12 @@ class Constants {
         const val kDriverControllerPort = 0
     }
 
+    object Field{
+        public val chargeStationPoint = Pose2d(
+            Translation2d(224.inches, 84.25.inches), Rotation2d.fromDegrees(0.0.deg)
+        )
+    }
+
     object Camera{
         //!FixME
         public val camHeight = 10.inches;
@@ -31,6 +38,7 @@ class Constants {
 
         public val gyroID: Int = 6;
         public val invertGyro: Boolean = false; // Always ensure Gyro is CCW+ CW-
+        public val startYaw = 180.0
 
         /* Drivetrain Constants */
         public val trackWidth = 21.73.inches;
