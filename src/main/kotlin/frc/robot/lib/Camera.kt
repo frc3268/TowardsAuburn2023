@@ -55,7 +55,7 @@ class Camera {
         limelight.pipelineIndex = 0
 
         var output: PhotonTrackedTarget? =
-            if(frame.hasTargets()){
+            if(!frame.hasTargets()){
                 null
             } else if(bestTarget){
                 frame.getBestTarget()
