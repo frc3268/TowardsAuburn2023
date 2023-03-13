@@ -22,7 +22,7 @@ class Constants {
         const val kDriverControllerPort = 0
     }
 
-    object Field{
+    object Field {
         public val chargeStationPoint = Pose2d(
             Translation2d(224.inches, 84.25.inches), Rotation2d.fromDegrees(0.0.deg)
         )
