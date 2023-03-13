@@ -28,12 +28,6 @@ class Constants {
         )
     }
 
-    object Field {
-        public val chargeStationPoint = Pose2d(
-            Translation2d(224.inches, 84.25.inches), Rotation2d.fromDegrees(0.0.deg)
-        )
-    }
-
     object Camera {
         //!FixME
         public val camHeight = 10.inches;
@@ -129,14 +123,14 @@ class Constants {
         val angleOffset: Rotation2d
     )
     object AutoConstants {
-        val  kMaxSpeedMetersPerSecond : Double= 3.0;
+        val kMaxSpeedMetersPerSecond: Double = 3.0;
         val kMaxAccelerationMetersPerSecondSquared: Double = 3.0;
-        val kMaxAngularSpeedRadiansPerSecond :Double = Math.PI;
+        val kMaxAngularSpeedRadiansPerSecond: Double = Math.PI;
         val kMaxAngularSpeedRadiansPerSecondSquared: Double = Math.PI;
     
-        val kPXController:Double = 1.0;
-        val kPYController:Double = 1.0;
-        val kPThetaController:Double = 1.0;
+        val kPXController: Double = 1.0;
+        val kPYController: Double = 1.0;
+        val kPThetaController: Double = 1.0;
     
         // Constraint for the motion profilied robot angle controller
         val kThetaControllerConstraints : TrapezoidProfile.Constraints =
