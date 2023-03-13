@@ -16,11 +16,10 @@ import org.photonvision.PhotonPoseEstimator
 import org.photonvision.EstimatedRobotPose
 import java.io.IOException
 
-class Camera{
+class Camera {
     public val limelight: PhotonCamera = PhotonCamera("CCP BALOON CAMERA")
     public var frame: PhotonPipelineResult = PhotonPipelineResult()
     var poseEstimator: PhotonPoseEstimator? = null
-    
 
     init {
         try {
@@ -44,30 +43,30 @@ class Camera{
         target: PhotonTrackedTarget?,
         targetHeight: Double
     ): Translation2d? {
-        if(target != null){
-        var lengthForward = (targetHeight - Constants.Camera.camHeight) / Math.tan(target.pitch - Constants.Camera.cameraAngle)
-        var lengthStafe = lengthForward / Math.tan(target.yaw)
-
-            return Translation2d(lengthForward, lengthStafe)
-        }
-        return null
+        return if(target != null) {
+            val lengthForward = ((targetHeight - Constants.Camera.camHeight) /
+                Math.tan(target.pitch - Constants.Camera.cameraAngle))
+            return Translation2d(lengthForward, lengthForward / Math.tan(target.yaw))
+        } else null
     }
 
     public fun getTarget(bestTarget: Boolean, index: Int): PhotonTrackedTarget? {
+        // Reflective tape
         limelight.pipelineIndex = 0
-        if (frame.hasTargets()) {
-            limelight.pipelineIndex = 1
-            return null
-        }
-        if (bestTarget) {
-            val target = frame.getBestTarget()
-            limelight.pipelineIndex = 1
-            return target
 
-        }
-        val target = frame.targets[index]
+        var output: PhotonTrackedTarget? =
+            if(frame.hasTargets()){
+                null
+            } else if(bestTarget){
+                frame.getBestTarget()
+            } else {
+                frame.targets[index]
+            }
+
+        // April tag
         limelight.pipelineIndex = 1
-        return target
+
+        return output
     }
 
     fun getEstimatedPose(prevPose: Pose2d): EstimatedRobotPose? {

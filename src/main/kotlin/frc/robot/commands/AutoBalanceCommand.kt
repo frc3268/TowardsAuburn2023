@@ -7,7 +7,7 @@ import frc.robot.Constants
 import frc.robot.subsystems.DriveSubsystem
 import frc.robot.lib.units.*
 
-class AutoBalanceCommand(drive: DriveSubsystem) : CommandBase() {
+class AutoBalanceCommand(drive: DriveSubsystem): CommandBase() {
     val drive: DriveSubsystem = DriveSubsystem()
     var gyroAngle: Double = 0.rad
 
@@ -28,7 +28,7 @@ class AutoBalanceCommand(drive: DriveSubsystem) : CommandBase() {
                 MathUtil.applyDeadband(Math.sin(gyroAngle) * 1.5, 0.0),
                 Constants.Swerve.stickDeadband
             ),
-            0.0,
+            0.deg,
             true,
             false
         )
