@@ -20,7 +20,7 @@ class Constants {
         const val kDriverControllerPort = 0
     }
 
-    object Camera{
+    object Camera {
         //!FixME
         public val camHeight = 10.inches;
         public val cameraAngle = 45.deg;
@@ -41,15 +41,16 @@ class Constants {
         public val openLoopRamp: Double = 0.25;
         public val closedLoopRamp: Double = 0.0;
 
-        public val driveGearRatio: Double = 8.14 / 1.0; // 6.75:1
-        public val angleGearRatio: Double = 12.8 / 1.0; // 12.8:1
+        public val driveGearRatio: Double = 8.14 / 1.0;
+        public val angleGearRatio: Double = 12.8 / 1.0;
 
         public val swerveKinematics: SwerveDriveKinematics =
             SwerveDriveKinematics(
                 Translation2d(wheelBase / 2.0, trackWidth / 2.0),
                 Translation2d(wheelBase / 2.0, -trackWidth / 2.0),
                 Translation2d(-wheelBase / 2.0, trackWidth / 2.0),
-                Translation2d(-wheelBase / 2.0, -trackWidth / 2.0));
+                Translation2d(-wheelBase / 2.0, -trackWidth / 2.0)
+            );
 
         /* Swerve Voltage Compensation */
         public val voltageComp: Double = 12.0;

@@ -38,7 +38,6 @@ class AutoBalanceCommand(drive: DriveSubsystem) : CommandBase() {
     override fun end(interrupted: Boolean) {}
 
     // Returns true when the command should end.
-    override fun isFinished(): Boolean {
-        return gyroAngle > 5.deg
-    }
+    override fun isFinished(): Boolean =
+        gyroAngle > 5.deg
 }
