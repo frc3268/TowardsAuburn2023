@@ -1,35 +1,13 @@
 package frc.robot.commands
 
-import edu.wpi.first.wpilibj2.command.CommandBase
-import edu.wpi.first.math.geometry.Translation2d
-import edu.wpi.first.math.trajectory.Trajectory
-import edu.wpi.first.math.trajectory.Trajectory
-import frc.robot.subsystems.DriveSubsystem
-import frc.robot.subsystems.DriveSubsystem
+import edu.wpi.first.wpilibj2.command.InstantCommand
 
-class BeelineCommand (drive: DriveSubsystem): CommandBase() {
-    /**
-     * Creates a new BeelineCommand.
-     */
-    val drive:DriveSubsystem = drive
-    init {
-        // Use addRequirements() here to declare subsystem dependencies.
-        addRequirements(drive)
-    }
-
+// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
+// information, see:
+// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
+class BeelineCommand : InstantCommand() {
     // Called when the command is initially scheduled.
     override fun initialize() {
-
-     }
-
-    // Called every time the scheduler runs while the command is scheduled.
-    override fun execute() { }
-
-    // Called once the command ends or is interrupted.
-    override fun end(interrupted: Boolean) { }
-
-    // Returns true when the command should end.
-    override fun isFinished(): Boolean {
-        return false
+        
     }
 }

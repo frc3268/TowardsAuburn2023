@@ -22,4 +22,7 @@ Name       | Conversion factor
 `.meters`  | 1
 `.inch`    | 0.0254
 `.deg`     | 1
-`.rad`     | ~57.2957795
+`.rad`     | ~57.2957795  
+
+# Credits  
+**LOLNOPE**
