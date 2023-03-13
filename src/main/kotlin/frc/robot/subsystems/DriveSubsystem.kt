@@ -120,7 +120,7 @@ class DriveSubsystem : SubsystemBase() {
     }
 
     public fun getYaw(): Rotation2d {
-        return Rotation2d.fromDegrees(gyro.getYaw().toDouble())
+        return Rotation2d.fromDegrees(gyro.getYaw().toDouble() + Constants.Swerve.startYaw)
     }
 
     public fun getPitch(): Rotation2d {

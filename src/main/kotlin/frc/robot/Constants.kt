@@ -2,7 +2,9 @@ package frc.robot
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d
+import edu.wpi.first.math.geometry.Pose2d
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics
+import edu.wpi.first.math.trajectory.TrapezoidProfile
 import com.revrobotics.CANSparkMax.IdleMode;
 import frc.robot.lib.units.*
 
@@ -20,6 +22,18 @@ class Constants {
         const val kDriverControllerPort = 0
     }
 
+    object Field{
+        public val chargeStationPoint = Pose2d(
+            Translation2d(224.inches, 84.25.inches), Rotation2d.fromDegrees(0.0.deg)
+        )
+    }
+
+    object Field {
+        public val chargeStationPoint = Pose2d(
+            Translation2d(224.inches, 84.25.inches), Rotation2d.fromDegrees(0.0.deg)
+        )
+    }
+
     object Camera {
         //!FixME
         public val camHeight = 10.inches;
@@ -31,6 +45,7 @@ class Constants {
 
         public val gyroID: Int = 6;
         public val invertGyro: Boolean = false; // Always ensure Gyro is CCW+ CW-
+        public val startYaw = 180.0
 
         /* Drivetrain Constants */
         public val trackWidth = 21.73.inches;
@@ -113,4 +128,19 @@ class Constants {
         val canCoderID: Int,
         val angleOffset: Rotation2d
     )
+    object AutoConstants {
+        val  kMaxSpeedMetersPerSecond : Double= 3.0;
+        val kMaxAccelerationMetersPerSecondSquared: Double = 3.0;
+        val kMaxAngularSpeedRadiansPerSecond :Double = Math.PI;
+        val kMaxAngularSpeedRadiansPerSecondSquared: Double = Math.PI;
+    
+        val kPXController:Double = 1.0;
+        val kPYController:Double = 1.0;
+        val kPThetaController:Double = 1.0;
+    
+        // Constraint for the motion profilied robot angle controller
+        val kThetaControllerConstraints : TrapezoidProfile.Constraints =
+            TrapezoidProfile.Constraints(
+                kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
+    }
 }
