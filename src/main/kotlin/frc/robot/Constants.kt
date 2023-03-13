@@ -137,5 +137,4 @@ class Constants {
                 kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
       }
     }
-    
-}
+
