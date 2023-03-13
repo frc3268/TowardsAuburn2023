@@ -21,9 +21,8 @@ class RobotContainer {
 
     // controllers
     private val driverController =
-            CommandXboxController(Constants.OperatorConstants.kDriverControllerPort)
+        CommandXboxController(Constants.OperatorConstants.kDriverControllerPort)
 
-    
     /* Driver Buttons */
 
     // subsystems
@@ -38,10 +37,10 @@ class RobotContainer {
         drive.setDefaultCommand(
             JoystickDriveCommand(
                 drive,
-                {-driverController.getLeftY()},
-                {-driverController.getLeftX()},
-                {driverController.getRightX()},
-                {driverController.rightBumper().getAsBoolean()}
+                { -driverController.getLeftY() },
+                { -driverController.getLeftX() },
+                { driverController.getRightX() },
+                { driverController.rightBumper().getAsBoolean() }
             )
         )
     }
@@ -69,8 +68,7 @@ class RobotContainer {
      * @return the command to run in autonomous
      */
     val autonomousCommand: Command
-        get() {
-            // An example command will be run in autonomous
-            return Autos.exampleAuto()
-        }
+        get() =
+            // Example command
+            Autos.exampleAuto()
 }
