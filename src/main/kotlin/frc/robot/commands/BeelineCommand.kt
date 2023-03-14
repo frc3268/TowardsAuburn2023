@@ -58,8 +58,7 @@ class BeelineCommand(drive: DriveSubsystem) : InstantCommand() {
                         PIDController(Constants.AutoConstants.kPXController, 0.0, 0.0),
                         PIDController(Constants.AutoConstants.kPYController, 0.0, 0.0),
                         thetaController,
-                        Rotation2d.fromDegrees(0.0),
-                        drive::setModuleStates,
+                        {drive::setModuleStates},
                         drive
                 )
     }
