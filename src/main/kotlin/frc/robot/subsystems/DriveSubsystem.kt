@@ -21,6 +21,7 @@ import org.photonvision.EstimatedRobotPose
 
 import frc.robot.Constants
 import frc.robot.lib.*
+import frc.robot.lib.Camera
 
 class DriveSubsystem : SubsystemBase() {
     public val swervePoseEstimator: SwerveDrivePoseEstimator

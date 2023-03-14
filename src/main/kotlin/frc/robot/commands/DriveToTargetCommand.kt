@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase
 
 import frc.robot.Constants
 import frc.robot.lib.*
+import frc.robot.lib.Camera
 import frc.robot.subsystems.*
 
 class DriveToTargetCommand(
