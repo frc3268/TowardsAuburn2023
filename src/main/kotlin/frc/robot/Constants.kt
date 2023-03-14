@@ -8,7 +8,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile
 
 import com.revrobotics.CANSparkMax.IdleMode
 
-import frc.robot.lib.*
+import frc.robot.lib.units.*
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean

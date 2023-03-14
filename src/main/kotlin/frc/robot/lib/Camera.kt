@@ -46,7 +46,7 @@ class Camera {
         target: PhotonTrackedTarget?,
         targetHeight: Double
     ): Translation2d? {
-        return if(target != null) {
+        return if (target != null) {
             val lengthForward = ((targetHeight - Constants.Camera.camHeight) /
                 Math.tan(target.pitch - Constants.Camera.cameraAngle))
             return Translation2d(lengthForward, lengthForward / Math.tan(target.yaw))
@@ -58,9 +58,9 @@ class Camera {
         limelight.pipelineIndex = 0
 
         var output: PhotonTrackedTarget? =
-            if(!frame.hasTargets()){
+            if (!frame.hasTargets()) {
                 null
-            } else if(bestTarget){
+            } else if (bestTarget) {
                 frame.getBestTarget()
             } else {
                 frame.targets[index]

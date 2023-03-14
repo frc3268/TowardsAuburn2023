@@ -5,15 +5,16 @@ import edu.wpi.first.math.MathUtil
 import edu.wpi.first.wpilibj2.command.CommandBase
 
 import frc.robot.Constants
-import frc.robot.lib.*
-import frc.robot.subsystems.*
+import frc.robot.lib.Camera
+import frc.robot.lib.units.*
+import frc.robot.subsystems.DriveSubsystem
 
 class DriveToTargetCommand(
     drive: DriveSubsystem,
     goalDist: Double,
     targetHeight: Double,
     offset: Double
-): CommandBase() {
+) : CommandBase() {
     /** Creates a new DriveToTargetCommand. */
     val drive: DriveSubsystem = drive
     val camera: Camera = drive.camera
