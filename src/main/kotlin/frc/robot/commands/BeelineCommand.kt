@@ -17,9 +17,9 @@ import frc.robot.subsystems.DriveSubsystem
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-class BeelineCommand(drive: DriveSubsystem, target:Pose2d) : InstantCommand() {
+class BeelineCommand(drive: DriveSubsystem, target: Pose2d) : InstantCommand() {
     val drive: DriveSubsystem = drive
-    val target:Pose2d = target
+    val target: Pose2d = target
     init {
         addRequirements(drive)
     }
