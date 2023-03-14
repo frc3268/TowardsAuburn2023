@@ -62,5 +62,6 @@ class BeelineCommand(drive: DriveSubsystem) : InstantCommand() {
                         {drive::setModuleStates},
                         drive
                 )
+        run{swerveControllerCommand}
     }
 }
