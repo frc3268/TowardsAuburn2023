@@ -8,7 +8,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile
 
 import com.revrobotics.CANSparkMax.IdleMode
 
-import frc.robot.lib.*
+import frc.robot.lib.units.*
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -78,9 +78,9 @@ class Constants {
 
         /* Drive Motor PID Values */
         public val driveKP: Double = 0.1
-        public val driveKI: Double  = 0.0
-        public val driveKD: Double  = 0.0
-        public val driveKFF: Double  = 0.0
+        public val driveKI: Double = 0.0
+        public val driveKD: Double = 0.0
+        public val driveKFF: Double = 0.0
 
         /* Drive Motor Characterization Values */
         public val driveKS: Double  = 0.667

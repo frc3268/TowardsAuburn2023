@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase
 import org.photonvision.EstimatedRobotPose
 
 import frc.robot.Constants
-import frc.robot.lib.*
 import frc.robot.lib.Camera
 
 class DriveSubsystem : SubsystemBase() {
@@ -52,13 +51,13 @@ class DriveSubsystem : SubsystemBase() {
         swervePoseEstimator.update(getYaw(), getModulePositions()); 
         
         var visionResult : EstimatedRobotPose? = camera.getEstimatedPose(getPose())
-        if(visionResult != null){
+        if (visionResult != null) {
             swervePoseEstimator.addVisionMeasurement(visionResult.estimatedPose.toPose2d(), visionResult.timestampSeconds)
         }
         
         camera.frame = camera.limelight.getLatestResult()
 
-        for(mod in swerveMods){
+        for (mod in swerveMods) {
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Integrated", mod.getPosition().angle.getDegrees());
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);    
@@ -71,7 +70,7 @@ class DriveSubsystem : SubsystemBase() {
 
     public fun drive(translation: Translation2d, rotation: Double, isOpenLoop: Boolean, fieldOriented: Boolean) {
         val swerveModuleStates: Array<SwerveModuleState> = Constants.Swerve.swerveKinematics.toSwerveModuleStates(
-            if(fieldOriented) {
+            if (fieldOriented) {
                 ChassisSpeeds.fromFieldRelativeSpeeds(
                     translation.getX(),
                     translation.getY(),

@@ -7,9 +7,15 @@ import java.util.function.DoubleSupplier
 import java.util.function.BooleanSupplier
 
 import frc.robot.Constants
-import frc.robot.subsystems.*
+import frc.robot.subsystems.DriveSubsystem
 
-class  JoystickDriveCommand(drive: DriveSubsystem, translationX: DoubleSupplier, translationY: DoubleSupplier, rotation:DoubleSupplier, fieldOriented: BooleanSupplier): CommandBase() {
+class JoystickDriveCommand(
+    drive: DriveSubsystem,
+    translationX: DoubleSupplier,
+    translationY: DoubleSupplier,
+    rotation: DoubleSupplier,
+    fieldOriented: BooleanSupplier
+) : CommandBase() {
     /**
      * Creates a new .
      */

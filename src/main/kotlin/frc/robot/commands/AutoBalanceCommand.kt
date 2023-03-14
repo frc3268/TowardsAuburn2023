@@ -5,10 +5,10 @@ import edu.wpi.first.math.geometry.Translation2d
 import edu.wpi.first.wpilibj2.command.CommandBase
 
 import frc.robot.Constants
-import frc.robot.lib.*
-import frc.robot.subsystems.*
+import frc.robot.lib.units.*
+import frc.robot.subsystems.DriveSubsystem
 
-class AutoBalanceCommand(drive: DriveSubsystem): CommandBase() {
+class AutoBalanceCommand(drive: DriveSubsystem) : CommandBase() {
     val drive: DriveSubsystem = DriveSubsystem()
     var gyroAngle: Double = 0.rad
 

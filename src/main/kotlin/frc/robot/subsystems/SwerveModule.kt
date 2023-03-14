@@ -17,7 +17,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState
 import edu.wpi.first.math.kinematics.SwerveModulePosition
 
 import frc.robot.Constants
-import frc.robot.lib.*
+import frc.robot.lib.units.*
 
 /** Add your docs here. */
 class SwerveModule(moduleNumber: Int, moduleConstants: Constants.SwerveDriveModuleConstants) {
@@ -55,7 +55,7 @@ class SwerveModule(moduleNumber: Int, moduleConstants: Constants.SwerveDriveModu
 
     public fun setDesiredState(desiredState: SwerveModuleState, isOpenLoop: Boolean) {
         var dState: SwerveModuleState = optimize(desiredState, getState().angle)
-        if(isOpenLoop) {
+        if (isOpenLoop) {
             setAngle(dState)
             //percentwanted * max = speedwanted
             driveMotor.set(dState.speedMetersPerSecond / Constants.Swerve.maxSpeed)
@@ -177,9 +177,9 @@ class SwerveModule(moduleNumber: Int, moduleConstants: Constants.SwerveDriveModu
             )
         var targetSpeed: Double = desiredState.speedMetersPerSecond
         var delta: Double = targetAngle - currentAngle.getDegrees()
-        if(Math.abs(delta) > 90.deg) {
+        if (Math.abs(delta) > 90.deg) {
             targetSpeed *= -1
-            targetAngle += if(delta > 90.deg) { -180.deg } else { +180.deg }
+            targetAngle += if (delta > 90.deg) -180.deg else +180.deg
         }
         return SwerveModuleState(targetSpeed, Rotation2d.fromDegrees(targetAngle))
     }
