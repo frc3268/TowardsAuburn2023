@@ -38,9 +38,8 @@ class BeelineCommand(drive: DriveSubsystem) : InstantCommand() {
                                 Constants.Field.chargeStationPoint.translation.getY()
                 )
         val rotationToGo: Rotation2d =
-                Rotation2d.fromDegrees(
-                        drive.swervePoseEstimator.estimatedPosition.rotation.degrees -
-                                Constants.Field.chargeStationPoint.rotation.degrees
+                drive.swervePoseEstimator.estimatedPosition.rotation.minus(
+                        Constants.Field.chargeStationPoint.rotation
                 )
 
         // An example trajectory to follow.  All units in meters.
@@ -75,9 +74,10 @@ class BeelineCommand(drive: DriveSubsystem) : InstantCommand() {
                         { drive::setModuleStates },
                         drive
                 )
-        run { 
+        run {
             drive.resetOdometry(trajectory.initialPose)
-            swerveControllerCommand 
+            swerveControllerCommand
+            // might have to reset odometry again
         }
     }
 }
