@@ -33,13 +33,14 @@ class BeelineCommand(drive: DriveSubsystem) : InstantCommand() {
         // An example trajectory to follow.  All units in meters.
         val trajectory: Trajectory =
                 TrajectoryGenerator.generateTrajectory(
-                    // Start at the origin facing the +X direction
-                    Pose2d(0.0, 0.0, Rotation2d(0.0)),
-                    // Pass through these two interior waypoints, making an 's' curve path
-                    listOf(Translation2d(1.0, 1.0), Translation2d(2.0, -1.0)),
-                    // End 3 meters straight ahead of where we started, facing forward
-                    Pose2d(3.0, 0.0, Rotation2d(0.0)),
-                    config)
+                        // Start at the origin facing the +X direction
+                        Pose2d(0.0, 0.0, Rotation2d(0.0)),
+                        // Pass through these two interior waypoints, making an 's' curve path
+                        listOf(Translation2d(1.0, 1.0), Translation2d(2.0, -1.0)),
+                        // End 3 meters straight ahead of where we started, facing forward
+                        Pose2d(3.0, 0.0, Rotation2d(0.0)),
+                        config
+                )
 
         var thetaController: ProfiledPIDController =
                 ProfiledPIDController(
@@ -58,8 +59,9 @@ class BeelineCommand(drive: DriveSubsystem) : InstantCommand() {
                         PIDController(Constants.AutoConstants.kPXController, 0.0, 0.0),
                         PIDController(Constants.AutoConstants.kPYController, 0.0, 0.0),
                         thetaController,
-                        {drive::setModuleStates},
+                        { drive::setModuleStates },
                         drive
                 )
+        run { swerveControllerCommand }
     }
 }
