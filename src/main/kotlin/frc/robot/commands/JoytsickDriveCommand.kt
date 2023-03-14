@@ -12,11 +12,12 @@ class  JoystickDriveCommand(drive: DriveSubsystem, translationX: DoubleSupplier,
     /**
      * Creates a new .
      */
-    val drive:DriveSubsystem = drive
-    val translationX:DoubleSupplier = translationX
-    val translationY:DoubleSupplier = translationY
-    val rotation:DoubleSupplier = rotation
-    val fieldOriented:BooleanSupplier = fieldOriented
+    val drive: DriveSubsystem = drive
+    val translationX: DoubleSupplier = translationX
+    val translationY: DoubleSupplier = translationY
+    val rotation: DoubleSupplier = rotation
+    val fieldOriented: BooleanSupplier = fieldOriented
+
     init {
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(drive)
@@ -27,18 +28,18 @@ class  JoystickDriveCommand(drive: DriveSubsystem, translationX: DoubleSupplier,
 
     // Called every time the scheduler runs while the command is scheduled.
     override fun execute() { 
-         /* Get Values, Deadband*/
-         val translationVal:Double = MathUtil.applyDeadband(translationX.getAsDouble(), Constants.Swerve.stickDeadband);
-         val strafeVal:Double = MathUtil.applyDeadband(translationY.getAsDouble(), Constants.Swerve.stickDeadband);
-         val rotationVal:Double = MathUtil.applyDeadband(rotation.getAsDouble(), Constants.Swerve.stickDeadband);
+        /* Get Values, Deadband*/
+        val translationVal: Double = MathUtil.applyDeadband(translationX.getAsDouble(), Constants.Swerve.stickDeadband);
+        val strafeVal: Double = MathUtil.applyDeadband(translationY.getAsDouble(), Constants.Swerve.stickDeadband);
+        val rotationVal: Double = MathUtil.applyDeadband(rotation.getAsDouble(), Constants.Swerve.stickDeadband);
  
-         /* Drive */
-         drive.drive(
-             Translation2d(translationVal, strafeVal).times(Constants.Swerve.maxSpeed), 
-             rotationVal * Constants.Swerve.maxAngularVelocity, 
-             fieldOriented.getAsBoolean(), 
-             true
-         );
+        /* Drive */
+        drive.drive(
+            Translation2d(translationVal, strafeVal).times(Constants.Swerve.maxSpeed), 
+            rotationVal * Constants.Swerve.maxAngularVelocity, 
+            fieldOriented.getAsBoolean(), 
+            true
+        );
     }
 
     // Called once the command ends or is interrupted.
