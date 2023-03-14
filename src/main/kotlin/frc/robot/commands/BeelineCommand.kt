@@ -24,31 +24,44 @@ class BeelineCommand(drive: DriveSubsystem) : InstantCommand() {
     // Called when the command is initially scheduled.
     override fun initialize() {
         val config: TrajectoryConfig =
-            TrajectoryConfig(
-                Constants.AutoConstants.kMaxSpeedMetersPerSecond,
-                Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared
-            )
-            .setKinematics(Constants.Swerve.swerveKinematics)
+                TrajectoryConfig(
+                                Constants.AutoConstants.kMaxSpeedMetersPerSecond,
+                                Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared
+                        )
+                        .setKinematics(Constants.Swerve.swerveKinematics)
+
+        val distanceToGo: Translation2d =
+                Translation2d(
+                        drive.swervePoseEstimator.estimatedPosition.translation.getX() -
+                                Constants.Field.chargeStationPoint.translation.getX(),
+                        drive.swervePoseEstimator.estimatedPosition.translation.getY() -
+                                Constants.Field.chargeStationPoint.translation.getY()
+                )
+        val rotationToGo: Rotation2d =
+                Rotation2d.fromDegrees(
+                        drive.swervePoseEstimator.estimatedPosition.rotation.degrees -
+                                Constants.Field.chargeStationPoint.rotation.degrees
+                )
 
         // An example trajectory to follow.  All units in meters.
         val trajectory: Trajectory =
                 TrajectoryGenerator.generateTrajectory(
-                        // Start at the origin facing the +X direction
-                        Pose2d(0.0, 0.0, Rotation2d(0.0)),
-                        // Pass through these two interior waypoints, making an 's' curve path
-                        listOf(Translation2d(1.0, 1.0), Translation2d(2.0, -1.0)),
+                        // Start at the origin facing any direction
+                        Pose2d(0.0, 0.0, drive.getYaw()),
+                        // No int. waypoints
+                        listOf(),
                         // End 3 meters straight ahead of where we started, facing forward
-                        Pose2d(3.0, 0.0, Rotation2d(0.0)),
+                        Pose2d(distanceToGo, rotationToGo),
                         config
                 )
 
         var thetaController: ProfiledPIDController =
-            ProfiledPIDController(
-                Constants.AutoConstants.kPThetaController,
-                0.0,
-                0.0,
-                Constants.AutoConstants.kThetaControllerConstraints
-            )
+                ProfiledPIDController(
+                        Constants.AutoConstants.kPThetaController,
+                        0.0,
+                        0.0,
+                        Constants.AutoConstants.kThetaControllerConstraints
+                )
         thetaController.enableContinuousInput(-Math.PI, Math.PI)
 
         val swerveControllerCommand: SwerveControllerCommand =
@@ -59,9 +72,9 @@ class BeelineCommand(drive: DriveSubsystem) : InstantCommand() {
                         PIDController(Constants.AutoConstants.kPXController, 0.0, 0.0),
                         PIDController(Constants.AutoConstants.kPYController, 0.0, 0.0),
                         thetaController,
-                        {drive::setModuleStates},
+                        { drive::setModuleStates },
                         drive
                 )
-        run{swerveControllerCommand}
+        run { swerveControllerCommand }
     }
 }
