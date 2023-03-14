@@ -24,11 +24,11 @@ class BeelineCommand(drive: DriveSubsystem) : InstantCommand() {
     // Called when the command is initially scheduled.
     override fun initialize() {
         val config: TrajectoryConfig =
-                TrajectoryConfig(
-                                Constants.AutoConstants.kMaxSpeedMetersPerSecond,
-                                Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared
-                        )
-                        .setKinematics(Constants.Swerve.swerveKinematics)
+            TrajectoryConfig(
+                Constants.AutoConstants.kMaxSpeedMetersPerSecond,
+                Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared
+            )
+            .setKinematics(Constants.Swerve.swerveKinematics)
 
         // An example trajectory to follow.  All units in meters.
         val trajectory: Trajectory =
@@ -43,12 +43,12 @@ class BeelineCommand(drive: DriveSubsystem) : InstantCommand() {
                 )
 
         var thetaController: ProfiledPIDController =
-                ProfiledPIDController(
-                        Constants.AutoConstants.kPThetaController,
-                        0.0,
-                        0.0,
-                        Constants.AutoConstants.kThetaControllerConstraints
-                )
+            ProfiledPIDController(
+                Constants.AutoConstants.kPThetaController,
+                0.0,
+                0.0,
+                Constants.AutoConstants.kThetaControllerConstraints
+            )
         thetaController.enableContinuousInput(-Math.PI, Math.PI)
 
         val swerveControllerCommand: SwerveControllerCommand =
@@ -59,9 +59,8 @@ class BeelineCommand(drive: DriveSubsystem) : InstantCommand() {
                         PIDController(Constants.AutoConstants.kPXController, 0.0, 0.0),
                         PIDController(Constants.AutoConstants.kPYController, 0.0, 0.0),
                         thetaController,
-                        { drive::setModuleStates },
+                        {drive::setModuleStates},
                         drive
                 )
-        run { swerveControllerCommand }
     }
 }
