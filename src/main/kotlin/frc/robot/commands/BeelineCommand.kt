@@ -75,6 +75,9 @@ class BeelineCommand(drive: DriveSubsystem) : InstantCommand() {
                         { drive::setModuleStates },
                         drive
                 )
-        run { swerveControllerCommand }
+        run { 
+            drive.resetOdometry(trajectory.initialPose)
+            swerveControllerCommand 
+        }
     }
 }
