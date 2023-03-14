@@ -33,10 +33,8 @@ class BeelineCommand(drive: DriveSubsystem) : InstantCommand() {
 
         val distanceToGo: Translation2d =
             Translation2d(
-                drive.swervePoseEstimator.estimatedPosition.translation.getX() -
-                    Constants.Field.chargeStationPoint.translation.getX(),
-                drive.swervePoseEstimator.estimatedPosition.translation.getY() -
-                    Constants.Field.chargeStationPoint.translation.getY()
+                Constants.Field.chargeStationPoint.translation.getX() - drive.swervePoseEstimator.estimatedPosition.translation.getX(),
+                Constants.Field.chargeStationPoint.translation.getY() - drive.swervePoseEstimator.estimatedPosition.translation.getY()
             )
         val rotationToGo: Rotation2d =
             drive.swervePoseEstimator.estimatedPosition.rotation.minus(
@@ -50,7 +48,7 @@ class BeelineCommand(drive: DriveSubsystem) : InstantCommand() {
                 Pose2d(0.0, 0.0, drive.getYaw()),
                 // No int. waypoints
                 listOf(),
-                // End 3 meters straight ahead of where we started, facing forward
+                // end at our change station point
                 Pose2d(distanceToGo, rotationToGo),
                 config
             )
