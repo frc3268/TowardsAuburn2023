@@ -17,8 +17,9 @@ import frc.robot.subsystems.*
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-class BeelineCommand(drive: DriveSubsystem) : InstantCommand() {
+class BeelineCommand(drive: DriveSubsystem, target:Pose2d) : InstantCommand() {
     val drive: DriveSubsystem = drive
+    val target:Pose2d = target
     init {
         addRequirements(drive)
     }
@@ -33,15 +34,15 @@ class BeelineCommand(drive: DriveSubsystem) : InstantCommand() {
 
         val distanceToGo: Translation2d =
             Translation2d(
-                Constants.Field.chargeStationPoint.translation.getX() - drive.swervePoseEstimator.estimatedPosition.translation.getX(),
-                Constants.Field.chargeStationPoint.translation.getY() - drive.swervePoseEstimator.estimatedPosition.translation.getY()
+                target.translation.getX() - drive.swervePoseEstimator.estimatedPosition.translation.getX(),
+                target.translation.getY() - drive.swervePoseEstimator.estimatedPosition.translation.getY()
             )
         val rotationToGo: Rotation2d =
             drive.swervePoseEstimator.estimatedPosition.rotation.minus(
-                Constants.Field.chargeStationPoint.rotation
+                target.rotation
             )
 
-        // An example trajectory to follow.  All units in meters.
+        // tajectory towards the set translation
         val trajectory: Trajectory =
             TrajectoryGenerator.generateTrajectory(
                 // Start at the origin facing any direction
