@@ -1,12 +1,14 @@
 package frc.robot
 
-import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.math.geometry.Translation2d
 import edu.wpi.first.math.geometry.Pose2d
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics
 import edu.wpi.first.math.trajectory.TrapezoidProfile
-import com.revrobotics.CANSparkMax.IdleMode;
-import frc.robot.lib.units.*
+
+import com.revrobotics.CANSparkMax.IdleMode
+
+import frc.robot.lib.*
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -59,7 +61,7 @@ class Constants {
                 Translation2d(wheelBase / 2.0, -trackWidth / 2.0),
                 Translation2d(-wheelBase / 2.0, trackWidth / 2.0),
                 Translation2d(-wheelBase / 2.0, -trackWidth / 2.0)
-            );
+            )
 
         /* Swerve Voltage Compensation */
         public val voltageComp: Double = 12.0
@@ -92,8 +94,8 @@ class Constants {
         public val angleConversionFactor = 360.deg / angleGearRatio
 
         /* Swerve Profiling Values */
-        public val maxSpeed = 4.5; // meters per second
-        public val maxAngularVelocity = 11.5;
+        public val maxSpeed = 4.5 // meters per second
+        public val maxAngularVelocity = 11.5
 
         /* Neutral Modes */
         public val angleNeutralMode: IdleMode = IdleMode.kBrake
@@ -122,6 +124,7 @@ class Constants {
         val canCoderID: Int,
         val angleOffset: Rotation2d
     )
+
     object AutoConstants {
         val kMaxSpeedMetersPerSecond: Double = 3.0
         val kMaxAccelerationMetersPerSecondSquared: Double = 3.0

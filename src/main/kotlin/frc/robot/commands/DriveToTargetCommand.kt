@@ -3,9 +3,10 @@ package frc.robot.commands
 import edu.wpi.first.math.geometry.Translation2d
 import edu.wpi.first.math.MathUtil
 import edu.wpi.first.wpilibj2.command.CommandBase
-import frc.robot.subsystems.DriveSubsystem
-import frc.robot.subsystems.Camera
+
 import frc.robot.Constants
+import frc.robot.lib.*
+import frc.robot.subsystems.*
 
 class DriveToTargetCommand(
     drive: DriveSubsystem,
@@ -15,7 +16,7 @@ class DriveToTargetCommand(
 ): CommandBase() {
     /** Creates a new DriveToTargetCommand. */
     val drive: DriveSubsystem = drive
-    val camera: Camera = drive.cam
+    val camera: Camera = drive.camera
     val goalDist: Double = goalDist
     val targetHeight: Double = targetHeight
     val offset: Double = offset

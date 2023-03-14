@@ -1,4 +1,4 @@
-package frc.robot.subsystems
+package frc.robot.lib
 
 import edu.wpi.first.math.geometry.Translation2d
 import edu.wpi.first.math.geometry.Transform3d
@@ -7,13 +7,16 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase
 import edu.wpi.first.apriltag.AprilTagFieldLayout
 import edu.wpi.first.wpilibj.Filesystem
 import edu.wpi.first.wpilibj.DriverStation
-import frc.robot.Constants
+
 import org.photonvision.PhotonCamera
 import org.photonvision.targeting.PhotonPipelineResult
 import org.photonvision.targeting.PhotonTrackedTarget
 import org.photonvision.PhotonPoseEstimator.PoseStrategy
 import org.photonvision.PhotonPoseEstimator
 import org.photonvision.EstimatedRobotPose
+
+import frc.robot.Constants
+
 import java.io.IOException
 
 class Camera {
