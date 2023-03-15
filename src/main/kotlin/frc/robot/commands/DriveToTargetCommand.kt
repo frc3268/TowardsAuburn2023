@@ -15,7 +15,6 @@ class DriveToTargetCommand(
     targetHeight: Double,
     offset: Double
 ) : CommandBase() {
-    /** Creates a new DriveToTargetCommand. */
     val drive: DriveSubsystem = drive
     val camera: Camera = drive.camera
     val goalDist: Double = goalDist

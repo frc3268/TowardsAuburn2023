@@ -16,9 +16,6 @@ class JoystickDriveCommand(
     rotation: DoubleSupplier,
     fieldOriented: BooleanSupplier
 ) : CommandBase() {
-    /**
-     * Creates a new .
-     */
     val drive: DriveSubsystem = drive
     val translationX: DoubleSupplier = translationX
     val translationY: DoubleSupplier = translationY

@@ -16,9 +16,6 @@ class DriveUntilConditionCommand(
     fieldOriented: Boolean,
     forward: Boolean
 ) : CommandBase() {
-    /**
-     * Creates a new DriveUntilConditionCommand.
-     */
     val drive: DriveSubsystem = drive
     val condition: BooleanSupplier = condition
     val fieldOriented: Boolean = fieldOriented

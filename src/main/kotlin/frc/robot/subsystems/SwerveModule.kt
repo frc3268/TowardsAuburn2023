@@ -19,7 +19,6 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition
 import frc.robot.Constants
 import frc.robot.lib.units.*
 
-/** Add your docs here. */
 class SwerveModule(moduleNumber: Int, moduleConstants: Constants.SwerveDriveModuleConstants) {
     public val moduleNumber: Int = moduleNumber
     private var lastangle: Rotation2d = Rotation2d.fromDegrees(0.deg)
@@ -64,10 +63,13 @@ class SwerveModule(moduleNumber: Int, moduleConstants: Constants.SwerveDriveModu
         setAngle(dState)
         setSpeed(dState)
     }
+
     /*
-    The following three methods(configAngleEncoder, configDriveMotor, configAngleMotor) are used to set the config params of the motors and encoders.
-    They are required for proper operation of the swerve drive system
-     */
+    The following three methods -- `configAngleEncoder()`, `configDriveMotor()`,
+    `configAngleMotor()` -- are used to set the config params of the motors and encoders. They are
+    required for proper operation of the swerve drive system.
+    */
+
     fun configAngleEncoder() {
         canCoderConfig.absoluteSensorRange = AbsoluteSensorRange.Unsigned_0_to_360
         canCoderConfig.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition

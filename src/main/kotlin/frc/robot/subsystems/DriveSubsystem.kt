@@ -48,7 +48,7 @@ class DriveSubsystem : SubsystemBase() {
 
     override fun periodic() {
         // This method will be called once per scheduler run
-        swervePoseEstimator.update(getYaw(), getModulePositions()); 
+        swervePoseEstimator.update(getYaw(), getModulePositions())
         
         var visionResult : EstimatedRobotPose? = camera.getEstimatedPose(getPose())
         if (visionResult != null) {
@@ -58,9 +58,9 @@ class DriveSubsystem : SubsystemBase() {
         camera.frame = camera.limelight.getLatestResult()
 
         for (mod in swerveMods) {
-            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
-            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Integrated", mod.getPosition().angle.getDegrees());
-            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);    
+            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees())
+            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Integrated", mod.getPosition().angle.getDegrees())
+            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond)  
         }
     }
 

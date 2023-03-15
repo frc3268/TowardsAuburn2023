@@ -7,12 +7,10 @@ import frc.robot.subsystems.DriveSubsystem
 import frc.robot.lib.units.*
 
 class TurnAmountCommand (drive:DriveSubsystem, angle:Double, fieldOriented:Boolean): CommandBase() {
-    /**
-     * Creates a new TurnAmountCommand.
-     */
-    val drive:DriveSubsystem = drive
-    val angle :Double = angle.deg
+    val drive: DriveSubsystem = drive
+    val angle: Double = angle.deg
     val fieldOriented:Boolean = fieldOriented
+
     init {
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(drive)

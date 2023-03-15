@@ -54,14 +54,14 @@ class Camera {
     }
 
     public fun getTarget(bestTarget: Boolean, index: Int): PhotonTrackedTarget? {
-        limelight.pipelineIndex = Constants.LimelightPipelineIndexes.reflectiveTape;
+        limelight.pipelineIndex = Constants.LimelightPipelineIndexes.reflectiveTape
 
         var output: PhotonTrackedTarget? =
             if (!frame.hasTargets()) null
             else if (bestTarget) frame.getBestTarget()
             else frame.targets[index]
 
-        limelight.pipelineIndex = Constants.LimelightPipelineIndexes.aprilTag;
+        limelight.pipelineIndex = Constants.LimelightPipelineIndexes.aprilTag
 
         return output
     }
