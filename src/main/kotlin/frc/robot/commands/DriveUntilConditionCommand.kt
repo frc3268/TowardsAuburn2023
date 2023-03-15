@@ -3,19 +3,27 @@ package frc.robot.commands
 import edu.wpi.first.wpilibj2.command.CommandBase
 import edu.wpi.first.math.geometry.Translation2d
 import edu.wpi.first.math.MathUtil
-import frc.robot.subsystems.DriveSubsystem
-import frc.robot.Constants
-import java.util.function.BooleanSupplier
-import frc.robot.lib.units.*
 
-class DriveUntilConditionCommand (drive:DriveSubsystem, condition:BooleanSupplier, fieldOriented:Boolean, forward:Boolean): CommandBase() {
+import java.util.function.BooleanSupplier
+
+import frc.robot.Constants
+import frc.robot.lib.units.*
+import frc.robot.subsystems.DriveSubsystem
+
+class DriveUntilConditionCommand(
+    drive: DriveSubsystem,
+    condition: BooleanSupplier,
+    fieldOriented: Boolean,
+    forward: Boolean
+) : CommandBase() {
     /**
      * Creates a new DriveUntilConditionCommand.
      */
-    val drive:DriveSubsystem = drive
-    val condition:BooleanSupplier = condition
-    val fieldOriented:Boolean = fieldOriented
-    val forward:Int = if (forward) { 1 } else{ -1 }
+    val drive: DriveSubsystem = drive
+    val condition: BooleanSupplier = condition
+    val fieldOriented: Boolean = fieldOriented
+    val forward: Int = if (forward) 1 else -1
+
     init {
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(drive)
