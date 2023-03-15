@@ -38,7 +38,7 @@ As much as possible, this code follows the [Android Kotlin Style Guide](https://
 
 
 chris requests:
--autograb game peice
--turn a set angle
--turn towards scoring
--detect game peice
+- autograb game peice
+- turn a set angle
+- turn towards scoring
+- detect game peice
