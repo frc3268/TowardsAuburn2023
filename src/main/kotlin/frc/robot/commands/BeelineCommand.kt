@@ -20,9 +20,11 @@ import frc.robot.subsystems.DriveSubsystem
 class BeelineCommand(drive: DriveSubsystem, target: Pose2d) : InstantCommand() {
     val drive: DriveSubsystem = drive
     val target: Pose2d = target
+
     init {
         addRequirements(drive)
     }
+
     // Called when the command is initially scheduled.
     override fun initialize() {
         val config: TrajectoryConfig =
@@ -32,12 +34,13 @@ class BeelineCommand(drive: DriveSubsystem, target: Pose2d) : InstantCommand() {
             )
             .setKinematics(Constants.Swerve.swerveKinematics)
 
-        val distanceToGo: Translation2d =
+        val distanceRemaining: Translation2d =
             Translation2d(
                 target.translation.getX() - drive.swervePoseEstimator.estimatedPosition.translation.getX(),
                 target.translation.getY() - drive.swervePoseEstimator.estimatedPosition.translation.getY()
             )
-        val rotationToGo: Rotation2d =
+
+        val rotationRemaining: Rotation2d =
             drive.swervePoseEstimator.estimatedPosition.rotation.minus(
                 target.rotation
             )
@@ -50,7 +53,7 @@ class BeelineCommand(drive: DriveSubsystem, target: Pose2d) : InstantCommand() {
                 // No int. waypoints
                 listOf(),
                 // end at our change station point
-                Pose2d(distanceToGo, rotationToGo),
+                Pose2d(distanceRemaining, rotationRemaining),
                 config
             )
 
