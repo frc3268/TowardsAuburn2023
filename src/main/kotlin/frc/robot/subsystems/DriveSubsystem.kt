@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase
 import org.photonvision.EstimatedRobotPose
 
 import frc.robot.Constants
+import frc.robot.lib.units.*
 import frc.robot.lib.Camera
 
 class DriveSubsystem : SubsystemBase() {
@@ -42,7 +43,7 @@ class DriveSubsystem : SubsystemBase() {
         gyro.calibrate()
         zeroGyro()
         swervePoseEstimator = SwerveDrivePoseEstimator(Constants.Swerve.swerveKinematics, getYaw(), getModulePositions(), Pose2d(Translation2d(0.0,0.0), getYaw()))
-        Timer.delay(1.0)
+        Timer.delay(1.sec)
         resetModulesToAbsolute()
     }
 

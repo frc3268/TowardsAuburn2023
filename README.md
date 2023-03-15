@@ -14,7 +14,7 @@ Current "Custom" Components:
     - create a translation2d based on those
 
 ## Units
-**The base units for all measurements in this codebase are meters (length) and degrees (angle).**
+**The base units for all measurements in this codebase are meters (length), degrees (angle), and seconds (time).**
 To avoid confusion, always use one of the following to specify the unit of a given measurement. These are defined in `lib/Units.kt`.
 
 Name       | Conversion factor
