@@ -34,11 +34,8 @@ As much as possible, this code follows the [Android Kotlin Style Guide](https://
 - Imports are not ASCII-sorted. *Rationale:* Sorting would take too much time for relatively little gain.
 
 ## Credits  
-**LOLNOPE**
-
-
-chris requests:
-- autograb game peice
-- turn a set angle
-- turn towards scoring
-- detect game peice
+- Team 364, for their BaseFalconSweve code, used in much of our sverwe implementation
+- Team 3512, for their SwereBot-2022 code, used to adapt 364's swerve code to fit NEO motors
+- The RevRobotics, Kauai Labs, and PhotonVision teams for their vendor libraries
+- WPI, for WPILIB
+- Brenek Harrison, for the "Kotlin for FRC" extension
