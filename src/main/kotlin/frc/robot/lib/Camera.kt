@@ -48,8 +48,8 @@ class Camera {
     ): Translation2d? {
         return if (target != null) {
             val lengthForward = ((targetHeight - Constants.Camera.camHeight) /
-                Math.tan(target.pitch - Constants.Camera.cameraAngle))
-            return Translation2d(lengthForward, lengthForward / Math.tan(target.yaw))
+                Math.tan(Math.toRadians(target.pitch - Constants.Camera.cameraAngle)))
+            return Translation2d(lengthForward, lengthForward / Math.tan(Math.toRadians(target.yaw)))
         } else null
     }
 

@@ -26,7 +26,7 @@ class AutoBalanceCommand(drive: DriveSubsystem) : CommandBase() {
         gyroAngle = drive.getPitch().getRadians()
         drive.drive(
             Translation2d(
-                MathUtil.applyDeadband(Math.sin(gyroAngle) * 1.5, 0.0),
+                MathUtil.applyDeadband(Math.toRadians(Math.sin(gyroAngle)) * 1.5, 0.0),
                 Constants.Swerve.stickDeadband
             ),
             0.deg,
