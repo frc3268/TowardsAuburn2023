@@ -31,18 +31,18 @@ class DriveToTargetCommand(
 
     // Called every time the scheduler runs while the command is scheduled.
     override fun execute() {
-        // get the translation to the target from the camera
+        // Get the translation to the target from the camera
         val translationToTargetDist: Translation2d? =
             camera.getTranslationToTarget(camera.getTarget(true, 0), targetHeight)
         // nullsafe
         if (translationToTargetDist != null) {
-            //turn the distances to motor speeds
+            // Turn the distances to motor speeds
             val translationToTargetSpeed =
                 Translation2d(
-                    MathUtil.applyDeadband((drive.driveController.calculate(translationToTargetDist.getX(), goalDist)), Constants.Swerve.stickDeadband),
+                    MathUtil.applyDeadband(drive.driveController.calculate(translationToTargetDist.getX(), goalDist), Constants.Swerve.stickDeadband),
                     MathUtil.applyDeadband(drive.driveController.calculate(translationToTargetDist.getY(), goalDist), Constants.Swerve.stickDeadband)
                 )
-            //drive in open-loop mode using the speed
+            // Drive in open-loop mode using the speed
             drive.drive(translationToTargetSpeed, 0.0, true, false)
         }
     }
