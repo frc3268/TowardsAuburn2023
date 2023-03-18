@@ -15,7 +15,7 @@ class AutoBalanceCommand(drive: DriveSubsystem) : CommandBase() {
     init {
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(drive)
-        gyroAngle = drive.getPitch().getRadians()
+        gyroAngle = drive.getPitch().deg
     }
 
     // Called when the command is initially scheduled.
@@ -23,15 +23,11 @@ class AutoBalanceCommand(drive: DriveSubsystem) : CommandBase() {
 
     // Called every time the scheduler runs while the command is scheduled.
     override fun execute() {
-        gyroAngle = drive.getPitch().getRadians()
+        gyroAngle = drive.getPitch().deg
         drive.drive(
-            Translation2d(
-                MathUtil.applyDeadband(Math.toRadians(Math.sin(gyroAngle)) * 1.5, 0.0),
-                Constants.Swerve.stickDeadband
-            ),
-            0.deg,
-            true,
-            false
+            Math.sin(gyroAngle.rad) * 1.5,
+            0.0,
+            Constants.DriveMode.ARCADE
         )
     }
 

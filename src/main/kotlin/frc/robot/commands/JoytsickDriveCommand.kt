@@ -11,16 +11,14 @@ import frc.robot.subsystems.DriveSubsystem
 
 class JoystickDriveCommand(
     drive: DriveSubsystem,
-    translationX: DoubleSupplier,
-    translationY: DoubleSupplier,
-    rotation: DoubleSupplier,
-    fieldOriented: BooleanSupplier
+    y: DoubleSupplier,
+    x: DoubleSupplier,
+    goblinMode: BooleanSupplier
 ) : CommandBase() {
     val drive: DriveSubsystem = drive
-    val translationX: DoubleSupplier = translationX
-    val translationY: DoubleSupplier = translationY
-    val rotation: DoubleSupplier = rotation
-    val fieldOriented: BooleanSupplier = fieldOriented
+    val y: DoubleSupplier = y
+    val x: DoubleSupplier = x
+    val goblinMode: BooleanSupplier = goblinMode
 
     init {
         // Use addRequirements() here to declare subsystem dependencies.
@@ -32,17 +30,11 @@ class JoystickDriveCommand(
 
     // Called every time the scheduler runs while the command is scheduled.
     override fun execute() { 
-        /* Get Values, Deadband */
-        val translationVal: Double = MathUtil.applyDeadband(translationX.getAsDouble(), Constants.Swerve.stickDeadband)
-        val strafeVal: Double = MathUtil.applyDeadband(translationY.getAsDouble(), Constants.Swerve.stickDeadband)
-        val rotationVal: Double = MathUtil.applyDeadband(rotation.getAsDouble(), Constants.Swerve.stickDeadband)
- 
         /* Drive */
         drive.drive(
-            Translation2d(translationVal, strafeVal).times(Constants.Swerve.maxSpeed), 
-            rotationVal * Constants.Swerve.maxAngularVelocity, 
-            fieldOriented.getAsBoolean(), 
-            true
+            y.getAsDouble(),
+            x.getAsDouble(),
+            if(goblinMode.getAsBoolean()) Constants.DriveMode.GOBLIN else Constants.DriveMode.ARCADE
         )
     }
 

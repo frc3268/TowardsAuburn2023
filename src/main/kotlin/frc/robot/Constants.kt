@@ -36,113 +36,25 @@ class Constants {
         public val cameraAngle = 45.deg
     }
 
-    object Swerve {
-        public val stickDeadband = 0.1
-
-        public val gyroID: Int = 6
-        public val invertGyro: Boolean = false // Always ensure Gyro is CCW+ CW-
-        public val startYaw = 180.0
-
-        /* Drivetrain Constants */
-        public val trackWidth = 21.73.inches
-        public val wheelBase = 21.73.inches
-        public val wheelDiameter = 4.inches
-        public val wheelCircumference = wheelDiameter * Math.PI
-
-        public val openLoopRamp: Double = 0.25
-        public val closedLoopRamp: Double = 0.0
-
-        public val driveGearRatio: Double = 8.14 / 1.0
-        public val angleGearRatio: Double = 12.8 / 1.0
-
-        public val swerveKinematics: SwerveDriveKinematics =
-            SwerveDriveKinematics(
-                Translation2d(wheelBase / 2.0, trackWidth / 2.0),
-                Translation2d(wheelBase / 2.0, -trackWidth / 2.0),
-                Translation2d(-wheelBase / 2.0, trackWidth / 2.0),
-                Translation2d(-wheelBase / 2.0, -trackWidth / 2.0)
-            )
-
-        /* Swerve Voltage Compensation */
-        public val voltageComp: Double = 12.0
-
-        /* Swerve Current Limiting */
-        public val angleContinuousCurrentLimit: Int = 20
-        public val driveContinuousCurrentLimit: Int = 80
-
-        /* Angle Motor PID Values */
-        public val angleKP: Double = 0.01
-        public val angleKI: Double = 0.0
-        public val angleKD: Double = 0.0
-        public val angleKFF: Double = 0.0
-
-        /* Drive Motor PID Values */
-        public val driveKP: Double = 0.1
-        public val driveKI: Double = 0.0
-        public val driveKD: Double = 0.0
-        public val driveKFF: Double = 0.0
-
-        /* Drive Motor Characterization Values */
-        public val driveKS: Double  = 0.667
-        public val driveKV: Double = 2.44
-        public val driveKA: Double  = 0.27
-
-        /* Drive Motor Conversion Factors */
-        public val driveConversionPositionFactor: Double =
-            (wheelDiameter * Math.PI) / driveGearRatio
-        public val driveConversionVelocityFactor = driveConversionPositionFactor / 60.0
-        public val angleConversionFactor = 360.deg / angleGearRatio
-
-        /* Swerve Profiling Values */
-        public val maxSpeed = 4.5 // meters per second
-        public val maxAngularVelocity = 11.5
-
-        /* Neutral Modes */
-        public val angleNeutralMode: IdleMode = IdleMode.kBrake
-        public val driveNeutralMode: IdleMode = IdleMode.kBrake
-
-        /* Motor Inverts */
-        public val driveInvert: Boolean = false
-        public val angleInvert: Boolean = false
-
-        /* Angle Encoder Invert */
-        public val canCoderInvert: Boolean = false
-
-        /*Swerve Module Constants */
-        //!FIX: ADD REAL CONSTANTS
-        public val swerveMods: List<SwerveDriveModuleConstants> = arrayListOf(
-            SwerveDriveModuleConstants(0, 0, 0, Rotation2d.fromDegrees(0.deg)),
-            SwerveDriveModuleConstants(0, 0, 0, Rotation2d.fromDegrees(0.deg)),
-            SwerveDriveModuleConstants(0, 0, 0, Rotation2d.fromDegrees(0.deg)),
-            SwerveDriveModuleConstants(0, 0, 0, Rotation2d.fromDegrees(0.deg))
-        )
+    enum class DriveMode{
+        ARCADE, TANK, GOBLIN
     }
 
-    data class SwerveDriveModuleConstants(
-        val driveMotorID: Int,
-        val angleMotorID: Int,
-        val canCoderID: Int,
-        val angleOffset: Rotation2d
-    )
-
-    object AutoConstants {
-        val kMaxSpeedMetersPerSecond: Double = 3.0
-        val kMaxAccelerationMetersPerSecondSquared: Double = 3.0
-        val kMaxAngularSpeedRadiansPerSecond: Double = Math.PI
-        val kMaxAngularSpeedRadiansPerSecondSquared: Double = Math.PI
-    
-        val kPXController: Double = 1.0
-        val kPYController: Double = 1.0
-        val kPThetaController: Double = 1.0
-    
-        // Constraint for the motion profilied robot angle controller
-        val kThetaControllerConstraints : TrapezoidProfile.Constraints =
-            TrapezoidProfile.Constraints(
-                kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared)
+    object Drive{
+        val leftFrontID = 1
+        val leftBackID = 2
+        val rightFrontID = 3
+        val rightBackID = 4
+        val startYaw: Double = 0.deg
     }
 
     object LimelightPipelineIndexes {
         val reflectiveTape = 0
         val aprilTag = 1
     }
+
+    data class TankDirection(
+        val forward:Double,
+        val rot: Double
+    )
 }

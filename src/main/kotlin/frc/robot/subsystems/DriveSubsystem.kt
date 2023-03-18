@@ -1,136 +1,108 @@
 package frc.robot.subsystems
 
 import com.kauailabs.navx.frc.AHRS
-
-import edu.wpi.first.math.geometry.Pose2d
-import edu.wpi.first.math.geometry.Rotation2d
-import edu.wpi.first.math.geometry.Translation2d
-import edu.wpi.first.math.kinematics.ChassisSpeeds
-import edu.wpi.first.math.kinematics.SwerveDriveKinematics
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry
-import edu.wpi.first.math.kinematics.SwerveModulePosition
-import edu.wpi.first.math.kinematics.SwerveModuleState
+import com.revrobotics.CANSparkMax
+import com.revrobotics.CANSparkMaxLowLevel.MotorType
 import edu.wpi.first.math.controller.PIDController
-import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator
 import edu.wpi.first.wpilibj.SPI
-import edu.wpi.first.wpilibj.Timer
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
+import edu.wpi.first.wpilibj.drive.DifferentialDrive
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup
 import edu.wpi.first.wpilibj2.command.SubsystemBase
-
-import org.photonvision.EstimatedRobotPose
-
 import frc.robot.Constants
-import frc.robot.lib.units.*
 import frc.robot.lib.Camera
+import frc.robot.lib.units.*
 
 class DriveSubsystem : SubsystemBase() {
-    public val swervePoseEstimator: SwerveDrivePoseEstimator
-
-    public val swerveMods: List<SwerveModule> =
-        Constants.Swerve.swerveMods.mapIndexed { i, swerveMod -> SwerveModule(i, swerveMod) }
     public val gyro: AHRS = AHRS(SPI.Port.kMXP)
+    // Controllers
+    private val driveLeftFront: CANSparkMax =
+            CANSparkMax(Constants.Drive.leftFrontID, MotorType.kBrushless)
+    private val driveLeftBack: CANSparkMax =
+            CANSparkMax(Constants.Drive.leftBackID, MotorType.kBrushless)
+    private val driveRightFront: CANSparkMax =
+            CANSparkMax(Constants.Drive.rightFrontID, MotorType.kBrushless)
+    private val driveRightBack: CANSparkMax =
+            CANSparkMax(Constants.Drive.rightBackID, MotorType.kBrushless)
+    // Groups
+    private val driveLeft: MotorControllerGroup =
+            MotorControllerGroup(driveLeftFront, driveLeftBack)
+    private val driveRight: MotorControllerGroup =
+            MotorControllerGroup(driveRightFront, driveRightBack)
+    // Drive
+    private val drive: DifferentialDrive = DifferentialDrive(driveLeft, driveRight)
 
-    /* PID Controllers */
-
-    // PID constants should be tuned per robot
+    // PID
+    // constants should be tuned per robot
     val linearP: Double = 0.6
     val linearD: Double = 0.0
-    public val driveController: PIDController = PIDController(linearP, 0.0, linearD)
+    public val forwardController: PIDController = PIDController(linearP, 0.0, linearD)
+
+    val angularP: Double = 0.3
+    val angularD: Double = 0.0
+    public val turnController = PIDController(angularP, 0.0, angularD)
 
     public val camera: Camera = Camera()
 
     init {
         gyro.calibrate()
         zeroGyro()
-        swervePoseEstimator = SwerveDrivePoseEstimator(Constants.Swerve.swerveKinematics, getYaw(), getModulePositions(), Pose2d(Translation2d(0.0,0.0), getYaw()))
-        Timer.delay(1.sec)
-        resetModulesToAbsolute()
     }
 
     override fun periodic() {
-        // This method will be called once per scheduler run
-        swervePoseEstimator.update(getYaw(), getModulePositions())
-
-        var visionResult: EstimatedRobotPose? = camera.getEstimatedPose(getPose())
-        if (visionResult != null) {
-            swervePoseEstimator.addVisionMeasurement(visionResult.estimatedPose.toPose2d(), visionResult.timestampSeconds)
-        }
-
         camera.frame = camera.limelight.getLatestResult()
-
-        for (mod in swerveMods) {
-            SmartDashboard.putNumber("Mod ${mod.moduleNumber} Cancoder", mod.getCanCoder().getDegrees())
-            SmartDashboard.putNumber("Mod ${mod.moduleNumber} Integrated", mod.getPosition().angle.getDegrees())
-            SmartDashboard.putNumber("Mod ${mod.moduleNumber} Velocity", mod.getState().speedMetersPerSecond)  
-        }
     }
 
     override fun simulationPeriodic() {
         // This method will be called once per scheduler run during simulation
     }
 
-    public fun drive(translation: Translation2d, rotation: Double, isOpenLoop: Boolean, fieldOriented: Boolean) {
-        val swerveModuleStates: Array<SwerveModuleState> = Constants.Swerve.swerveKinematics.toSwerveModuleStates(
-            if (fieldOriented) {
-                ChassisSpeeds.fromFieldRelativeSpeeds(
-                    translation.getX(),
-                    translation.getY(),
-                    rotation,
-                    getYaw()
-                )
-            } else {
-                ChassisSpeeds(
-                    translation.getX(),
-                    translation.getY(),
-                    rotation
-                )
+    /*
+       drive method:
+           args taken:
+           - arg1: y speed, left speed, y speed(respective to drive modes)
+           - arg2: rotation speed, right speed, x speed(respective to drive mode)
+           - mode: the mode of drive being used. Arcade, Tank, and Goblin respectively.
+       note on "goblin mode":
+           "goblin mode" is an attempt to immitate strafing seen in swerve
+    */
+    public fun drive(arg1: Double, arg2: Double, mode: Constants.DriveMode) {
+        when (mode) {
+            Constants.DriveMode.ARCADE -> {
+                drive.arcadeDrive(arg1, arg2)
             }
-        )
-
-        setModuleStates(swerveModuleStates, isOpenLoop)
-    }
-
-    public fun setModuleStates(desiredStates: Array<SwerveModuleState>, isOpenLoop: Boolean) {
-        SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, Constants.Swerve.maxSpeed)
-
-        for (mod in swerveMods) {
-            mod.setDesiredState(desiredStates[mod.moduleNumber], isOpenLoop)
+            Constants.DriveMode.TANK -> {
+                drive.tankDrive(arg1, arg2)
+            }
+            Constants.DriveMode.GOBLIN -> {
+                val targetAngle = Math.atan(arg1 / arg2).rad.deg
+                // if you're close to the direct forward or back, you dont deserve "goblin mode"
+                if ((45 < targetAngle && targetAngle < 135) ||
+                                (225 < targetAngle && targetAngle < 315)
+                ) {
+                    drive(arg1, arg2, Constants.DriveMode.ARCADE)
+                } else {
+                    val delta =
+                            if (targetAngle > getYaw()) targetAngle - getYaw()
+                            else getYaw() - targetAngle
+                    while (delta > 5.0) {
+                        // test this
+                        drive.arcadeDrive(0.0, turnController.calculate(getYaw(), delta))
+                    }
+                    drive.arcadeDrive(Math.sqrt(Math.pow(arg1, 2.0) + Math.pow(arg2, 2.0)), 0.0)
+                }
+            }
         }
-    }
-
-    public fun getPose(): Pose2d {
-        return swervePoseEstimator.getEstimatedPosition()
-    }
-
-    public fun resetOdometry(pose: Pose2d) {
-        swervePoseEstimator.resetPosition(getYaw(), getModulePositions(), pose)
-    }
-
-    public fun getModuleStates(): Array<SwerveModuleState> {
-        return swerveMods.map { it.getState() }
-            .toTypedArray()
-    }
-
-    public fun getModulePositions(): Array<SwerveModulePosition> {
-        return swerveMods.map { it.getPosition() }
-            .toTypedArray()
     }
 
     public fun zeroGyro() {
         gyro.zeroYaw()
     }
 
-    public fun getYaw(): Rotation2d {
-        return Rotation2d.fromDegrees(gyro.getYaw().toDouble() + Constants.Swerve.startYaw)
+    public fun getYaw(): Double {
+        return gyro.getYaw().toDouble() + Constants.Drive.startYaw
     }
 
-    public fun getPitch(): Rotation2d {
-        return Rotation2d.fromDegrees(gyro.getPitch().toDouble())
-    }
-
-    public fun resetModulesToAbsolute() {
-        for (mod in swerveMods) {
-            mod.resetToAbsolute()
-        }
+    public fun getPitch(): Double {
+        return gyro.getPitch().toDouble()
     }
 }

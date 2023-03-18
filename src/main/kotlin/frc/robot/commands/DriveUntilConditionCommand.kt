@@ -32,13 +32,9 @@ class DriveUntilConditionCommand(
     // Called every time the scheduler runs while the command is scheduled.
     override fun execute() {
         drive.drive(
-            Translation2d(
-                MathUtil.applyDeadband(0.5 * forward, 0.0),
-                Constants.Swerve.stickDeadband
-            ),
-            0.deg,
-            true,
-            fieldOriented
+            if (fieldOriented) forward.toDouble() else forward * Math.sin(drive.getYaw().deg.rad),
+            0.0,
+            Constants.DriveMode.ARCADE
         )
      }
 

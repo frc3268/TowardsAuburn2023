@@ -6,15 +6,14 @@ import edu.wpi.first.math.geometry.Translation2d
 
 import frc.robot.subsystems.DriveSubsystem
 import frc.robot.lib.units.*
+import frc.robot.Constants
 
 class TurnAmountCommand(
     drive: DriveSubsystem,
-    angle: Double,
-    fieldOriented: Boolean
+    angle: Double
 ) : CommandBase() {
     val drive: DriveSubsystem = drive
     val angle: Double = angle
-    val fieldOriented: Boolean = fieldOriented
 
     init {
         // Use addRequirements() here to declare subsystem dependencies.
@@ -26,7 +25,7 @@ class TurnAmountCommand(
 
     // Called every time the scheduler runs while the command is scheduled.
     override fun execute() { 
-        drive.drive(Translation2d(0.0, 0.0), angle, false, fieldOriented)
+        drive.drive(0.0, drive.turnController.calculate(drive.getYaw(), angle), Constants.DriveMode.ARCADE)
     }
 
     // Called once the command ends or is interrupted.
@@ -34,6 +33,6 @@ class TurnAmountCommand(
 
     // Returns true when the command should end.
     override fun isFinished(): Boolean {
-        return Math.abs(drive.getYaw().degrees - angle) > 5.deg
+        return Math.abs(drive.getYaw() - angle) > 5.deg
     }
 }

@@ -32,18 +32,11 @@ class DriveToTargetCommand(
     // Called every time the scheduler runs while the command is scheduled.
     override fun execute() {
         // get the translation to the target from the camera
-        val translationToTargetDist: Translation2d? =
-            camera.getTranslationToTarget(camera.getTarget(true, 0), targetHeight)
+        val tankdirtotarget: Constants.TankDirection? =
+            camera.getTankDirectionToTarget(camera.getTarget(true, 0), targetHeight)
         // nullsafe
-        if (translationToTargetDist != null) {
-            //turn the distances to motor speeds
-            val translationToTargetSpeed =
-                Translation2d(
-                    MathUtil.applyDeadband((drive.driveController.calculate(translationToTargetDist.getX(), goalDist)), Constants.Swerve.stickDeadband),
-                    MathUtil.applyDeadband(drive.driveController.calculate(translationToTargetDist.getY(), goalDist), Constants.Swerve.stickDeadband)
-                )
-            //drive in open-loop mode using the speed
-            drive.drive(translationToTargetSpeed, 0.0, true, false)
+        if (tankdirtotarget != null) {
+            drive.drive(tankdirtotarget.forward, tankdirtotarget.rot, Constants.DriveMode.ARCADE)
         }
     }
 
@@ -52,11 +45,11 @@ class DriveToTargetCommand(
 
     // Returns true when the command should end.
     override fun isFinished(): Boolean {
-        val translationToTarget: Translation2d? =
-            camera.getTranslationToTarget(camera.getTarget(true, 0), targetHeight)
+        val translationToTarget: Constants.TankDirection? =
+            camera.getTankDirectionToTarget(camera.getTarget(true, 0), targetHeight)
         if (translationToTarget != null) {
             // if we have a target, check distance to it.
-            return translationToTarget.getDistance(Translation2d(0.0, 0.0)) < goalDist + offset
+            return translationToTarget.forward < goalDist + offset
         }
         // if there's no target, exit the command
         return true
