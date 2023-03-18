@@ -7,8 +7,10 @@ import edu.wpi.first.math.geometry.Translation2d
 
 import frc.robot.Constants
 import frc.robot.lib.*
-import frc.robot.subsystems.*
-import frc.robot.commands.*
+import frc.robot.subsystems.DriveSubsystem
+import frc.robot.commands.JoystickDriveCommand
+import frc.robot.commands.DriveToTargetCommand
+import frc.robot.commands.Autos
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
