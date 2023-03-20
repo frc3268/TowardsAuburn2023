@@ -77,11 +77,9 @@ class DriveSubsystem : SubsystemBase() {
                 val targetAngle = Math.atan(arg1 / arg2).rad.deg
                 // if you're close to the direct forward or back, you dont deserve "goblin mode"
                 val delta =
-                            if (targetAngle > getYaw()) targetAngle - getYaw()
-                            else getYaw() - targetAngle
-                if ((45 < getYaw() && getYaw() < 135) ||
-                                (225 < getYaw() && getYaw() < 315) && (delta < 45)
-                ) {
+                        if (targetAngle > getYaw()) targetAngle - getYaw()
+                        else getYaw() - targetAngle
+                if ((Math.abs(delta - 180 ) > 22.5)) {
                     drive(arg1, arg2, Constants.DriveMode.ARCADE)
                 } else {
                     while (delta > 5.0) {
