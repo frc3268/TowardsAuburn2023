@@ -24,13 +24,14 @@ class RobotContainer {
     // private val exampleSubsystem = ExampleSubsystem()
 
     // controllers
-    private val driverController =
+    public val driverController =
         CommandXboxController(Constants.OperatorConstants.kDriverControllerPort)
 
     /* Driver Buttons */
 
     // subsystems
     private val drive: DriveSubsystem = DriveSubsystem()
+    public var toggleGoblin = false
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     init {
@@ -43,7 +44,7 @@ class RobotContainer {
                 drive,
                 { -driverController.getLeftY() },
                 { -driverController.getLeftX() },
-                { driverController.rightBumper().getAsBoolean() }
+                { toggleGoblin }
             )
         )
     }
@@ -63,6 +64,14 @@ class RobotContainer {
         // Schedule exampleMethodCommand when the Xbox controller's B button is pressed,
         // cancelling on release.
         driverController.b().onTrue(TurnAmountCommand(drive, 90.0))
+    }
+
+    public fun updateGoblinState(){
+        if (driverController.b().getAsBoolean()){
+            toggleGoblin = true
+        }else{
+            toggleGoblin = false
+        }
     }
 
     /**
