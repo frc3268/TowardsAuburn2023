@@ -39,3 +39,8 @@ Name       | Conversion factor
 - The RevRobotics, Kauai Labs, and PhotonVision teams for their vendor libraries
 - WPI, for WPILIB
 - Brenek Harrison, for the "Kotlin for FRC" extension
+
+### todo  
+- Get odomotery working(again)
+- test current commands on drivetrain
+- add subsystems for radial, extension arms and gripper
