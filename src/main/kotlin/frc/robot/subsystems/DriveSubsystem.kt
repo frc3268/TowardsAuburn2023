@@ -3,7 +3,10 @@ package frc.robot.subsystems
 import com.kauailabs.navx.frc.AHRS
 import com.revrobotics.CANSparkMax
 import com.revrobotics.CANSparkMaxLowLevel.MotorType
+import com.revrobotics.RelativeEncoder
 import edu.wpi.first.math.controller.PIDController
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry
+import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.wpilibj.SPI
 import edu.wpi.first.wpilibj.drive.DifferentialDrive
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup
@@ -23,11 +26,17 @@ class DriveSubsystem : SubsystemBase() {
             CANSparkMax(Constants.Drive.rightFrontID, MotorType.kBrushless)
     private val driveRightBack: CANSparkMax =
             CANSparkMax(Constants.Drive.rightBackID, MotorType.kBrushless)
+
+    //Encoders
+    private val leftEncoder:RelativeEncoder = driveLeftFront.getEncoder()
+    private val rightEncoder:RelativeEncoder = driveRightFront.getEncoder()
+
     // Groups
     private val driveLeft: MotorControllerGroup =
             MotorControllerGroup(driveLeftFront, driveLeftBack)
     private val driveRight: MotorControllerGroup =
             MotorControllerGroup(driveRightFront, driveRightBack)
+
     // Drive
     private val drive: DifferentialDrive = DifferentialDrive(driveLeft, driveRight)
 
@@ -43,9 +52,17 @@ class DriveSubsystem : SubsystemBase() {
 
     public val camera: Camera = Camera()
 
+    //Odometry
+
+    private val odometry:DifferentialDriveOdometry;
+
     init {
+        //conv. factors of the encoders should be set: 1 meter / x revolutions 
         gyro.calibrate()
         zeroGyro()
+        odometry = DifferentialDriveOdometry(
+            gyro.getRotation2d(), leftEncoder.getPosition(), leftEncoder.getPosition());
+  
     }
 
     override fun periodic() {
@@ -76,14 +93,12 @@ class DriveSubsystem : SubsystemBase() {
             Constants.DriveMode.GOBLIN -> {
                 val targetAngle = Math.atan(arg1 / arg2).rad.deg
                 // if you're close to the direct forward or back, you dont deserve "goblin mode"
-                if ((45 < targetAngle && targetAngle < 135) ||
-                                (225 < targetAngle && targetAngle < 315)
-                ) {
+                val delta =
+                        if (targetAngle > getYaw()) targetAngle - getYaw()
+                        else getYaw() - targetAngle
+                if ((Math.abs(delta - 180 ) > 22.5)) {
                     drive(arg1, arg2, Constants.DriveMode.ARCADE)
                 } else {
-                    val delta =
-                            if (targetAngle > getYaw()) targetAngle - getYaw()
-                            else getYaw() - targetAngle
                     while (delta > 5.0) {
                         // test this
                         drive.arcadeDrive(0.0, turnController.calculate(getYaw(), delta))
@@ -105,4 +120,9 @@ class DriveSubsystem : SubsystemBase() {
     public fun getPitch(): Double {
         return gyro.getPitch().toDouble()
     }
+      /** Updates the field-relative position. */
+  public fun updateOdometry() {
+    odometry.update(
+        gyro.getRotation2d(), leftEncoder.getPosition(), rightEncoder.getPosition());
+  }
 }
