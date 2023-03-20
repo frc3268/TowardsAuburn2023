@@ -41,8 +41,8 @@ class RobotContainer {
         drive.setDefaultCommand(
             JoystickDriveCommand(
                 drive,
-                { -driverController.getLeftY() },
-                { -driverController.getLeftX() },
+                { driverController.getLeftX() },
+                { driverController.getLeftY() },
                 { driverController.rightBumper().getAsBoolean() }
             )
         )
