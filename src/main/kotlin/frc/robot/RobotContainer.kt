@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController
 import edu.wpi.first.wpilibj2.command.button.JoystickButton
 import edu.wpi.first.math.geometry.Translation2d
+import edu.wpi.first.math.MathUtil
 
 import frc.robot.Constants
 import frc.robot.lib.*
@@ -42,8 +43,8 @@ class RobotContainer {
         drive.setDefaultCommand(
             JoystickDriveCommand(
                 drive,
-                { -driverController.getLeftY() },
-                { -driverController.getLeftX() },
+                { MathUtil.clamp(driverController.getLeftY(), -0.99, 0.99) },
+                { MathUtil.clamp(driverController.getLeftX(), -0.99, 0.99) },
                 { toggleGoblin }
             )
         )
