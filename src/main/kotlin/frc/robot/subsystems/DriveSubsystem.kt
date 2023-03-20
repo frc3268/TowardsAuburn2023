@@ -57,6 +57,7 @@ class DriveSubsystem : SubsystemBase() {
     private val odometry:DifferentialDriveOdometry;
 
     init {
+        //conv. factors of the encoders should be set: 1 meter / x revolutions 
         gyro.calibrate()
         zeroGyro()
         odometry = DifferentialDriveOdometry(
