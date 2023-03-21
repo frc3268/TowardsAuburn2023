@@ -47,7 +47,7 @@ class DriveSubsystem(startingPose : Pose2d) : SubsystemBase() {
     val linearD: Double = 0.0
     public val forwardController: PIDController = PIDController(linearP, 0.0, linearD)
 
-    val angularP: Double = 0.3
+    val angularP: Double = 0.03
     val angularD: Double = 0.0
     public val turnController = PIDController(angularP, 0.0, angularD)
 
@@ -64,6 +64,15 @@ class DriveSubsystem(startingPose : Pose2d) : SubsystemBase() {
         zeroGyro()
         odometry = DifferentialDriveOdometry(
             gyro.getRotation2d(), leftEncoder.getPosition(), leftEncoder.getPosition(), startingPose);
+        //config for motors
+        driveLeftBack.restoreFactoryDefaults()
+        driveLeftFront.restoreFactoryDefaults()
+        driveRightFront.restoreFactoryDefaults()
+        driveRightBack.restoreFactoryDefaults()
+        driveLeftBack.setOpenLoopRampRate(0.45)
+        driveLeftFront.setOpenLoopRampRate(0.45)
+        driveRightBack.setOpenLoopRampRate(0.45)
+        driveRightFront.setOpenLoopRampRate(0.45)
   
     }
 

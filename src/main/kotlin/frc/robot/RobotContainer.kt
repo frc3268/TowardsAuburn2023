@@ -33,7 +33,7 @@ class RobotContainer {
     /* Driver Buttons */
 
     // subsystems
-    private val drive: DriveSubsystem = DriveSubsystem()
+    private val drive: DriveSubsystem = DriveSubsystem(Constants.Field.startingPose)
     public var toggleTank = false
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
