@@ -32,8 +32,8 @@ class Constants {
 
     object Camera {
         //!FixME
-        public val camHeight = 10.inches
-        public val cameraAngle = 45.deg
+        public val camHeight = 10.0.inches
+        public val cameraAngle = 45.0.deg
     }
 
     enum class DriveMode{
@@ -45,7 +45,7 @@ class Constants {
         val leftBackID = 2
         val rightFrontID = 3
         val rightBackID = 4
-        val startYaw: Double = 0.deg
+        val startYaw: Double = 0.0.deg
     }
 
     object LimelightPipelineIndexes {
