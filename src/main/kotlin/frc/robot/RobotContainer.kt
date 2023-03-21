@@ -45,9 +45,9 @@ class RobotContainer {
         drive.setDefaultCommand(
             JoystickDriveCommand(
                 drive,
-                { driverController.getLeftY() },
-                { driverController.getLeftX() },
-                { toggleGoblin }
+                { driverController.getX()},
+                { driverController.getY() },
+                { toggleTank }
             )
         )
     }
@@ -66,15 +66,7 @@ class RobotContainer {
 
         // Schedule exampleMethodCommand when the Xbox controller's B button is pressed,
         // cancelling on release.
-        driverController.b().onTrue(TurnAmountCommand(drive, 90.0))
-    }
-
-    public fun updateGoblinState(){
-        if (driverController.b().getAsBoolean()){
-            toggleGoblin = true
-        }else{
-            toggleGoblin = false
-        }
+        Trigger {driverController.triggerPressed} .onTrue(TurnAmountCommand(drive, 90.0))
     }
     /**
      * Use this to pass the autonomous command to the main [Robot] class.
