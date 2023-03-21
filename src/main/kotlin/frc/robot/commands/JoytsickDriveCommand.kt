@@ -13,12 +13,12 @@ class JoystickDriveCommand(
     drive: DriveSubsystem,
     y: DoubleSupplier,
     x: DoubleSupplier,
-    goblinMode: BooleanSupplier
+    tankMode: BooleanSupplier
 ) : CommandBase() {
     val drive: DriveSubsystem = drive
     val y: DoubleSupplier = y
     val x: DoubleSupplier = x
-    val goblinMode: BooleanSupplier = goblinMode
+    val tankMode: BooleanSupplier = tankMode
 
     init {
         // Use addRequirements() here to declare subsystem dependencies.
@@ -34,7 +34,7 @@ class JoystickDriveCommand(
         drive.drive(
             y.getAsDouble(),
             x.getAsDouble(),
-            if(goblinMode.getAsBoolean()) Constants.DriveMode.GOBLIN else Constants.DriveMode.ARCADE
+            if(tankMode.getAsBoolean()) Constants.DriveMode.TANK else Constants.DriveMode.ARCADE
         )
     }
 

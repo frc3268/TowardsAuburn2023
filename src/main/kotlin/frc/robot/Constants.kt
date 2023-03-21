@@ -4,7 +4,9 @@ import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.math.geometry.Translation2d
 import edu.wpi.first.math.geometry.Pose2d
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics
 import edu.wpi.first.math.trajectory.TrapezoidProfile
+import edu.wpi.first.math.util.Units
 
 import com.revrobotics.CANSparkMax.IdleMode
 
@@ -26,8 +28,10 @@ class Constants {
 
     object Field {
         public val chargeStationPoint = Pose2d(
-            Translation2d(224.inches, 84.25.inches), Rotation2d.fromDegrees(0.deg)
+            Translation2d(Units.inchesToMeters(224.0), Units.inchesToMeters(84.25)), Rotation2d.fromDegrees(0.deg)
         )
+        public val startingPose = Pose2d(
+            Translation2d(Units.inchesToMeters(0.0), Units.inchesToMeters(0.0)), Rotation2d.fromDegrees(180.deg))
     }
 
     object Camera {
@@ -37,7 +41,7 @@ class Constants {
     }
 
     enum class DriveMode{
-        ARCADE, TANK, GOBLIN
+        ARCADE, TANK
     }
 
     object Drive{
@@ -46,6 +50,21 @@ class Constants {
         val rightFrontID = 3
         val rightBackID = 4
         val startYaw: Double = 0.0.deg
+
+        //ramsete params
+        val ksVolts:Double = 0.0
+        val kvVoltSecondsPerMeter:Double = 0.0
+        val kaVoltSecondsSquaredPerMeter:Double = 0.0
+
+        val kPDriveVel:Double = 0.0
+
+        val kTrackWidthMeters:Double = 0.0
+        val kDriveKinematics:DifferentialDriveKinematics = DifferentialDriveKinematics(kTrackWidthMeters)
+
+        val kMaxSpeedMetersPerSeconds:Double = 3.0
+        val kMaxAccelerationMetersPerSecondSquared = 1.0
+
+        
     }
 
     object LimelightPipelineIndexes {

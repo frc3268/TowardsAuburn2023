@@ -3,6 +3,7 @@ package frc.robot
 import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController
 import edu.wpi.first.wpilibj2.command.button.JoystickButton
+import edu.wpi.first.wpilibj2.command.button.Trigger
 import edu.wpi.first.math.geometry.Translation2d
 import edu.wpi.first.math.MathUtil
 import edu.wpi.first.wpilibj.Joystick
@@ -32,20 +33,20 @@ class RobotContainer {
     /* Driver Buttons */
 
     // subsystems
-    private val drive: DriveSubsystem = DriveSubsystem()
-    public var toggleGoblin = false
+    private val drive: DriveSubsystem = DriveSubsystem(Constants.Field.startingPose)
+    public var toggleTank = false
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     init {
         // Configure the trigger bindings
         configureBindings()
 
-        //set the default command for the drivetrain using the joysticks and buttons on the xbox controller
+        //set the default command for the drivetrain using the joysticks and buttons on the controller
         drive.setDefaultCommand(
             JoystickDriveCommand(
                 drive,
-                { MathUtil.clamp(driverController.getX(), -0.9, 0.9) },
-                { MathUtil.clamp(driverController.getY(), -0.9, 0.9) },
+                { driverController.getLeftY() },
+                { driverController.getLeftX() },
                 { toggleGoblin }
             )
         )
@@ -65,15 +66,16 @@ class RobotContainer {
 
         // Schedule exampleMethodCommand when the Xbox controller's B button is pressed,
         // cancelling on release.
-        //driverController.getTrigger().onTrue(TurnAmountCommand(drive, 90.0))
+        driverController.b().onTrue(TurnAmountCommand(drive, 90.0))
     }
 
     public fun updateGoblinState(){
-        if (driverController.getTrigger()){
-            toggleGoblin = !toggleGoblin
+        if (driverController.b().getAsBoolean()){
+            toggleGoblin = true
+        }else{
+            toggleGoblin = false
         }
     }
-
     /**
      * Use this to pass the autonomous command to the main [Robot] class.
      *
