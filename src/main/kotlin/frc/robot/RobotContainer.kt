@@ -4,6 +4,8 @@ import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController
 import edu.wpi.first.wpilibj2.command.button.JoystickButton
 import edu.wpi.first.math.geometry.Translation2d
+import edu.wpi.first.math.MathUtil
+import edu.wpi.first.wpilibj.Joystick
 
 import frc.robot.Constants
 import frc.robot.lib.*
@@ -25,7 +27,7 @@ class RobotContainer {
 
     // controllers
     public val driverController =
-        CommandXboxController(Constants.OperatorConstants.kDriverControllerPort)
+        Joystick(Constants.OperatorConstants.kDriverControllerPort)
 
     /* Driver Buttons */
 
@@ -42,8 +44,8 @@ class RobotContainer {
         drive.setDefaultCommand(
             JoystickDriveCommand(
                 drive,
-                { driverController.getLeftY() },
-                { driverController.getLeftX() },
+                { MathUtil.clamp(driverController.getX(), -0.9, 0.9) },
+                { MathUtil.clamp(driverController.getY(), -0.9, 0.9) },
                 { toggleGoblin }
             )
         )
@@ -63,14 +65,12 @@ class RobotContainer {
 
         // Schedule exampleMethodCommand when the Xbox controller's B button is pressed,
         // cancelling on release.
-        driverController.b().onTrue(TurnAmountCommand(drive, 90.0))
+        //driverController.getTrigger().onTrue(TurnAmountCommand(drive, 90.0))
     }
 
     public fun updateGoblinState(){
-        if (driverController.b().getAsBoolean()){
-            toggleGoblin = true
-        }else{
-            toggleGoblin = false
+        if (driverController.getTrigger()){
+            toggleGoblin = !toggleGoblin
         }
     }
 

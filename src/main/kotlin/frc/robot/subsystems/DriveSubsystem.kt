@@ -46,7 +46,7 @@ class DriveSubsystem : SubsystemBase() {
     val linearD: Double = 0.0
     public val forwardController: PIDController = PIDController(linearP, 0.0, linearD)
 
-    val angularP: Double = 0.3
+    val angularP: Double = 0.03
     val angularD: Double = 0.0
     public val turnController = PIDController(angularP, 0.0, angularD)
 
@@ -62,6 +62,14 @@ class DriveSubsystem : SubsystemBase() {
         zeroGyro()
         odometry = DifferentialDriveOdometry(
             gyro.getRotation2d(), leftEncoder.getPosition(), leftEncoder.getPosition());
+        driveLeftFront.restoreFactoryDefaults()
+        driveLeftBack.restoreFactoryDefaults()
+        driveRightFront.restoreFactoryDefaults()
+        driveRightBack.restoreFactoryDefaults()
+        driveLeftFront.setOpenLoopRampRate(0.5)
+        driveLeftBack.setOpenLoopRampRate(0.5)
+        driveRightFront.setOpenLoopRampRate(0.5)
+        driveRightBack.setOpenLoopRampRate(0.5)
   
     }
 
@@ -91,30 +99,23 @@ class DriveSubsystem : SubsystemBase() {
                 drive.tankDrive(arg1, arg2)
             }
             Constants.DriveMode.GOBLIN -> {
-                val targetAngle = Math.atan(arg1 / arg2).rad.deg
+                val targetAngle = Math.atan(arg1 / arg2) * (180/ Math.PI)
                 // if you're close to the direct forward or back, you dont deserve "goblin mode"
                 val delta =
                         if (targetAngle > getYaw()) targetAngle - getYaw()
                         else getYaw() - targetAngle
-                if ((Math.abs(delta - 180 ) > 22.5)) {
-                    drive(arg1, arg2, Constants.DriveMode.ARCADE)
-                } else {
-                    while (delta > 5.0) {
-                        // test this
-                        drive.arcadeDrive(0.0, turnController.calculate(getYaw(), delta))
-                    }
-                    drive.arcadeDrive(Math.sqrt(Math.pow(arg1, 2.0) + Math.pow(arg2, 2.0)), 0.0)
-                }
+                drive.arcadeDrive(turnController.calculate(getYaw(), delta), 0.3)
+                
+                
             }
-        }
-    }
+        }}
 
     public fun zeroGyro() {
         gyro.zeroYaw()
     }
 
     public fun getYaw(): Double {
-        return gyro.getYaw().toDouble() + Constants.Drive.startYaw
+        return gyro.getYaw().toDouble()
     }
 
     public fun getPitch(): Double {
