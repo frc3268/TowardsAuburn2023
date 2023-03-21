@@ -3,8 +3,10 @@ package frc.robot
 import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController
 import edu.wpi.first.wpilibj2.command.button.JoystickButton
+import edu.wpi.first.wpilibj2.command.button.Trigger
 import edu.wpi.first.math.geometry.Translation2d
 import edu.wpi.first.math.MathUtil
+import edu.wpi.first.wpilibj.Joystick
 
 import frc.robot.Constants
 import frc.robot.lib.*
@@ -26,26 +28,26 @@ class RobotContainer {
 
     // controllers
     public val driverController =
-        CommandXboxController(Constants.OperatorConstants.kDriverControllerPort)
+        Joystick(Constants.OperatorConstants.kDriverControllerPort)
 
     /* Driver Buttons */
 
     // subsystems
     private val drive: DriveSubsystem = DriveSubsystem()
-    public var toggleGoblin = false
+    public var toggleTank = false
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     init {
         // Configure the trigger bindings
         configureBindings()
 
-        //set the default command for the drivetrain using the joysticks and buttons on the xbox controller
+        //set the default command for the drivetrain using the joysticks and buttons on the controller
         drive.setDefaultCommand(
             JoystickDriveCommand(
                 drive,
-                { MathUtil.clamp(driverController.getLeftY(), -0.99, 0.99) },
-                { MathUtil.clamp(driverController.getLeftX(), -0.99, 0.99) },
-                { toggleGoblin }
+                { driverController.getX()},
+                { driverController.getY()},
+                { toggleTank }
             )
         )
     }
@@ -64,17 +66,8 @@ class RobotContainer {
 
         // Schedule exampleMethodCommand when the Xbox controller's B button is pressed,
         // cancelling on release.
-        driverController.b().onTrue(TurnAmountCommand(drive, 90.0))
+        Trigger {driverController.triggerPressed}.onTrue(TurnAmountCommand(drive, 90.0))
     }
-
-    public fun updateGoblinState(){
-        if (driverController.b().getAsBoolean()){
-            toggleGoblin = true
-        }else{
-            toggleGoblin = false
-        }
-    }
-
     /**
      * Use this to pass the autonomous command to the main [Robot] class.
      *

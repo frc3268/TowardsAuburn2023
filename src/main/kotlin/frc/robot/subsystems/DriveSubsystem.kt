@@ -7,6 +7,7 @@ import com.revrobotics.RelativeEncoder
 import edu.wpi.first.math.controller.PIDController
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry
 import edu.wpi.first.math.geometry.Rotation2d
+import edu.wpi.first.math.geometry.Pose2d
 import edu.wpi.first.wpilibj.SPI
 import edu.wpi.first.wpilibj.drive.DifferentialDrive
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup
@@ -15,7 +16,7 @@ import frc.robot.Constants
 import frc.robot.lib.Camera
 import frc.robot.lib.units.*
 
-class DriveSubsystem : SubsystemBase() {
+class DriveSubsystem(startingPose : Pose2d) : SubsystemBase() {
     public val gyro: AHRS = AHRS(SPI.Port.kMXP)
     // Controllers
     private val driveLeftFront: CANSparkMax =
@@ -55,13 +56,14 @@ class DriveSubsystem : SubsystemBase() {
     //Odometry
 
     private val odometry:DifferentialDriveOdometry;
+    private val startingPose:Pose2d = startingPose
 
     init {
         //conv. factors of the encoders should be set: 1 meter / x revolutions 
         gyro.calibrate()
         zeroGyro()
         odometry = DifferentialDriveOdometry(
-            gyro.getRotation2d(), leftEncoder.getPosition(), leftEncoder.getPosition());
+            gyro.getRotation2d(), leftEncoder.getPosition(), leftEncoder.getPosition(), startingPose);
   
     }
 
@@ -89,22 +91,6 @@ class DriveSubsystem : SubsystemBase() {
             }
             Constants.DriveMode.TANK -> {
                 drive.tankDrive(arg1, arg2)
-            }
-            Constants.DriveMode.GOBLIN -> {
-                val targetAngle = Math.atan(arg1 / arg2).rad.deg
-                // if you're close to the direct forward or back, you dont deserve "goblin mode"
-                val delta =
-                        if (targetAngle > getYaw()) targetAngle - getYaw()
-                        else getYaw() - targetAngle
-                if ((Math.abs(delta - 180 ) > 22.5)) {
-                    drive(arg1, arg2, Constants.DriveMode.ARCADE)
-                } else {
-                    while (delta > 5.0) {
-                        // test this
-                        drive.arcadeDrive(0.0, turnController.calculate(getYaw(), delta))
-                    }
-                    drive.arcadeDrive(Math.sqrt(Math.pow(arg1, 2.0) + Math.pow(arg2, 2.0)), 0.0)
-                }
             }
         }
     }

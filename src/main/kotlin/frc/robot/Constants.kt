@@ -37,7 +37,7 @@ class Constants {
     }
 
     enum class DriveMode{
-        ARCADE, TANK, GOBLIN
+        ARCADE, TANK
     }
 
     object Drive{
