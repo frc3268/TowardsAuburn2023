@@ -5,6 +5,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController
 import edu.wpi.first.wpilibj2.command.button.JoystickButton
 import edu.wpi.first.wpilibj2.command.button.Trigger
 import edu.wpi.first.math.geometry.Translation2d
+import edu.wpi.first.math.geometry.Pose2d
+import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.math.MathUtil
 import edu.wpi.first.wpilibj.Joystick
 
@@ -66,7 +68,15 @@ class RobotContainer {
 
         // Schedule exampleMethodCommand when the Xbox controller's B button is pressed,
         // cancelling on release.
-        //Trigger { driverController.Trigger }.onTrue(TurnAmountCommand(drive, 90.0))
+        driverController.b().onTrue(TurnAmountCommand(drive, 90.0))
+    }
+
+    public fun updateGoblinState(){
+        if (driverController.b().getAsBoolean()){
+            toggleGoblin = true
+        }else{
+            toggleGoblin = false
+        }
     }
     /**
      * Use this to pass the autonomous command to the main [Robot] class.
@@ -76,5 +86,5 @@ class RobotContainer {
     val autonomousCommand: Command
         get() =
             // Example command
-            Autos.exampleAuto()
+            Autos.beelineAuto(Pose2d(Translation2d(1.0, 1.0), Rotation2d.fromDegrees(0.0)), drive)
 }

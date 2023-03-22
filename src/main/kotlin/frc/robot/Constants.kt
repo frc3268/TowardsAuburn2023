@@ -52,17 +52,19 @@ class Constants {
         val startYaw: Double = 0.0.deg
 
         //ramsete params
-        val ksVolts:Double = 0.0
-        val kvVoltSecondsPerMeter:Double = 0.0
-        val kaVoltSecondsSquaredPerMeter:Double = 0.0
+        val ksVolts:Double = 0.14087
+        val kvVoltSecondsPerMeter:Double = 1.3489
+        val kaVoltSecondsSquaredPerMeter:Double = 0.096935
 
-        val kPDriveVel:Double = 0.0
-
-        val kTrackWidthMeters:Double = 0.0
+        val kPDriveVel:Double = 1.4502
+        val kTrackWidthMeters:Double = Units.inchesToMeters(18.0)
         val kDriveKinematics:DifferentialDriveKinematics = DifferentialDriveKinematics(kTrackWidthMeters)
 
         val kMaxSpeedMetersPerSeconds:Double = 3.0
         val kMaxAccelerationMetersPerSecondSquared = 1.0
+
+        val kRamseteB:Double = 2.0
+        val kRamseteZeta:Double = 0.7
 
         
     }

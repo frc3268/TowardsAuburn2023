@@ -5,9 +5,9 @@ import com.revrobotics.CANSparkMax
 import com.revrobotics.CANSparkMaxLowLevel.MotorType
 import com.revrobotics.RelativeEncoder
 import edu.wpi.first.math.controller.PIDController
-import edu.wpi.first.math.kinematics.DifferentialDriveOdometry
-import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.math.geometry.Pose2d
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds
 import edu.wpi.first.wpilibj.SPI
 import edu.wpi.first.wpilibj.drive.DifferentialDrive
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup
@@ -16,7 +16,7 @@ import frc.robot.Constants
 import frc.robot.lib.Camera
 import frc.robot.lib.units.*
 
-class DriveSubsystem(startingPose : Pose2d) : SubsystemBase() {
+class DriveSubsystem(startingPose: Pose2d) : SubsystemBase() {
     public val gyro: AHRS = AHRS(SPI.Port.kMXP)
     // Controllers
     private val driveLeftFront: CANSparkMax =
@@ -28,9 +28,9 @@ class DriveSubsystem(startingPose : Pose2d) : SubsystemBase() {
     private val driveRightBack: CANSparkMax =
             CANSparkMax(Constants.Drive.rightBackID, MotorType.kBrushless)
 
-    //Encoders
-    private val leftEncoder:RelativeEncoder = driveLeftFront.getEncoder()
-    private val rightEncoder:RelativeEncoder = driveRightFront.getEncoder()
+    // Encoders
+    public val leftEncoder: RelativeEncoder = driveLeftFront.getEncoder()
+    public val rightEncoder: RelativeEncoder = driveRightFront.getEncoder()
 
     // Groups
     private val driveLeft: MotorControllerGroup =
@@ -53,18 +53,23 @@ class DriveSubsystem(startingPose : Pose2d) : SubsystemBase() {
 
     public val camera: Camera = Camera()
 
-    //Odometry
+    // Odometry
 
-    private val odometry:DifferentialDriveOdometry;
-    private val startingPose:Pose2d = startingPose
+    private val odometry: DifferentialDriveOdometry
+    private val startingPose: Pose2d = startingPose
 
     init {
-        //conv. factors of the encoders should be set: 1 meter / x revolutions 
+        // conv. factors of the encoders should be set: 1 meter / x revolutions
         gyro.calibrate()
         zeroGyro()
-        odometry = DifferentialDriveOdometry(
-            gyro.getRotation2d(), leftEncoder.getPosition(), leftEncoder.getPosition(), startingPose);
-        //config for motors
+        odometry =
+                DifferentialDriveOdometry(
+                        gyro.getRotation2d(),
+                        leftEncoder.getPosition(),
+                        leftEncoder.getPosition(),
+                        startingPose
+                )
+        // config for motors
         driveLeftBack.restoreFactoryDefaults()
         driveLeftFront.restoreFactoryDefaults()
         driveRightFront.restoreFactoryDefaults()
@@ -73,7 +78,15 @@ class DriveSubsystem(startingPose : Pose2d) : SubsystemBase() {
         driveLeftFront.setOpenLoopRampRate(0.45)
         driveRightBack.setOpenLoopRampRate(0.45)
         driveRightFront.setOpenLoopRampRate(0.45)
-  
+
+        // set encoder conversion factors
+        leftEncoder.setPositionConversionFactor(10.71 / 1.0)
+
+        rightEncoder.setPositionConversionFactor(10.71 / 1.0)
+
+        leftEncoder.setVelocityConversionFactor(10.71 / 1.0 * 60 / 1)
+
+        rightEncoder.setVelocityConversionFactor(10.71 / 1.0 * 60 / 1)
     }
 
     override fun periodic() {
@@ -105,6 +118,14 @@ class DriveSubsystem(startingPose : Pose2d) : SubsystemBase() {
         }
     }
 
+    public fun getPose(): Pose2d {
+        return odometry.getPoseMeters()
+    }
+
+    public fun getWheelSpeeds(): DifferentialDriveWheelSpeeds {
+        return DifferentialDriveWheelSpeeds(leftEncoder.getVelocity(), rightEncoder.getVelocity())
+    }
+
     public fun zeroGyro() {
         gyro.zeroYaw()
     }
@@ -116,9 +137,74 @@ class DriveSubsystem(startingPose : Pose2d) : SubsystemBase() {
     public fun getPitch(): Double {
         return gyro.getPitch().toDouble()
     }
-      /** Updates the field-relative position. */
-  public fun updateOdometry() {
-    odometry.update(
-        gyro.getRotation2d(), leftEncoder.getPosition(), rightEncoder.getPosition());
-  }
+    /** Updates the field-relative position. */
+    public fun updateOdometry() {
+        odometry.update(gyro.getRotation2d(), leftEncoder.getPosition(), rightEncoder.getPosition())
+    }
+
+    /** Resets the drive encoders to currently read a position of 0. */
+    public fun resetEncoders() {
+
+        leftEncoder.setPosition(0.0)
+
+        rightEncoder.setPosition(0.0)
+    }
+
+    /**
+     *
+     * Gets the average distance of the two encoders.
+     *
+     * @return the average of the two encoder readings
+     */
+    public fun getAverageEncoderDistance(): Double {
+
+        return (leftEncoder.getPosition() + rightEncoder.getPosition()) / 2.0
+    }
+
+    /**
+     *
+     * Sets the max output of the drive. Useful for scaling the drive to drive more slowly.
+     *
+     * @param maxOutput the maximum output to which the drive will be constrained
+     */
+    public fun setMaxOutput(maxOutput: Double) {
+
+        drive.setMaxOutput(maxOutput)
+    }
+
+    /** Zeroes the heading of the robot. */
+    public fun zeroHeading() {
+
+        gyro.reset()
+    }
+
+    /**
+     *
+     * Returns the heading of the robot.
+     *
+     * @return the robot's heading in degrees, from -180 to 180
+     */
+    public fun getHeading(): Double {
+
+        return gyro.getRotation2d().getDegrees()
+    }
+
+    /**
+     *
+     * Returns the turn rate of the robot.
+     *
+     * @return The turn rate of the robot, in degrees per second
+     */
+    public fun getTurnRate(): Double {
+
+        return -gyro.getRate()
+    }
+
+    public fun tankDriveVolts(leftVolts: Double, rightVolts: Double) {
+        driveLeftFront.setVoltage(leftVolts)
+        driveLeftBack.setVoltage(leftVolts)
+        driveRightFront.setVoltage(rightVolts)
+        driveRightFront.setVoltage(rightVolts)
+        drive.feed()
+    }
 }
