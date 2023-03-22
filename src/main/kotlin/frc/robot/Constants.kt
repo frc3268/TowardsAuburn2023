@@ -28,10 +28,10 @@ class Constants {
 
     object Field {
         public val chargeStationPoint = Pose2d(
-            Translation2d(Units.inchesToMeters(224.0), Units.inchesToMeters(84.25)), Rotation2d.fromDegrees(0.deg)
+            Translation2d(Units.inchesToMeters(224.0), Units.inchesToMeters(84.25)), Rotation2d.fromDegrees(0.0.deg)
         )
         public val startingPose = Pose2d(
-            Translation2d(Units.inchesToMeters(0.0), Units.inchesToMeters(0.0)), Rotation2d.fromDegrees(180.deg))
+            Translation2d(Units.inchesToMeters(0.0), Units.inchesToMeters(0.0)), Rotation2d.fromDegrees(180.0.deg))
     }
 
     object Camera {
