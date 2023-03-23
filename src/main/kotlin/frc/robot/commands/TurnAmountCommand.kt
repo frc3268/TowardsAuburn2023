@@ -22,7 +22,8 @@ class TurnAmountCommand(target: Double, drive: DriveSubsystem) :
                 // does this shit even work?? idk
                 BiConsumer { output: Double?, setpoint: TrapezoidProfile.State? ->
                     run { drive.driveArcadeConsumer({ 0.0 }, { output!! }) }
-                }
+                },
+                drive
         ) {
     init {
         getController().setTolerance(2.0)
