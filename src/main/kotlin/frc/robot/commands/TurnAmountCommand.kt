@@ -2,6 +2,7 @@ package frc.robot.commands
 
 import edu.wpi.first.math.trajectory.TrapezoidProfile
 import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand
+import frc.robot.subsystems.DriveSubsystem
 import java.util.function.BiConsumer
 import java.util.function.DoubleSupplier
 import java.util.function.Supplier
@@ -16,10 +17,11 @@ class TurnAmountCommand(target: Double, drive: DriveSubsystem) :
                 // This should return the measurement
                 DoubleSupplier { drive.getYaw() },
                 // This should return the goal (can also be a constant)
-                Supplier { TrapezoidProfile.State(target, 0) },
+                Supplier { TrapezoidProfile.State(target, 0.0) },
                 // This uses the output
+                // does this shit even work?? idk
                 BiConsumer { output: Double?, setpoint: TrapezoidProfile.State? ->
-                    { drive.driveArcadeConsumer(0.0, output) }
+                    run { drive.driveArcadeConsumer({ 0.0 }, { output!! }) }
                 }
         ) {
     init {
