@@ -1,0 +1,18 @@
+{
+    "configurations": [
+        {
+            "name": "TowardsAuburn2023 [deploy]",
+            "type": "gradle",
+            "tasks": ["deploy"],
+            "args": [""],
+            "initScripts": {"flmapper":"ext.mapPath = { path -> null }"}
+        },
+        {
+            "name": "TowardsAuburn2023 [build]",
+            "type": "gradle",
+            "tasks": ["build"],
+            "args": [""],
+            "initScripts": {"flmapper":"ext.mapPath = { path -> null }"}
+        }
+    ]
+}

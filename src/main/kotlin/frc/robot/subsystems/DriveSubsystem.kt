@@ -17,8 +17,6 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 import frc.robot.Constants
 import frc.robot.lib.Camera
-import frc.robot.lib.units.*
-import edu.wpi.first.wpilibj.livewindow.LiveWindow
 import java.util.function.DoubleSupplier
 import org.photonvision.EstimatedRobotPose
 
@@ -53,14 +51,13 @@ class DriveSubsystem(startingPose: Pose2d) : SubsystemBase() {
     val linearD: Double = 0.0
     public val forwardController: PIDController = PIDController(linearP, 0.0, linearD)
 
-    val angularP: Double = 0.02
+    val angularP: Double = 0.03
     val angularD: Double = 0.01
     public val turnController = ProfiledPIDController(angularP, 0.0, angularD, TrapezoidProfile.Constraints(100.0, 200.0))
 
     public val camera: Camera = Camera()
 
     // Odometry
-
     private val odometry: DifferentialDriveOdometry
     private val startingPose: Pose2d = startingPose
     public val poseEstimator: DifferentialDrivePoseEstimator
@@ -68,7 +65,6 @@ class DriveSubsystem(startingPose: Pose2d) : SubsystemBase() {
 
     init {
         //odometry
-        gyro.calibrate()
         zeroGyro()
         odometry =
                 DifferentialDriveOdometry(
@@ -144,7 +140,7 @@ class DriveSubsystem(startingPose: Pose2d) : SubsystemBase() {
     }
 
     public fun getYaw(): Double {
-        return gyro.getYaw().toDouble()
+        return gyro.getYaw().toDouble() + startingPose.rotation.degrees
     }
 
     public fun getPitch(): Double {
