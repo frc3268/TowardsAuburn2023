@@ -22,15 +22,16 @@ import org.photonvision.EstimatedRobotPose
 
 class DriveSubsystem(startingPose: Pose2d) : SubsystemBase() {
     public val gyro: AHRS = AHRS(SPI.Port.kMXP)
+
     // Controllers
     private val driveLeftFront: CANSparkMax =
-            CANSparkMax(Constants.Drive.leftFrontID, MotorType.kBrushless)
+        CANSparkMax(Constants.Drive.leftFrontID, MotorType.kBrushless)
     private val driveLeftBack: CANSparkMax =
-            CANSparkMax(Constants.Drive.leftBackID, MotorType.kBrushless)
+        CANSparkMax(Constants.Drive.leftBackID, MotorType.kBrushless)
     private val driveRightFront: CANSparkMax =
-            CANSparkMax(Constants.Drive.rightFrontID, MotorType.kBrushless)
+        CANSparkMax(Constants.Drive.rightFrontID, MotorType.kBrushless)
     private val driveRightBack: CANSparkMax =
-            CANSparkMax(Constants.Drive.rightBackID, MotorType.kBrushless)
+        CANSparkMax(Constants.Drive.rightBackID, MotorType.kBrushless)
 
     // Encoders
     public val leftEncoder: RelativeEncoder = driveLeftFront.getEncoder()
@@ -38,18 +39,18 @@ class DriveSubsystem(startingPose: Pose2d) : SubsystemBase() {
 
     // Groups
     private val driveLeft: MotorControllerGroup =
-            MotorControllerGroup(driveLeftFront, driveLeftBack)
+        MotorControllerGroup(driveLeftFront, driveLeftBack)
     private val driveRight: MotorControllerGroup =
-            MotorControllerGroup(driveRightFront, driveRightBack)
+        MotorControllerGroup(driveRightFront, driveRightBack)
 
     // Drive
     private val drive: DifferentialDrive = DifferentialDrive(driveLeft, driveRight)
 
     // PID
     // constants should be tuned per robot
-    val linearP: Double = 0.6
-    val linearD: Double = 0.0
-    public val forwardController: PIDController = PIDController(linearP, 0.0, linearD)
+    val linearP: Double = 0.03
+    val linearD: Double = 0.01
+    public val forwardController: ProfiledPIDController = ProfiledPIDController(linearP, 0.0, linearD, TrapezoidProfile.Constraints(Constants.Drive.kMaxSpeedMetersPerSeconds, Constants.Drive.kMaxAccelerationMetersPerSecondSquared))
 
     val angularP: Double = 0.03
     val angularD: Double = 0.01
@@ -67,12 +68,12 @@ class DriveSubsystem(startingPose: Pose2d) : SubsystemBase() {
         //odometry
         zeroGyro()
         odometry =
-                DifferentialDriveOdometry(
-                        gyro.getRotation2d(),
-                        leftEncoder.getPosition(),
-                        leftEncoder.getPosition(),
-                        startingPose
-                )
+            DifferentialDriveOdometry(
+                gyro.getRotation2d(),
+                leftEncoder.getPosition(),
+                leftEncoder.getPosition(),
+                startingPose
+            )
         poseEstimator = DifferentialDrivePoseEstimator(Constants.Drive.kDriveKinematics, gyro.getRotation2d(), leftEncoder.getPosition(), rightEncoder.getPosition(), startingPose)
         // config for motors
         driveLeftBack.restoreFactoryDefaults()
@@ -96,7 +97,7 @@ class DriveSubsystem(startingPose: Pose2d) : SubsystemBase() {
 
     override fun periodic() {
         camera.frame = camera.limelight.getLatestResult()
-        
+
     }
 
     override fun simulationPeriodic() {
@@ -117,13 +118,14 @@ class DriveSubsystem(startingPose: Pose2d) : SubsystemBase() {
             Constants.DriveMode.ARCADE -> {
                 drive.arcadeDrive(arg1, arg2)
             }
+
             Constants.DriveMode.TANK -> {
                 drive.tankDrive(arg1, arg2)
             }
         }
     }
 
-    public fun driveArcadeConsumer(xspeed:DoubleSupplier, zrot:DoubleSupplier){
+    public fun driveArcadeConsumer(xspeed: DoubleSupplier, zrot: DoubleSupplier) {
         drive.arcadeDrive(xspeed.getAsDouble(), zrot.getAsDouble())
     }
 
@@ -146,6 +148,7 @@ class DriveSubsystem(startingPose: Pose2d) : SubsystemBase() {
     public fun getPitch(): Double {
         return gyro.getPitch().toDouble()
     }
+
     /** Updates the field-relative position. */
     public fun updateOdometry() {
         var visionResult: EstimatedRobotPose? = camera.getEstimatedPose(getPose())
