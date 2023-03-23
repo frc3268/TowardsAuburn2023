@@ -16,7 +16,6 @@ import frc.robot.subsystems.DriveSubsystem
 import frc.robot.commands.JoystickDriveCommand
 import frc.robot.commands.DriveToTargetCommand
 import frc.robot.commands.Autos
-import frc.robot.commands.TurnAmountCommand
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -68,7 +67,7 @@ class RobotContainer {
 
         // Schedule exampleMethodCommand when the Xbox controller's B button is pressed,
         // cancelling on release.
-        Trigger {driverController.triggerPressed}.toggleOnTrue(TurnAmountCommand(drive, 90.0))
+        //Trigger {driverController.triggerPressed}.toggleOnTrue(TurnAmountCommand(drive, 90.0))
     }
 
   /**

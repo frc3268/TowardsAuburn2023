@@ -16,6 +16,7 @@ import frc.robot.Constants
 import frc.robot.lib.Camera
 import frc.robot.lib.units.*
 import edu.wpi.first.wpilibj.livewindow.LiveWindow
+import java.util.function.DoubleSupplier
 
 class DriveSubsystem(startingPose: Pose2d) : SubsystemBase() {
     public val gyro: AHRS = AHRS(SPI.Port.kMXP)
@@ -61,8 +62,6 @@ class DriveSubsystem(startingPose: Pose2d) : SubsystemBase() {
 
     init {
         //pid
-        turnController.enableContinuousInput(-180.0, 180.0)
-        turnController.setTolerance(2.0)
        // conv. factors of the encoders should be set: 1 meter / x revolutions
         gyro.calibrate()
         zeroGyro()
@@ -88,9 +87,9 @@ class DriveSubsystem(startingPose: Pose2d) : SubsystemBase() {
 
         rightEncoder.setPositionConversionFactor(10.71 / 1.0)
 
-        leftEncoder.setVelocityConversionFactor(10.71 / 1.0 * 60 / 1)
+        leftEncoder.setVelocityConversionFactor(10.71 / 1.0 * (60 / 1))
 
-        rightEncoder.setVelocityConversionFactor(10.71 / 1.0 * 60 / 1)
+        rightEncoder.setVelocityConversionFactor(10.71 / 1.0 * (60 / 1))
     }
 
     override fun periodic() {
@@ -120,6 +119,10 @@ class DriveSubsystem(startingPose: Pose2d) : SubsystemBase() {
                 drive.tankDrive(arg1, arg2)
             }
         }
+    }
+
+    public fun driveArcadeConsumer(xspeed:DoubleSupplier, zrot:DoubleSupplier){
+        drive.arcadeDrive(xspeed.getAsDouble(), zrot.getAsDouble())
     }
 
     public fun getPose(): Pose2d {

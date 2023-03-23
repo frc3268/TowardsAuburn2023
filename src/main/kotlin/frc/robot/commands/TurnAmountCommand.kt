@@ -1,44 +1,31 @@
 package frc.robot.commands
 
-import edu.wpi.first.wpilibj2.command.CommandBase
-import edu.wpi.first.math.geometry.Rotation2d
-import edu.wpi.first.math.geometry.Translation2d
-
-import frc.robot.lib.units.*
+import edu.wpi.first.wpilibj2.command.PIDCommand
 import frc.robot.subsystems.DriveSubsystem
-import frc.robot.lib.units.*
-import frc.robot.Constants
+import java.util.function.DoubleConsumer
+import java.util.function.DoubleSupplier
 
-import edu.wpi.first.math.MathUtil
-class TurnAmountCommand(
-    drive: DriveSubsystem,
-    angle: Double
-) : CommandBase() {
-    val drive: DriveSubsystem = drive
-    val angle: Double = angle
-    var target:Double = 0.0
-
-    init {
-        // Use addRequirements() here to declare subsystem dependencies.
-        addRequirements(drive)
+// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
+// information, see:
+// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
+class TurnAmountCommand(targetDeg: Double, drive: DriveSubsystem) :
+        PIDCommand(
+                // The controller that the command will use
+                drive.turnController,
+                // This should return the measurement
+                DoubleSupplier { drive.getYaw() },
+                // This should return the setpoint (can also be a constant)
+                DoubleSupplier { targetDeg },
+                // This uses the output
+                DoubleConsumer { output: Double -> { drive.driveArcadeConsumer({0.0}, {output}) } }
+        ) {
+    init{
+        getController().setTolerance(2.0)
+        getController().enableContinuousInput(-180.0, 180.0);
     }
-
-    // Called when the command is initially scheduled.
-    override fun initialize() { 
-        target = drive.getYaw() + angle
-    }
-
-    // Called every time the scheduler runs while the command is scheduled.
-    override fun execute() {
-        drive.turnController.setSetpoint(target)
-        drive.drive(MathUtil.clamp(drive.turnController.calculate(drive.getYaw()), -0.3, 0.3), 0.0, Constants.DriveMode.ARCADE)
-    }
-
-    // Called once the command ends or is interrupted.
-    override fun end(interrupted: Boolean) { }
 
     // Returns true when the command should end.
     override fun isFinished(): Boolean {
-        return Math.abs(drive.getYaw() - target) < 2.0
+        return getController().atSetpoint()
     }
 }
