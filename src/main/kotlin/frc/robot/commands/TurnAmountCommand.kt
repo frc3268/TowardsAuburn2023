@@ -9,12 +9,14 @@ import frc.robot.subsystems.DriveSubsystem
 import frc.robot.lib.units.*
 import frc.robot.Constants
 
+import edu.wpi.first.math.MathUtil
 class TurnAmountCommand(
     drive: DriveSubsystem,
     angle: Double
 ) : CommandBase() {
     val drive: DriveSubsystem = drive
     val angle: Double = angle
+    var target:Double = 0.0
 
     init {
         // Use addRequirements() here to declare subsystem dependencies.
@@ -22,11 +24,13 @@ class TurnAmountCommand(
     }
 
     // Called when the command is initially scheduled.
-    override fun initialize() { }
+    override fun initialize() { 
+        target = drive.getYaw() + angle
+    }
 
     // Called every time the scheduler runs while the command is scheduled.
-    override fun execute() { 
-        drive.drive(0.0, drive.turnController.calculate(drive.getYaw(), angle), Constants.DriveMode.ARCADE)
+    override fun execute() {
+        drive.drive(MathUtil.applyDeadband(drive.turnController.calculate(drive.getYaw(), target),-0.3, 0.3), 0.0, Constants.DriveMode.ARCADE)
     }
 
     // Called once the command ends or is interrupted.
@@ -34,6 +38,6 @@ class TurnAmountCommand(
 
     // Returns true when the command should end.
     override fun isFinished(): Boolean {
-        return Math.abs(drive.getYaw() - angle) > 5.deg
+        return Math.abs(drive.getYaw() - target) < 2.0
     }
 }

@@ -68,17 +68,10 @@ class RobotContainer {
 
         // Schedule exampleMethodCommand when the Xbox controller's B button is pressed,
         // cancelling on release.
-        driverController.b().onTrue(TurnAmountCommand(drive, 90.0))
+        Trigger {driverController.triggerPressed}.toggleOnTrue(TurnAmountCommand(drive, 90.0))
     }
 
-    public fun updateGoblinState(){
-        if (driverController.b().getAsBoolean()){
-            toggleGoblin = true
-        }else{
-            toggleGoblin = false
-        }
-    }
-    /**
+  /**
      * Use this to pass the autonomous command to the main [Robot] class.
      *
      * @return the command to run in autonomous
@@ -86,5 +79,5 @@ class RobotContainer {
     val autonomousCommand: Command
         get() =
             // Example command
-            Autos.beelineAuto(Pose2d(Translation2d(1.0, 1.0), Rotation2d.fromDegrees(0.0)), drive)
+            Autos.beelineAuto(Pose2d(Translation2d(1.0, 0.0), Rotation2d.fromDegrees(0.0)), drive)
 }

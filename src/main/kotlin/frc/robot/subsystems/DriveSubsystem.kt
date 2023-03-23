@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase
 import frc.robot.Constants
 import frc.robot.lib.Camera
 import frc.robot.lib.units.*
+import edu.wpi.first.wpilibj.livewindow.LiveWindow
 
 class DriveSubsystem(startingPose: Pose2d) : SubsystemBase() {
     public val gyro: AHRS = AHRS(SPI.Port.kMXP)
@@ -47,8 +48,8 @@ class DriveSubsystem(startingPose: Pose2d) : SubsystemBase() {
     val linearD: Double = 0.0
     public val forwardController: PIDController = PIDController(linearP, 0.0, linearD)
 
-    val angularP: Double = 0.03
-    val angularD: Double = 0.0
+    val angularP: Double = 0.02
+    val angularD: Double = 0.01
     public val turnController = PIDController(angularP, 0.0, angularD)
 
     public val camera: Camera = Camera()
@@ -59,7 +60,8 @@ class DriveSubsystem(startingPose: Pose2d) : SubsystemBase() {
     private val startingPose: Pose2d = startingPose
 
     init {
-        // conv. factors of the encoders should be set: 1 meter / x revolutions
+        // sdknlmf;
+       // conv. factors of the encoders should be set: 1 meter / x revolutions
         gyro.calibrate()
         zeroGyro()
         odometry =
@@ -74,10 +76,10 @@ class DriveSubsystem(startingPose: Pose2d) : SubsystemBase() {
         driveLeftFront.restoreFactoryDefaults()
         driveRightFront.restoreFactoryDefaults()
         driveRightBack.restoreFactoryDefaults()
-        driveLeftBack.setOpenLoopRampRate(0.45)
-        driveLeftFront.setOpenLoopRampRate(0.45)
-        driveRightBack.setOpenLoopRampRate(0.45)
-        driveRightFront.setOpenLoopRampRate(0.45)
+        driveLeftBack.setOpenLoopRampRate(0.9)
+        driveLeftFront.setOpenLoopRampRate(0.9)
+        driveRightBack.setOpenLoopRampRate(0.9)
+        driveRightFront.setOpenLoopRampRate(0.9)
 
         // set encoder conversion factors
         leftEncoder.setPositionConversionFactor(10.71 / 1.0)
