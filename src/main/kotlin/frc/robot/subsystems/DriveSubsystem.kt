@@ -10,6 +10,7 @@ import edu.wpi.first.math.geometry.Pose2d
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds
 import edu.wpi.first.math.trajectory.TrapezoidProfile
+import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator
 import edu.wpi.first.wpilibj.SPI
 import edu.wpi.first.wpilibj.drive.DifferentialDrive
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup
@@ -19,6 +20,7 @@ import frc.robot.lib.Camera
 import frc.robot.lib.units.*
 import edu.wpi.first.wpilibj.livewindow.LiveWindow
 import java.util.function.DoubleSupplier
+import org.photonvision.EstimatedRobotPose
 
 class DriveSubsystem(startingPose: Pose2d) : SubsystemBase() {
     public val gyro: AHRS = AHRS(SPI.Port.kMXP)
@@ -61,10 +63,11 @@ class DriveSubsystem(startingPose: Pose2d) : SubsystemBase() {
 
     private val odometry: DifferentialDriveOdometry
     private val startingPose: Pose2d = startingPose
+    public val poseEstimator: DifferentialDrivePoseEstimator
+
 
     init {
-        //pid
-       // conv. factors of the encoders should be set: 1 meter / x revolutions
+        //odometry
         gyro.calibrate()
         zeroGyro()
         odometry =
@@ -74,6 +77,7 @@ class DriveSubsystem(startingPose: Pose2d) : SubsystemBase() {
                         leftEncoder.getPosition(),
                         startingPose
                 )
+        poseEstimator = DifferentialDrivePoseEstimator(Constants.Drive.kDriveKinematics, gyro.getRotation2d(), leftEncoder.getPosition(), rightEncoder.getPosition(), startingPose)
         // config for motors
         driveLeftBack.restoreFactoryDefaults()
         driveLeftFront.restoreFactoryDefaults()
@@ -128,7 +132,7 @@ class DriveSubsystem(startingPose: Pose2d) : SubsystemBase() {
     }
 
     public fun getPose(): Pose2d {
-        return odometry.getPoseMeters()
+        return poseEstimator.getEstimatedPosition()
     }
 
     public fun getWheelSpeeds(): DifferentialDriveWheelSpeeds {
@@ -148,7 +152,11 @@ class DriveSubsystem(startingPose: Pose2d) : SubsystemBase() {
     }
     /** Updates the field-relative position. */
     public fun updateOdometry() {
-        odometry.update(gyro.getRotation2d(), leftEncoder.getPosition(), rightEncoder.getPosition())
+        var visionResult: EstimatedRobotPose? = camera.getEstimatedPose(getPose())
+        if (visionResult != null) {
+            poseEstimator.addVisionMeasurement(visionResult.estimatedPose.toPose2d(), visionResult.timestampSeconds)
+        }
+        poseEstimator.update(gyro.getRotation2d(), leftEncoder.getPosition(), rightEncoder.getPosition())
     }
 
     /** Resets the drive encoders to currently read a position of 0. */
