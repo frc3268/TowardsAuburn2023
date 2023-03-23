@@ -1,31 +1,34 @@
 package frc.robot.commands
 
-import edu.wpi.first.wpilibj2.command.PIDCommand
-import frc.robot.subsystems.DriveSubsystem
-import java.util.function.DoubleConsumer
+import edu.wpi.first.math.trajectory.TrapezoidProfile
+import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand
+import java.util.function.BiConsumer
 import java.util.function.DoubleSupplier
+import java.util.function.Supplier
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-class TurnAmountCommand(targetDeg: Double, drive: DriveSubsystem) :
-        PIDCommand(
-                // The controller that the command will use
+class TurnAmountCommand(target: Double, drive: DriveSubsystem) :
+        ProfiledPIDCommand(
+                // The ProfiledPIDController used by the command
                 drive.turnController,
                 // This should return the measurement
                 DoubleSupplier { drive.getYaw() },
-                // This should return the setpoint (can also be a constant)
-                DoubleSupplier { targetDeg },
+                // This should return the goal (can also be a constant)
+                Supplier { TrapezoidProfile.State(target, 0) },
                 // This uses the output
-                DoubleConsumer { output: Double -> { drive.driveArcadeConsumer({0.0}, {output}) } }
+                BiConsumer { output: Double?, setpoint: TrapezoidProfile.State? ->
+                    { drive.driveArcadeConsumer(0.0, output) }
+                }
         ) {
-    init{
+    init {
         getController().setTolerance(2.0)
-        getController().enableContinuousInput(-180.0, 180.0);
+        getController().enableContinuousInput(-180.0, 180.0)
     }
 
     // Returns true when the command should end.
     override fun isFinished(): Boolean {
-        return getController().atSetpoint()
+        return getController().atGoal()
     }
 }
