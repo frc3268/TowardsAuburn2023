@@ -44,3 +44,22 @@ To avoid confusion, always use one of the following to specify the unit of a giv
 - Get odomotery working(again)
 - test current commands on drivetrain
 - add subsystems for radial, extension arms and gripper
+
+{
+    "configurations": [
+    {
+        "name": "TowardsAuburn2023 [deploy]",
+        "type": "gradle",
+        "tasks": ["deploy"],
+        "args": [""],
+        "initScripts": {"flmapper":"ext.mapPath = { path -> null }"}
+    },
+    {
+        "name": "TowardsAuburn2023 [build]",
+        "type": "gradle",
+        "tasks": ["build"],
+        "args": [""],
+        "initScripts": {"flmapper":"ext.mapPath = { path -> null }"}
+    }
+    ]
+}
