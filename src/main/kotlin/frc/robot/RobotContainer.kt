@@ -2,19 +2,14 @@ package frc.robot
 
 import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController
-import edu.wpi.first.wpilibj2.command.button.JoystickButton
 import edu.wpi.first.wpilibj2.command.button.Trigger
 import edu.wpi.first.math.geometry.Translation2d
 import edu.wpi.first.math.geometry.Pose2d
 import edu.wpi.first.math.geometry.Rotation2d
-import edu.wpi.first.math.MathUtil
 import edu.wpi.first.wpilibj.Joystick
 
-import frc.robot.Constants
-import frc.robot.lib.*
 import frc.robot.subsystems.DriveSubsystem
 import frc.robot.commands.JoystickDriveCommand
-import frc.robot.commands.DriveToTargetCommand
 import frc.robot.commands.Autos
 import frc.robot.commands.TurnAmountCommand
 
@@ -29,14 +24,14 @@ class RobotContainer {
     // private val exampleSubsystem = ExampleSubsystem()
 
     // controllers
-    public val driverController =
+    private val driverController =
         Joystick(Constants.OperatorConstants.kDriverControllerPort)
 
     /* Driver Buttons */
 
     // subsystems
     private val drive: DriveSubsystem = DriveSubsystem(Constants.Field.startingPose)
-    public var toggleTank = false
+    private var toggleTank = false
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     init {
