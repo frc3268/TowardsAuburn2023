@@ -60,7 +60,9 @@ class DriveSubsystem(startingPose: Pose2d) : SubsystemBase() {
     private val startingPose: Pose2d = startingPose
 
     init {
-        // sdknlmf;
+        //pid
+        turnController.enableContinuousInput(-180.0, 180.0)
+        turnController.setTolerance(2.0)
        // conv. factors of the encoders should be set: 1 meter / x revolutions
         gyro.calibrate()
         zeroGyro()

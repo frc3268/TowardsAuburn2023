@@ -4,6 +4,8 @@ import edu.wpi.first.math.controller.PIDController
 import edu.wpi.first.math.controller.RamseteController
 import edu.wpi.first.math.controller.SimpleMotorFeedforward
 import edu.wpi.first.math.geometry.Pose2d
+import edu.wpi.first.math.geometry.Translation2d
+import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.math.trajectory.Trajectory
 import edu.wpi.first.math.trajectory.TrajectoryConfig
 import edu.wpi.first.math.trajectory.TrajectoryGenerator
@@ -47,7 +49,7 @@ class Autos private constructor() {
 
             val trajectory: Trajectory =
                     TrajectoryGenerator.generateTrajectory(
-                            listOf(drive.getPose(), target),
+                            listOf(Pose2d(Translation2d(0.0, 0.0), Rotation2d.fromDegrees(0.0)), target),
                             trajectoryConfig
                     )
 

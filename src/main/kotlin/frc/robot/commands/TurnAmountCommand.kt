@@ -30,7 +30,7 @@ class TurnAmountCommand(
 
     // Called every time the scheduler runs while the command is scheduled.
     override fun execute() {
-        drive.drive(MathUtil.applyDeadband(drive.turnController.calculate(drive.getYaw(), target),-0.3, 0.3), 0.0, Constants.DriveMode.ARCADE)
+        drive.drive(drive.turnController.calculate(drive.getYaw(), target), 0.0, Constants.DriveMode.ARCADE)
     }
 
     // Called once the command ends or is interrupted.
