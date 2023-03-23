@@ -21,7 +21,7 @@ class TurnAmountCommand(target: Double, drive: DriveSubsystem) :
                 // This uses the output
                 // does this shit even work?? idk
                 BiConsumer { output: Double?, setpoint: TrapezoidProfile.State? ->
-                    run { drive.driveArcadeConsumer({ 0.0 }, { output!! }) }
+                    drive.driveArcadeConsumer({ 0.0 }, { output!! })
                 },
                 drive
         ) {
