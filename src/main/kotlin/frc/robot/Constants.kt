@@ -75,7 +75,19 @@ class Constants {
     }
 
     data class TankDirection(
-        val forward:Double,
+        val forward: Double,
         val rot: Double
+    )
+
+    data class Arm(
+        val motorPort: Int,
+        val kp: Double,
+        val ki: Double,
+        val kd: Double,
+        val kiz: Double,
+        val kff: Double,
+        val kmaxoutput: Double,
+        val kminoutput: Double,
+        val kgrav: Double
     )
 }
