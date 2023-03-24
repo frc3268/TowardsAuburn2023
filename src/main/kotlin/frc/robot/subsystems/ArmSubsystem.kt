@@ -20,7 +20,7 @@ class ArmSubsystem() : ProfiledPIDSubsystem(
         TrapezoidProfile.Constraints(Constants.limbs.RotationalArm.kmaxspeed, Constants.limbs.RotationalArm.kmaxaccel)
     )
 ) {
-    val motor: CANSparkMax = CANSparkMax(0, MotorType.kBrushless)
+    val motor: CANSparkMax = CANSparkMax(Constants.limbs.RotationalArm.motorPort, MotorType.kBrushless)
     val encoder: RelativeEncoder = motor.getEncoder()
 
     init {
