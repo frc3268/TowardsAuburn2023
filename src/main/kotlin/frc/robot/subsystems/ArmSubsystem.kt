@@ -13,6 +13,7 @@ class ArmSubsystem() : SubsystemBase() {
     val encoder: RelativeEncoder = motor.getEncoder()
 
     init {
+        //MUST MUST MUST BE CHANGED TO CORRECT THING
         encoder.setPositionConversionFactor(360 / (147 / 1.0))
     }
 

@@ -89,14 +89,16 @@ class DriveSubsystem(startingPose: Pose2d) : SubsystemBase() {
         driveRightBack.setOpenLoopRampRate(0.9)
         driveRightFront.setOpenLoopRampRate(0.9)
 
-        // set encoder conversion factors
-        leftEncoder.setPositionConversionFactor(10.71 / 1.0)
+        // set encoder conversion factors-diameter of each wheen is 6 inches
+        leftEncoder.setPositionConversionFactor((Math.PI * 6) / (10.71 / 1.0))
 
-        rightEncoder.setPositionConversionFactor(10.71 / 1.0)
+        rightEncoder.setPositionConversionFactor((Math.PI * 6) / (10.71 / 1.0))
 
-        leftEncoder.setVelocityConversionFactor(10.71 / 1.0 * (60 / 1))
+        leftEncoder.setVelocityConversionFactor(((Math.PI * 6) / (10.71 / 1.0)) / (60 / 1))
 
-        rightEncoder.setVelocityConversionFactor(10.71 / 1.0 * (60 / 1))
+        rightEncoder.setVelocityConversionFactor(((Math.PI * 6) / (10.71 / 1.0)) / (60 / 1))
+
+        resetEncoders()
     }
 
     override fun periodic() {
