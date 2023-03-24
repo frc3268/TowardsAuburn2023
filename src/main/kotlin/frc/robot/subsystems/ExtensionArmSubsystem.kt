@@ -8,12 +8,14 @@ import edu.wpi.first.wpilibj2.command.ProfiledPIDSubsystem
 import edu.wpi.first.math.trajectory.TrapezoidProfile
 import edu.wpi.first.math.util.Units
 
-import frc.robot.Constants
-import frc.robot.lib.units.*
 import kotlin.math.cos
 
-class ArmSubsystem() : ProfiledPIDSubsystem(
+import frc.robot.Constants
+
+// TODO Update code to be relevant to extension arm
+class ExtensionArmSubsystem : ProfiledPIDSubsystem(
     ProfiledPIDController(
+        /* TODO Replace constants */
         Constants.limbs.RotationalArm.kp,
         Constants.limbs.RotationalArm.ki,
         Constants.limbs.RotationalArm.kd,
@@ -41,7 +43,7 @@ class ArmSubsystem() : ProfiledPIDSubsystem(
     }
 
     override fun useOutput(output: Double, setpoint: TrapezoidProfile.State?) {
-        if(setpoint != null){
+        if(setpoint != null) {
             //add feed forward
             val ffscalar = cos(Units.degreesToRadians(setpoint.position)) * Constants.limbs.RotationalArm.kff
             motor.set(output + ffscalar)
