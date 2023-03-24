@@ -54,7 +54,7 @@ class DriveSubsystem(startingPose: Pose2d) : SubsystemBase() {
 
     val angularP: Double = 0.03
     val angularD: Double = 0.01
-    public val turnController = ProfiledPIDController(angularP, 0.0, angularD, TrapezoidProfile.Constraints(100.0, 200.0))
+    public val turnController = ProfiledPIDController(angularP, 0.0, angularD, TrapezoidProfile.Constraints(100.0, 300.0))
 
     public val camera: Camera = Camera()
 
