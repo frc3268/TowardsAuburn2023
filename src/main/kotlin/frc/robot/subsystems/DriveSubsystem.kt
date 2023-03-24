@@ -89,13 +89,9 @@ class DriveSubsystem(startingPose: Pose2d) : SubsystemBase() {
         driveRightBack.setOpenLoopRampRate(0.9)
         driveRightFront.setOpenLoopRampRate(0.9)
 
-        // set encoder conversion factors
         leftEncoder.setPositionConversionFactor(10.71 / 1.0)
-
         rightEncoder.setPositionConversionFactor(10.71 / 1.0)
-
         leftEncoder.setVelocityConversionFactor(10.71 / 1.0 * (60 / 1))
-
         rightEncoder.setVelocityConversionFactor(10.71 / 1.0 * (60 / 1))
     }
 
