@@ -20,11 +20,8 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow
 
 import frc.robot.Constants
 import frc.robot.lib.Camera
-<<<<<<< HEAD
 import frc.robot.lib.units.*
 
-=======
->>>>>>> ac7f075dbcb1cedceb0a33addaf19118f6e75409
 import java.util.function.DoubleSupplier
 import org.photonvision.EstimatedRobotPose
 
