@@ -60,7 +60,7 @@ class Constants {
         val kTrackWidthMeters:Double = Units.inchesToMeters(18.0)
         val kDriveKinematics:DifferentialDriveKinematics = DifferentialDriveKinematics(kTrackWidthMeters)
 
-        val kMaxSpeedMetersPerSeconds:Double = 3.0
+        val kMaxSpeedMetersPerSeconds:Double = 1.0
         val kMaxAccelerationMetersPerSecondSquared = 1.0
 
         val kRamseteB:Double = 2.0
