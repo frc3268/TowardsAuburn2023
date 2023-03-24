@@ -26,12 +26,12 @@ As much as possible, this code follows the [Android Kotlin Style Guide](https://
 **The base units for all measurements in this codebase are meters (length), degrees (angle), and seconds (time).**
 To avoid confusion, always use one of the following to specify the unit of a given measurement. These are defined in `lib/Units.kt`.
 
-Name       | Conversion factor
------------|---------------------
-`.meters`  | 1
-`.inch`    | 0.0254
-`.deg`     | 1
-`.rad`     | ~57.2957795  
+| Name      | Conversion factor |
+|-----------|-------------------|
+| `.meters` | 1                 |
+| `.inch`   | 0.0254            |
+| `.deg`    | 1                 |
+| `.rad`    | ~57.2957795       |
 
 ## Credits  
 - Team 364, for their BaseFalconSweve code, used in much of our sverwe implementation
@@ -44,3 +44,22 @@ Name       | Conversion factor
 - Get odomotery working(again)
 - test current commands on drivetrain
 - add subsystems for radial, extension arms and gripper
+
+{
+    "configurations": [
+    {
+        "name": "TowardsAuburn2023 [deploy]",
+        "type": "gradle",
+        "tasks": ["deploy"],
+        "args": [""],
+        "initScripts": {"flmapper":"ext.mapPath = { path -> null }"}
+    },
+    {
+        "name": "TowardsAuburn2023 [build]",
+        "type": "gradle",
+        "tasks": ["build"],
+        "args": [""],
+        "initScripts": {"flmapper":"ext.mapPath = { path -> null }"}
+    }
+    ]
+}
