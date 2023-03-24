@@ -29,28 +29,34 @@ class Autos private constructor() {
         }
          fun beelineAuto(target: Pose2d, drive: DriveSubsystem): Command {
             val volateConstraint: DifferentialDriveVoltageConstraint =
-                    DifferentialDriveVoltageConstraint(
-                            SimpleMotorFeedforward(
-                                    Constants.Drive.ksVolts,
-                                    Constants.Drive.kvVoltSecondsPerMeter,
-                                    Constants.Drive.kaVoltSecondsSquaredPerMeter
-                            ),
-                            Constants.Drive.kDriveKinematics,
-                            10.0
-                    )
+                DifferentialDriveVoltageConstraint(
+                    SimpleMotorFeedforward(
+                        Constants.Drive.ksVolts,
+                        Constants.Drive.kvVoltSecondsPerMeter,
+                        Constants.Drive.kaVoltSecondsSquaredPerMeter
+                    ),
+                    Constants.Drive.kDriveKinematics,
+                    10.0
+                )
             val trajectoryConfig: TrajectoryConfig =
-                    TrajectoryConfig(
-                                    Constants.Drive.kMaxSpeedMetersPerSeconds,
-                                    Constants.Drive.kaVoltSecondsSquaredPerMeter
-                            )
-                            .setKinematics(Constants.Drive.kDriveKinematics)
-                            .addConstraint(volateConstraint)
+                TrajectoryConfig(
+                    Constants.Drive.kMaxSpeedMetersPerSeconds,
+                    Constants.Drive.kaVoltSecondsSquaredPerMeter
+                )
+                .setKinematics(Constants.Drive.kDriveKinematics)
+                .addConstraint(volateConstraint)
 
             val trajectory: Trajectory =
-                    TrajectoryGenerator.generateTrajectory(
-                            listOf(Pose2d(Translation2d(0.0, 0.0), Rotation2d.fromDegrees(0.0)), target),
-                            trajectoryConfig
-                    )
+                TrajectoryGenerator.generateTrajectory(
+                    listOf(
+                        Pose2d(
+                            Translation2d(0.0, 0.0),
+                            Rotation2d.fromDegrees(0.0)
+                        ),
+                        target
+                    ),
+                    trajectoryConfig
+                )
 
             val ramseteCommand: RamseteCommand =
                     RamseteCommand(
