@@ -10,16 +10,12 @@ import frc.robot.lib.Camera
 import frc.robot.subsystems.DriveSubsystem
 
 class DriveToTargetCommand(
-    drive: DriveSubsystem,
-    goalDist: Double,
-    targetHeight: Double,
-    offset: Double
+    val drive: DriveSubsystem,
+    val goalDist: Double,
+    val targetHeight: Double,
+    val offset: Double
 ) : CommandBase() {
-    val drive: DriveSubsystem = drive
     val camera: Camera = drive.camera
-    val goalDist: Double = goalDist
-    val targetHeight: Double = targetHeight
-    val offset: Double = offset
 
     init {
         // Use addRequirements() here to declare subsystem dependencies.

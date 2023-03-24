@@ -27,8 +27,7 @@ class Autos private constructor() {
         fun exampleAuto(): CommandBase {
             return Commands.sequence()
         }
-
-        public fun beelineAuto(target: Pose2d, drive: DriveSubsystem): Command {
+         fun beelineAuto(target: Pose2d, drive: DriveSubsystem): Command {
             val volateConstraint: DifferentialDriveVoltageConstraint =
                     DifferentialDriveVoltageConstraint(
                             SimpleMotorFeedforward(

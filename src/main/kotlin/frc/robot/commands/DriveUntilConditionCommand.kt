@@ -11,14 +11,11 @@ import frc.robot.lib.units.*
 import frc.robot.subsystems.DriveSubsystem
 
 class DriveUntilConditionCommand(
-    drive: DriveSubsystem,
-    condition: BooleanSupplier,
-    fieldOriented: Boolean,
+    val drive: DriveSubsystem,
+    val condition: BooleanSupplier,
+    val fieldOriented: Boolean,
     forward: Boolean
 ) : CommandBase() {
-    val drive: DriveSubsystem = drive
-    val condition: BooleanSupplier = condition
-    val fieldOriented: Boolean = fieldOriented
     val forward: Int = if (forward) 1 else -1
 
     init {

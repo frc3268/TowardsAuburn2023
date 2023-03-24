@@ -16,8 +16,8 @@ import org.photonvision.targeting.PhotonPipelineResult
 import org.photonvision.targeting.PhotonTrackedTarget
 
 class Camera {
-    public val limelight: PhotonCamera = PhotonCamera("CCP BALOON CAMERA")
-    public var frame: PhotonPipelineResult = PhotonPipelineResult()
+    val limelight: PhotonCamera = PhotonCamera("CCP BALOON CAMERA")
+    var frame: PhotonPipelineResult = PhotonPipelineResult()
     var poseEstimator: PhotonPoseEstimator? = null
 
     init {
@@ -38,24 +38,23 @@ class Camera {
         }
     }
 
-    public fun getTankDirectionToTarget(
+    fun getTankDirectionToTarget(
         target: PhotonTrackedTarget?,
         targetHeight: Double
-    ): Constants.TankDirection? {
-        return if (target != null) {
+    ): Constants.TankDirection? =
+        if (target != null) {
             val lengthForward = (targetHeight - Constants.Camera.camHeight) /
                 Math.tan(Math.toRadians(target.pitch - Constants.Camera.cameraAngle))
-            return Constants.TankDirection(
+            Constants.TankDirection(
                 lengthForward,
                 target.yaw
             )
         } else null
-    }
 
-    public fun getTarget(bestTarget: Boolean, index: Int): PhotonTrackedTarget? {
+    fun getTarget(bestTarget: Boolean, index: Int): PhotonTrackedTarget? {
         limelight.pipelineIndex = Constants.LimelightPipelineIndexes.reflectiveTape
 
-        var output: PhotonTrackedTarget? =
+        val output: PhotonTrackedTarget? =
             if (!frame.hasTargets()) null
             else if (bestTarget) frame.getBestTarget() else frame.targets[index]
 

@@ -10,15 +10,11 @@ import frc.robot.Constants
 import frc.robot.subsystems.DriveSubsystem
 
 class JoystickDriveCommand(
-    drive: DriveSubsystem,
-    y: DoubleSupplier,
-    x: DoubleSupplier,
-    tankMode: BooleanSupplier
+    val drive: DriveSubsystem,
+    val y: DoubleSupplier,
+    val x: DoubleSupplier,
+    val tankMode: BooleanSupplier
 ) : CommandBase() {
-    val drive: DriveSubsystem = drive
-    val y: DoubleSupplier = y
-    val x: DoubleSupplier = x
-    val tankMode: BooleanSupplier = tankMode
 
     init {
         // Use addRequirements() here to declare subsystem dependencies.

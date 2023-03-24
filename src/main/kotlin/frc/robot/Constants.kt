@@ -27,17 +27,17 @@ class Constants {
     }
 
     object Field {
-        public val chargeStationPoint = Pose2d(
+        val chargeStationPoint = Pose2d(
             Translation2d(Units.inchesToMeters(224.0), Units.inchesToMeters(84.25)), Rotation2d.fromDegrees(0.0.deg)
         )
-        public val startingPose = Pose2d(
+        val startingPose = Pose2d(
             Translation2d(Units.inchesToMeters(0.0), Units.inchesToMeters(0.0)), Rotation2d.fromDegrees(180.0.deg))
     }
 
     object Camera {
         //!FixME
-        public val camHeight = 10.0.inches
-        public val cameraAngle = 45.0.deg
+        val camHeight = 10.0.inches
+        val cameraAngle = 45.0.deg
     }
 
     enum class DriveMode{
@@ -52,19 +52,19 @@ class Constants {
         val startYaw: Double = 0.0.deg
 
         //ramsete params
-        val ksVolts:Double = 0.14087
-        val kvVoltSecondsPerMeter:Double = 1.3489
-        val kaVoltSecondsSquaredPerMeter:Double = 0.096935
+        val ksVolts: Double = 0.14087
+        val kvVoltSecondsPerMeter: Double = 1.3489
+        val kaVoltSecondsSquaredPerMeter: Double = 0.096935
 
-        val kPDriveVel:Double = 1.4502
-        val kTrackWidthMeters:Double = Units.inchesToMeters(18.0)
+        val kPDriveVel: Double = 1.4502
+        val kTrackWidthMeters: Double = Units.inchesToMeters(18.0)
         val kDriveKinematics:DifferentialDriveKinematics = DifferentialDriveKinematics(kTrackWidthMeters)
 
-        val kMaxSpeedMetersPerSeconds:Double = 1.0
-        val kMaxAccelerationMetersPerSecondSquared = 1.0
+        val kMaxSpeedMetersPerSeconds: Double = 1.0
+        val kMaxAccelerationMetersPerSecondSquared: Double = 1.0
 
-        val kRamseteB:Double = 2.0
-        val kRamseteZeta:Double = 0.7
+        val kRamseteB: Double = 2.0
+        val kRamseteZeta: Double = 0.7
 
         
     }
@@ -84,10 +84,24 @@ class Constants {
         val kp: Double,
         val ki: Double,
         val kd: Double,
-        val kiz: Double,
         val kff: Double,
         val kmaxoutput: Double,
         val kminoutput: Double,
-        val kgrav: Double
+        val kmaxaccel:Double,
+        val kmaxspeed:Double
     )
+
+    object limbs {
+        val RotationalArm:Arm = Arm(
+            5,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            10.0,
+            20.0
+        )
+    }
 }

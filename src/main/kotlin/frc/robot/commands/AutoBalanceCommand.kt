@@ -6,8 +6,7 @@ import frc.robot.Constants
 import frc.robot.lib.units.*
 import frc.robot.subsystems.DriveSubsystem
 
-class AutoBalanceCommand(drive: DriveSubsystem) : CommandBase() {
-    val drive: DriveSubsystem = drive
+class AutoBalanceCommand(val drive: DriveSubsystem) : CommandBase() {
     var gyroAngle: Double = 0.rad
 
     init {
