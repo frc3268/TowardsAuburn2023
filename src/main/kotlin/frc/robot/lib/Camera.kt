@@ -23,15 +23,15 @@ class Camera {
     init {
         try {
             poseEstimator =
-                    PhotonPoseEstimator(
-                            AprilTagFieldLayout(
-                                    Filesystem.getDeployDirectory().toString() +
-                                            "/2023-chargedup.json"
-                            ),
-                            PoseStrategy.MULTI_TAG_PNP,
-                            limelight,
-                            Transform3d()
-                    )
+                PhotonPoseEstimator(
+                    AprilTagFieldLayout(
+                        Filesystem.getDeployDirectory().toString() +
+                        "/2023-chargedup.json"
+                    ),
+                    PoseStrategy.MULTI_TAG_PNP,
+                    limelight,
+                    Transform3d()
+                )
         } catch (e: IOException) {
             DriverStation.reportError("AprilTag: Failed to Load", e.getStackTrace())
             // !add some way to lock down apriltage features after this
@@ -39,16 +39,16 @@ class Camera {
     }
 
     public fun getTankDirectionToTarget(
-            target: PhotonTrackedTarget?,
-            targetHeight: Double
+        target: PhotonTrackedTarget?,
+        targetHeight: Double
     ): Constants.TankDirection? {
         return if (target != null) {
-            val lengthForward =
-                    ((targetHeight - Constants.Camera.camHeight) /
-                            Math.tan(Math.toRadians(target.pitch - Constants.Camera.cameraAngle)))
+            val lengthForward = (targetHeight - Constants.Camera.camHeight) /
+                Math.tan(Math.toRadians(target.pitch - Constants.Camera.cameraAngle))
             return Constants.TankDirection(
-                    lengthForward,
-                    target.yaw)
+                lengthForward,
+                target.yaw
+            )
         } else null
     }
 
@@ -56,8 +56,8 @@ class Camera {
         limelight.pipelineIndex = Constants.LimelightPipelineIndexes.reflectiveTape
 
         var output: PhotonTrackedTarget? =
-                if (!frame.hasTargets()) null
-                else if (bestTarget) frame.getBestTarget() else frame.targets[index]
+            if (!frame.hasTargets()) null
+            else if (bestTarget) frame.getBestTarget() else frame.targets[index]
 
         limelight.pipelineIndex = Constants.LimelightPipelineIndexes.aprilTag
 
