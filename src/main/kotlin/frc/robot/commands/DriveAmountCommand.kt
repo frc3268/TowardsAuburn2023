@@ -17,7 +17,7 @@ class DriveAmountCommand(targetMeters: Double, drive: DriveSubsystem) : Profiled
     // This should return the measurement
     DoubleSupplier { drive.getAverageEncoderDistance() },
     // This should return the goal (can also be a constant)
-    Supplier { TrapezoidProfile.State(drive.getAverageEncoderDistance() + targetMeters, 0.0) },
+    Supplier { TrapezoidProfile.State(targetMeters, 0.0) },
     // This uses the output
     BiConsumer { output: Double?, setpoint: TrapezoidProfile.State? ->
         drive.driveArcadeConsumer({ 0.0 }, { output!! })
