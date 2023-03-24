@@ -84,10 +84,24 @@ class Constants {
         val kp: Double,
         val ki: Double,
         val kd: Double,
-        val kiz: Double,
         val kff: Double,
         val kmaxoutput: Double,
         val kminoutput: Double,
-        val kgrav: Double
+        val kmaxaccel:Double,
+        val kmaxspeed:Double
     )
+
+    object  limbs{
+        val RotationalArm:Arm = Arm(
+            5,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            10.0,
+            20.0
+        )
+    }
 }
