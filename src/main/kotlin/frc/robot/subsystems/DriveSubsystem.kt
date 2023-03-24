@@ -52,7 +52,6 @@ class DriveSubsystem(startingPose: Pose2d) : SubsystemBase() {
     private val drive: DifferentialDrive = DifferentialDrive(driveLeft, driveRight)
 
     // PID
-    // constants should be tuned per robot
     val linearP: Double = 0.03
     val linearD: Double = 0.01
     public val forwardController: ProfiledPIDController = ProfiledPIDController(linearP, 0.0, linearD, TrapezoidProfile.Constraints(Constants.Drive.kMaxSpeedMetersPerSeconds, Constants.Drive.kMaxAccelerationMetersPerSecondSquared))
@@ -67,7 +66,6 @@ class DriveSubsystem(startingPose: Pose2d) : SubsystemBase() {
     private val odometry: DifferentialDriveOdometry
     private val startingPose: Pose2d = startingPose
     public val poseEstimator: DifferentialDrivePoseEstimator
-
 
     init {
         //odometry
@@ -102,7 +100,6 @@ class DriveSubsystem(startingPose: Pose2d) : SubsystemBase() {
 
     override fun periodic() {
         camera.frame = camera.limelight.getLatestResult()
-
     }
 
     override fun simulationPeriodic() {
