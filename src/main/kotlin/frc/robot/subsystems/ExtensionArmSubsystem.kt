@@ -43,10 +43,7 @@ class ExtensionArmSubsystem : ProfiledPIDSubsystem(
     }
 
     override fun useOutput(output: Double, setpoint: TrapezoidProfile.State?) {
-        if(setpoint != null) {
-            //add feed forward
-            val ffscalar = cos(Units.degreesToRadians(setpoint.position)) * Constants.limbs.RotationalArm.kff
-            motor.set(output + ffscalar)
+            //feedforward is irrelevant; gravicty does not need to be compensated for
+            motor.set(output)
         }
     }
-}
