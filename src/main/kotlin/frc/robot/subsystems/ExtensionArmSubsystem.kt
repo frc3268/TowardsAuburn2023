@@ -7,6 +7,7 @@ import edu.wpi.first.math.controller.ProfiledPIDController
 import edu.wpi.first.wpilibj2.command.ProfiledPIDSubsystem
 import edu.wpi.first.math.trajectory.TrapezoidProfile
 import edu.wpi.first.math.util.Units
+import edu.wpi.first.wpilibj2.command.Command
 
 import kotlin.math.cos
 
@@ -38,12 +39,20 @@ class ExtensionArmSubsystem : ProfiledPIDSubsystem(
     override fun simulationPeriodic() {
     }
 
-    override fun getMeasurement():Double{
+    override fun getMeasurement(): Double {
         return encoder.position
     }
 
     override fun useOutput(output: Double, setpoint: TrapezoidProfile.State?) {
-            //feedforward is irrelevant; gravicty does not need to be compensated for
-            motor.set(output)
+        //feedforward is irrelevant; gravicty does not need to be compensated for
+        motor.set(output)
+    }
+
+    fun setToAngle(angle: Double): Command {
+        return runOnce {
+            setGoal(angle)
+            enable()
         }
     }
+}
+

@@ -7,6 +7,7 @@ import edu.wpi.first.math.controller.ProfiledPIDController
 import edu.wpi.first.wpilibj2.command.ProfiledPIDSubsystem
 import edu.wpi.first.math.trajectory.TrapezoidProfile
 import edu.wpi.first.math.util.Units
+import edu.wpi.first.wpilibj2.command.Command
 
 import kotlin.math.cos
 
@@ -36,15 +37,22 @@ class RotationalArmSubsystem : ProfiledPIDSubsystem(
     override fun simulationPeriodic() {
     }
 
-    override fun getMeasurement():Double{
+    override fun getMeasurement(): Double {
         return encoder.position
     }
 
     override fun useOutput(output: Double, setpoint: TrapezoidProfile.State?) {
-        if(setpoint != null){
+        if (setpoint != null) {
             //add feed forward
             val ffscalar = cos(Units.degreesToRadians(setpoint.position)) * Constants.limbs.RotationalArm.kff
             motor.set(output + ffscalar)
+        }
+    }
+
+    fun setToAngle(angle: Double): Command {
+        return runOnce {
+            setGoal(angle)
+            enable()
         }
     }
 }
