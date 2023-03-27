@@ -7,6 +7,7 @@ import edu.wpi.first.math.controller.ProfiledPIDController
 import edu.wpi.first.wpilibj2.command.ProfiledPIDSubsystem
 import edu.wpi.first.math.trajectory.TrapezoidProfile
 import edu.wpi.first.math.util.Units
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import edu.wpi.first.wpilibj2.command.Command
 
 import kotlin.math.cos
@@ -32,6 +33,7 @@ class RotationalArmSubsystem : ProfiledPIDSubsystem(
     }
 
     override fun periodic() {
+        SmartDashboard.putNumber("Extension Motor Rotations", measurement)
     }
 
     override fun simulationPeriodic() {

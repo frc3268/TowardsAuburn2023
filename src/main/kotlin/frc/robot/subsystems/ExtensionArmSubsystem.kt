@@ -7,6 +7,7 @@ import edu.wpi.first.math.controller.ProfiledPIDController
 import edu.wpi.first.wpilibj2.command.ProfiledPIDSubsystem
 import edu.wpi.first.math.trajectory.TrapezoidProfile
 import edu.wpi.first.math.util.Units
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import edu.wpi.first.wpilibj2.command.Command
 
 import kotlin.math.cos
@@ -27,13 +28,14 @@ class ExtensionArmSubsystem : ProfiledPIDSubsystem(
     val encoder: RelativeEncoder = motor.getEncoder()
 
     init {
-        //MUST MUST MUST BE CHANGED TO CORRECT THING
-        encoder.setPositionConversionFactor(360 / (147 / 1.0))
-        //or an offset possibly?
+        //Measure rotations for 1 full extension. conversion factor should be 100 / that number
+        encoder.setPositionConversionFactor(1.0/1.0)
+        //encoder starts at 0
         encoder.position = 0.0
     }
 
     override fun periodic() {
+        SmartDashboard.putNumber("Extension Motor Rotations", measurement)
     }
 
     override fun simulationPeriodic() {
@@ -48,9 +50,9 @@ class ExtensionArmSubsystem : ProfiledPIDSubsystem(
         motor.set(output)
     }
 
-    fun setToAngle(angle: Double): Command {
+    fun setExtensionPercent(percent: Double): Command {
         return runOnce {
-            setGoal(angle)
+            setGoal(percent)
             enable()
         }
     }
