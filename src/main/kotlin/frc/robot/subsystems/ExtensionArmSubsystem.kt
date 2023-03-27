@@ -18,13 +18,13 @@ import frc.robot.Constants
 class ExtensionArmSubsystem : ProfiledPIDSubsystem(
     ProfiledPIDController(
         /* TODO Replace constants */
-        Constants.limbs.RotationalArm.kp,
-        Constants.limbs.RotationalArm.ki,
-        Constants.limbs.RotationalArm.kd,
-        TrapezoidProfile.Constraints(Constants.limbs.RotationalArm.kmaxspeed, Constants.limbs.RotationalArm.kmaxaccel)
+        Constants.limbs.ExtensionArm.kp,
+        Constants.limbs.ExtensionArm.ki,
+        Constants.limbs.ExtensionArm.kd,
+        TrapezoidProfile.Constraints(Constants.limbs.ExtensionArm.kmaxspeed, Constants.limbs.ExtensionArm.kmaxaccel)
     )
 ) {
-    val motor: CANSparkMax = CANSparkMax(Constants.limbs.RotationalArm.motorPort, MotorType.kBrushless)
+    val motor: CANSparkMax = CANSparkMax(Constants.limbs.ExtensionArm.motorPort, MotorType.kBrushless)
     val encoder: RelativeEncoder = motor.getEncoder()
 
     init {
