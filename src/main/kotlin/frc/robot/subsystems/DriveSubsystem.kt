@@ -53,12 +53,12 @@ class DriveSubsystem(private val startingPose: Pose2d) : SubsystemBase() {
     private val drive: DifferentialDrive = DifferentialDrive(driveLeft, driveRight)
 
     // PID
-    val linearP: Double = 0.03
+    val linearP: Double = 0.2
     val linearD: Double = 0.01
     val forwardController: ProfiledPIDController = ProfiledPIDController(linearP, 0.0, linearD, TrapezoidProfile.Constraints(Constants.Drive.kMaxSpeedMetersPerSeconds, Constants.Drive.kMaxAccelerationMetersPerSecondSquared))
 
-    val angularP: Double = 0.03
-    val angularD: Double = 0.01
+    val angularP: Double = 0.021
+    val angularD: Double = 0.02
     val turnController = ProfiledPIDController(angularP, 0.0, angularD, TrapezoidProfile.Constraints(100.0, 300.0))
 
     val camera: Camera = Camera()
@@ -90,8 +90,8 @@ class DriveSubsystem(private val startingPose: Pose2d) : SubsystemBase() {
 
         // set encoder conversion factors-diameter of each wheen is 6 inches
         /* We need to verify that these conversion factors are correct. -- Weiju */
-        leftEncoder.setPositionConversionFactor((Math.PI * 6) / (10.71 / 1.0))
-        rightEncoder.setPositionConversionFactor((Math.PI * 6) / (10.71 / 1.0))
+        leftEncoder.setPositionConversionFactor((1.0 / 14))
+        rightEncoder.setPositionConversionFactor(1.0 / 14)
         leftEncoder.setVelocityConversionFactor(((Math.PI * 6) / (10.71 / 1.0)) / (60 / 1))
         rightEncoder.setVelocityConversionFactor(((Math.PI * 6) / (10.71 / 1.0)) / (60 / 1))
         resetEncoders()
@@ -136,7 +136,7 @@ class DriveSubsystem(private val startingPose: Pose2d) : SubsystemBase() {
     }
 
     fun getWheelSpeeds(): DifferentialDriveWheelSpeeds {
-        return DifferentialDriveWheelSpeeds(leftEncoder.getVelocity(), rightEncoder.getVelocity())
+        return DifferentialDriveWheelSpeeds(leftEncoder.getVelocity(),  -1 * rightEncoder.getVelocity())
     }
 
     fun zeroGyro() {
@@ -175,7 +175,7 @@ class DriveSubsystem(private val startingPose: Pose2d) : SubsystemBase() {
      * @return the average of the two encoder readings
      */
     fun getAverageEncoderDistance(): Double =
-        (leftEncoder.getPosition() + rightEncoder.getPosition()) / 2.0
+        (leftEncoder.getPosition() + -1 * rightEncoder.getPosition()) / 2.0
 
     /**
      *

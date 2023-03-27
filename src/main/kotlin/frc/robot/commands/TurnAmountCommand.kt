@@ -25,7 +25,7 @@ class TurnAmountCommand(target: Double, drive: DriveSubsystem) : ProfiledPIDComm
     drive
 ) {
     init {
-        getController().setTolerance(2.0)
+        getController().setTolerance(5.0)
         getController().enableContinuousInput(-180.0, 180.0)
     }
 
