@@ -26,7 +26,7 @@ class RotationalArmSubsystem : ProfiledPIDSubsystem(
     val encoder: RelativeEncoder = motor.getEncoder()
 
     init {
-        //MUST MUST MUST BE CHANGED TO CORRECT THING
+        //measure encoder rortations to some easy to convert portion of 360 deg, then set conv. factor to 360 / computed encoder value per 1 rotation
         encoder.setPositionConversionFactor(360 / (147 / 1.0))
         //or an offset possibly?
         encoder.position = 0.0

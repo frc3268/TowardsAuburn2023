@@ -77,7 +77,7 @@ class DriveSubsystem(private val startingPose: Pose2d) : SubsystemBase() {
                 leftEncoder.getPosition(),
                 startingPose
             )
-        poseEstimator = DifferentialDrivePoseEstimator(Constants.Drive.kDriveKinematics, gyro.getRotation2d(), leftEncoder.getPosition(), rightEncoder.getPosition(), startingPose)
+        poseEstimator = DifferentialDrivePoseEstimator(Constants.Drive.kDriveKinematics, gyro.getRotation2d(), leftEncoder.getPosition(), -rightEncoder.getPosition(), startingPose)
         // config for motors
         driveLeftBack.restoreFactoryDefaults()
         driveLeftFront.restoreFactoryDefaults()
