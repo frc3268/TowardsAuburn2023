@@ -90,10 +90,10 @@ class DriveSubsystem(private val startingPose: Pose2d) : SubsystemBase() {
 
         // set encoder conversion factors-diameter of each wheen is 6 inches
         /* We need to verify that these conversion factors are correct. -- Weiju */
-        leftEncoder.setPositionConversionFactor(12.0 / 1.0)
-        rightEncoder.setPositionConversionFactor(12.0 / 1.0)
-        leftEncoder.setVelocityConversionFactor((12.0 / 1.0) / (60 / 1))
-        rightEncoder.setVelocityConversionFactor((12.0 / 1.0) / (60 / 1))
+        leftEncoder.setPositionConversionFactor((Math.PI * 6) / (10.71 / 1.0))
+        rightEncoder.setPositionConversionFactor((Math.PI * 6) / (10.71 / 1.0))
+        leftEncoder.setVelocityConversionFactor(((Math.PI * 6) / (10.71 / 1.0)) / (60 / 1))
+        rightEncoder.setVelocityConversionFactor(((Math.PI * 6) / (10.71 / 1.0)) / (60 / 1))
         resetEncoders()
     }
 
@@ -136,7 +136,7 @@ class DriveSubsystem(private val startingPose: Pose2d) : SubsystemBase() {
     }
 
     fun getWheelSpeeds(): DifferentialDriveWheelSpeeds {
-        return DifferentialDriveWheelSpeeds(leftEncoder.getVelocity(), rightEncoder.getVelocity())
+        return DifferentialDriveWheelSpeeds(leftEncoder.getVelocity(),  -1 * rightEncoder.getVelocity())
     }
 
     fun zeroGyro() {
@@ -175,7 +175,7 @@ class DriveSubsystem(private val startingPose: Pose2d) : SubsystemBase() {
      * @return the average of the two encoder readings
      */
     fun getAverageEncoderDistance(): Double =
-        (leftEncoder.getPosition() + rightEncoder.getPosition()) / 2.0
+        (leftEncoder.getPosition() + -1 * rightEncoder.getPosition()) / 2.0
 
     /**
      *

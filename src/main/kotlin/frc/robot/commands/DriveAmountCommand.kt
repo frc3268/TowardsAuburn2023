@@ -26,6 +26,7 @@ class DriveAmountCommand(targetMeters: Double, drive: DriveSubsystem) : Profiled
 ) {
     init {
         getController().setTolerance(0.1)
+        getController().enableContinuousInput(0.0, 54.0)
     }
 
     // Returns true when the command should end.
