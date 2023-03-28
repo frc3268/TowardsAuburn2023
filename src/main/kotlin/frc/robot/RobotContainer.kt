@@ -14,6 +14,7 @@ import frc.robot.commands.Autos
 import frc.robot.commands.DriveAmountCommand
 import frc.robot.commands.TurnAmountCommand
 import frc.robot.subsystems.ExtensionArmSubsystem
+import frc.robot.subsystems.GripperSubsystem
 import frc.robot.subsystems.RotationalArmSubsystem
 
 /**
@@ -37,6 +38,7 @@ class RobotContainer {
 
     private val extension: ExtensionArmSubsystem = ExtensionArmSubsystem()
     private val rotation:RotationalArmSubsystem = RotationalArmSubsystem()
+    private val gripp:GripperSubsystem = GripperSubsystem()
     private var toggleTank = false
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -74,6 +76,10 @@ class RobotContainer {
         Trigger {driverController.getRawButtonPressed(3)}.onTrue(rotation.setToAngle(45.0))
         Trigger {driverController.getRawButtonPressed(4)}.onTrue(extension.setExtensionPercent(100.0))
         Trigger {driverController.getRawButtonPressed(5)}.onTrue(extension.setExtensionPercent(0.0))
+
+        Trigger {driverController.getRawButtonPressed(6)}.onTrue(gripp.setIn())
+
+        Trigger {driverController.getRawButtonPressed(7)}.onTrue(gripp.setOut())
         
     }
 

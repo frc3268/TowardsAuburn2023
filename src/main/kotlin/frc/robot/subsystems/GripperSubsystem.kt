@@ -1,6 +1,7 @@
 package frc.robot.subsystems
 
 import edu.wpi.first.wpilibj.motorcontrol.Talon
+import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 import frc.robot.Constants
 
@@ -13,12 +14,12 @@ class GripperSubsystem : SubsystemBase() {
         motor.set(0.0)
     }
 
-    fun setIn() {
-        motor.set(maxOutput * direction)
+    fun setIn():Command{
+        return run{motor.set(maxOutput * direction)}.andThen(runOnce{stopMotor()})
     }
 
-    fun setOut() {
-        motor.set(-1 * maxOutput * direction)
+    fun setOut(): Command {
+        return run{motor.set(-1 * maxOutput * direction)}.andThen(runOnce{stopMotor()})
     }
 
     fun stopMotor() {
