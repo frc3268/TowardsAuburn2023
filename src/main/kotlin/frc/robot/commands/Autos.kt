@@ -33,5 +33,9 @@ class Autos private constructor() {
             val rot = Math.atan((drive.getPose().translation.x - target.translation.x) / (drive.getPose().translation.y - target.translation.y))
             return TurnAmountCommand(rot, drive).andThen(DriveAmountCommand(drive.getAverageEncoderDistance() + forward, drive))
         }
+
+        fun basicAuto(drive: DriveSubsystem) : Command {
+            return DriveUntilConditionCommand(drive, {true}, false, false).withTimeout(5.0).andThen(AutoBalanceCommand(drive))
+        }
     }
 }
