@@ -90,8 +90,8 @@ class DriveSubsystem(private val startingPose: Pose2d) : SubsystemBase() {
 
         // set encoder conversion factors-diameter of each wheen is 6 inches
         /* We need to verify that these conversion factors are correct. -- Weiju */
-        leftEncoder.setPositionConversionFactor((Math.PI * 6) / (10.71 / 1.0))
-        rightEncoder.setPositionConversionFactor((Math.PI * 6) / (10.71 / 1.0))
+        leftEncoder.setPositionConversionFactor(1.0/12)
+        rightEncoder.setPositionConversionFactor(1.0/12)
         leftEncoder.setVelocityConversionFactor(((Math.PI * 6) / (10.71 / 1.0)) / (60 / 1))
         rightEncoder.setVelocityConversionFactor(((Math.PI * 6) / (10.71 / 1.0)) / (60 / 1))
         resetEncoders()
