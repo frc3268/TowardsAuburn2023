@@ -23,7 +23,11 @@ class RotationalArmSubsystem : ProfiledPIDSubsystem(
     )
 ) {
     val motor: CANSparkMax = CANSparkMax(Constants.limbs.RotationalArm.motorPort, MotorType.kBrushless)
-    val encoder: RelativeEncoder = motor.getEncoder()
+    val encoder: RelativeEncoder = motor.encoder
+
+    val followermotor: CANSparkMax = CANSparkMax(Constants.limbs.rotationarmFollowerID, MotorType.kBrushless)
+
+    val followerEncoder: RelativeEncoder = followermotor.encoder
 
     init {
         //measure encoder rortations to some easy to convert portion of 360 deg, then set conv. factor to 360 / computed encoder value per 1 rotation
@@ -40,7 +44,7 @@ class RotationalArmSubsystem : ProfiledPIDSubsystem(
     }
 
     override fun getMeasurement(): Double {
-        return encoder.position
+        return (encoder.position + followerEncoder.position) / 2
     }
 
     override fun useOutput(output: Double, setpoint: TrapezoidProfile.State?) {
@@ -48,6 +52,7 @@ class RotationalArmSubsystem : ProfiledPIDSubsystem(
             //add feed forward
             val ffscalar = cos(Units.degreesToRadians(setpoint.position)) * Constants.limbs.RotationalArm.kff
             motor.set(output + ffscalar)
+            followermotor.set(output + ffscalar)
         }
     }
 

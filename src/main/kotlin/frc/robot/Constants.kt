@@ -104,7 +104,7 @@ class Constants {
             20.0
         )
         val ExtensionArm:Arm = Arm(
-            6,
+            7,
             0.08,
             0.00,
             0.01,
@@ -116,5 +116,6 @@ class Constants {
         )
         //pid
         val gripperPort = 1
+        val rotationarmFollowerID = 6
     }
 }
