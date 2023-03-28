@@ -94,14 +94,27 @@ class Constants {
     object limbs {
         val RotationalArm:Arm = Arm(
             5,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
+            0.08,
+            0.00,
+            0.01,
+            0.1,
+            -0.5,
+            0.5,
             10.0,
             20.0
         )
+        val ExtensionArm:Arm = Arm(
+            6,
+            0.08,
+            0.00,
+            0.01,
+            0.0,
+            -0.5,
+            0.5,
+            10.0,
+            20.0
+        )
+        //pid
+        val gripperPort = 1
     }
 }

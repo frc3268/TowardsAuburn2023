@@ -13,6 +13,8 @@ import frc.robot.commands.JoystickDriveCommand
 import frc.robot.commands.Autos
 import frc.robot.commands.DriveAmountCommand
 import frc.robot.commands.TurnAmountCommand
+import frc.robot.subsystems.ExtensionArmSubsystem
+import frc.robot.subsystems.RotationalArmSubsystem
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -32,6 +34,9 @@ class RobotContainer {
 
     // subsystems
     private val drive: DriveSubsystem = DriveSubsystem(Constants.Field.startingPose)
+
+    private val extension: ExtensionArmSubsystem = ExtensionArmSubsystem()
+    private val rotation:RotationalArmSubsystem = RotationalArmSubsystem()
     private var toggleTank = false
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -66,6 +71,9 @@ class RobotContainer {
         // cancelling on release.
         Trigger {driverController.getRawButtonPressed(1)}.onTrue(TurnAmountCommand(0.0, drive))
         Trigger {driverController.getRawButtonPressed(2)}.onTrue(DriveAmountCommand(1.0, drive))
+        Trigger {driverController.getRawButtonPressed(3)}.onTrue(rotation.setToAngle(45.0))
+        Trigger {driverController.getRawButtonPressed(4)}.onTrue(extension.setExtensionPercent(100.0))
+        Trigger {driverController.getRawButtonPressed(5)}.onTrue(extension.setExtensionPercent(0.0))
         
     }
 

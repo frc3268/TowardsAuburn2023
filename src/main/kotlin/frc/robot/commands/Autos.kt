@@ -27,58 +27,11 @@ class Autos private constructor() {
         fun exampleAuto(): CommandBase {
             return Commands.sequence()
         }
-         fun beelineAuto(target: Pose2d, drive: DriveSubsystem): Command {
-            val volateConstraint: DifferentialDriveVoltageConstraint =
-                DifferentialDriveVoltageConstraint(
-                    SimpleMotorFeedforward(
-                        Constants.Drive.ksVolts,
-                        Constants.Drive.kvVoltSecondsPerMeter,
-                        Constants.Drive.kaVoltSecondsSquaredPerMeter
-                    ),
-                    Constants.Drive.kDriveKinematics,
-                    10.0
-                )
-            val trajectoryConfig: TrajectoryConfig =
-                TrajectoryConfig(
-                    Constants.Drive.kMaxSpeedMetersPerSeconds,
-                    Constants.Drive.kaVoltSecondsSquaredPerMeter
-                )
-                .setKinematics(Constants.Drive.kDriveKinematics)
-                .addConstraint(volateConstraint)
 
-            val trajectory: Trajectory =
-                TrajectoryGenerator.generateTrajectory(
-                    listOf(
-                        Pose2d(
-                            Translation2d(0.0, 0.0),
-                            Rotation2d.fromDegrees(0.0)
-                        ),
-                        target
-                    ),
-                    trajectoryConfig
-                )
-
-            val ramseteCommand: RamseteCommand =
-                    RamseteCommand(
-                            trajectory,
-                            drive::getPose,
-                            RamseteController(
-                                    Constants.Drive.kRamseteB,
-                                    Constants.Drive.kRamseteZeta
-                            ),
-                            SimpleMotorFeedforward(
-                                    Constants.Drive.ksVolts,
-                                    Constants.Drive.kvVoltSecondsPerMeter,
-                                    Constants.Drive.kaVoltSecondsSquaredPerMeter
-                            ),
-                            Constants.Drive.kDriveKinematics,
-                            drive::getWheelSpeeds,
-                            PIDController(Constants.Drive.kPDriveVel, 0.0, 0.0),
-                            PIDController(Constants.Drive.kPDriveVel, 0.0, 0.0),
-                            drive::tankDriveVolts,
-                            drive
-                    )
-            return ramseteCommand.andThen({drive.tankDriveVolts(0.0, 0.0)}, drive)
+        fun beelineAuto(target: Pose2d, drive: DriveSubsystem): Command {
+            val forward = drive.getPose().translation.getDistance(target.translation)
+            val rot = Math.atan((drive.getPose().translation.x - target.translation.x) / (drive.getPose().translation.y - target.translation.y))
+            return TurnAmountCommand(rot, drive).andThen(DriveAmountCommand(drive.getAverageEncoderDistance() + forward, drive))
         }
     }
 }

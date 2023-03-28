@@ -53,8 +53,8 @@ class DriveSubsystem(private val startingPose: Pose2d) : SubsystemBase() {
     private val drive: DifferentialDrive = DifferentialDrive(driveLeft, driveRight)
 
     // PID
-    val linearP: Double = 0.2
-    val linearD: Double = 0.01
+    val linearP: Double = 0.05
+    val linearD: Double = 0.03
     val forwardController: ProfiledPIDController = ProfiledPIDController(linearP, 0.0, linearD, TrapezoidProfile.Constraints(Constants.Drive.kMaxSpeedMetersPerSeconds, Constants.Drive.kMaxAccelerationMetersPerSecondSquared))
 
     val angularP: Double = 0.021
@@ -77,7 +77,7 @@ class DriveSubsystem(private val startingPose: Pose2d) : SubsystemBase() {
                 leftEncoder.getPosition(),
                 startingPose
             )
-        poseEstimator = DifferentialDrivePoseEstimator(Constants.Drive.kDriveKinematics, gyro.getRotation2d(), leftEncoder.getPosition(), rightEncoder.getPosition(), startingPose)
+        poseEstimator = DifferentialDrivePoseEstimator(Constants.Drive.kDriveKinematics, gyro.getRotation2d(), leftEncoder.getPosition(), -rightEncoder.getPosition(), startingPose)
         // config for motors
         driveLeftBack.restoreFactoryDefaults()
         driveLeftFront.restoreFactoryDefaults()
@@ -90,8 +90,8 @@ class DriveSubsystem(private val startingPose: Pose2d) : SubsystemBase() {
 
         // set encoder conversion factors-diameter of each wheen is 6 inches
         /* We need to verify that these conversion factors are correct. -- Weiju */
-        leftEncoder.setPositionConversionFactor((1.0 / 14))
-        rightEncoder.setPositionConversionFactor(1.0 / 14)
+        leftEncoder.setPositionConversionFactor((Math.PI * 6) / (10.71 / 1.0))
+        rightEncoder.setPositionConversionFactor((Math.PI * 6) / (10.71 / 1.0))
         leftEncoder.setVelocityConversionFactor(((Math.PI * 6) / (10.71 / 1.0)) / (60 / 1))
         rightEncoder.setVelocityConversionFactor(((Math.PI * 6) / (10.71 / 1.0)) / (60 / 1))
         resetEncoders()
