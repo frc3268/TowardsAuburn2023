@@ -79,7 +79,7 @@ class RobotContainer {
 
         Trigger {driverController.getRawButtonPressed(6)}.onTrue(gripp.setIn())
 
-        Trigger {driverController.getRawButtonPressed(7)}.onTrue(gripp.setOut())
+        Trigger {driverController.getRawButtonPressed(7)}.onTrue(gripp.setOut().withTimeout(0.2).andThen(gripp.setIn()))
         
     }
 

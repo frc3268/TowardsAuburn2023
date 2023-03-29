@@ -26,6 +26,8 @@ class GripperSubsystem : SubsystemBase() {
         motor.set(0.0)
     }
 
+    
+
     override fun periodic() {
     }
 
