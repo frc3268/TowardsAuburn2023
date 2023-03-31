@@ -86,5 +86,5 @@ class RobotContainer {
     val autonomousCommand: Command
         get() =
             // Example command
-            Autos.basicAuto()
+            Autos.basicAuto(drive)
 }
