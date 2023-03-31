@@ -29,7 +29,7 @@ class ExtensionArmSubsystem : ProfiledPIDSubsystem(
 
     init {
         //Measure rotations for 1 full extension. conversion factor should be 100 / that number
-        encoder.setPositionConversionFactor(1.0/1.0)
+        encoder.setPositionConversionFactor(100/147/1.0)
         //encoder starts at 0
         encoder.position = 0.0
     }

@@ -32,6 +32,7 @@ class RotationalArmSubsystem : ProfiledPIDSubsystem(
     init {
         //measure encoder rortations to some easy to convert portion of 360 deg, then set conv. factor to 360 / computed encoder value per 1 rotation
         encoder.setPositionConversionFactor(360 / (147 / 1.0))
+        followerEncoder.setPositionConversionFactor(360 / (147 / 1.0))
         //or an offset possibly?
         encoder.position = 0.0
     }
