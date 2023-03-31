@@ -48,7 +48,6 @@ class RotationalArmSubsystem : ProfiledPIDSubsystem(
             //add feed forward
             val ffscalar = cos(Units.degreesToRadians(setpoint.position)) * Constants.limbs.RotationalArm.kff
             motor.set(output + ffscalar)
-            followermotor.set(output + ffscalar)
         }
     }
 
