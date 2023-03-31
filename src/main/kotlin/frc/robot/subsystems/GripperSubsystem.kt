@@ -19,14 +19,12 @@ class GripperSubsystem : SubsystemBase() {
     }
 
     fun setOut(): Command {
-        return run{motor.set(-1 * maxOutput * direction)}.andThen(runOnce{stopMotor()})
+        return run{motor.set(-1.0)}.andThen(runOnce{stopMotor()})
     }
 
     fun stopMotor() {
         motor.set(0.0)
     }
-
-    
 
     override fun periodic() {
     }
