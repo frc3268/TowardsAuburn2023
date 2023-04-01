@@ -30,7 +30,7 @@ class JoystickDriveCommand(
         drive.drive(
             y.getAsDouble(),
             x.getAsDouble(),
-            if(tankMode.getAsBoolean()) Constants.DriveMode.TANK else Constants.DriveMode.ARCADE
+            if (tankMode.getAsBoolean()) Constants.DriveMode.TANK else Constants.DriveMode.ARCADE
         )
     }
 

@@ -13,6 +13,7 @@ import frc.robot.commands.JoystickDriveCommand
 import frc.robot.commands.Autos
 import frc.robot.commands.DriveAmountCommand
 import frc.robot.commands.TurnAmountCommand
+import frc.robot.commands.SetRotAngleCommand
 import frc.robot.subsystems.GripperSubsystem
 import frc.robot.subsystems.RotationalArmSubsystem
 
@@ -34,8 +35,8 @@ class RobotContainer {
 
     // subsystems
     private val drive: DriveSubsystem = DriveSubsystem(Constants.Field.startingPose)
-    private val rotation:RotationalArmSubsystem = RotationalArmSubsystem()
-    private val gripp:GripperSubsystem = GripperSubsystem()
+    private val rotation: RotationalArmSubsystem = RotationalArmSubsystem()
+    private val gripp: GripperSubsystem = GripperSubsystem()
     private var toggleTank = false
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -70,15 +71,17 @@ class RobotContainer {
         // cancelling on release.
         Trigger {driverController.getRawButtonPressed(1)}.onTrue(TurnAmountCommand(0.0, drive))
         Trigger {driverController.getRawButtonPressed(2)}.onTrue(DriveAmountCommand(1.0, drive))
-        Trigger {driverController.getRawButtonPressed(3)}.onTrue(rotation.setToAngle(45.0))
+        Trigger {driverController.getRawButtonPressed(3)}.onTrue(SetRotAngleCommand(rotation, 45.0))
 
-        Trigger {driverController.getRawButtonPressed(6)}.onTrue(gripp.setIn())
+        /* TODO later change to always activate as long as is pressed -- Weiju */
+        Trigger {driverController.getRawButtonPressed(4)}.onTrue(gripp.setIn().withTimeout(1.0))
 
-        Trigger {driverController.getRawButtonPressed(7)}.onTrue(gripp.setOut().withTimeout(0.2).andThen(gripp.setIn()))
-        
+        Trigger {driverController.getRawButtonPressed(5)}.onTrue(gripp.setOut().withTimeout(1.0))
+
+        Trigger {driverController.getRawButtonPressed(8)}.onTrue(gripp.stopMotor())
     }
 
-  /**
+    /**
      * Use this to pass the autonomous command to the main [Robot] class.
      *
      * @return the command to run in autonomous
@@ -88,3 +91,5 @@ class RobotContainer {
             // Example command
             Autos.basicAuto(drive)
 }
+//by: vezzhu vayng
+//int main(int argc, char** argv){ printf(NULL); }

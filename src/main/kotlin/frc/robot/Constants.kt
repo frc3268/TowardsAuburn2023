@@ -94,9 +94,9 @@ class Constants {
     object limbs {
         val RotationalArm:Arm = Arm(
             5,
-            0.04,
+            0.08,
             0.00,
-            0.01,
+            0.03,
             0.1,
             -0.5,
             0.5,
@@ -105,7 +105,7 @@ class Constants {
         )
         val ExtensionArm:Arm = Arm(
             7,
-            0.08,
+            0.1,
             0.00,
             0.01,
             0.0,
