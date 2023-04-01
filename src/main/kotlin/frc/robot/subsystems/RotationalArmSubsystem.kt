@@ -27,9 +27,12 @@ class RotationalArmSubsystem : ProfiledPIDSubsystem(
 
     init {
         //measure encoder rortations to some easy to convert portion of 360 deg, then set conv. factor to 360 / computed encoder value per 1 rotation
+        //RAAAAAAAAAAAAAAAAAAAAAH
         encoder.setPositionConversionFactor(360 / (147 / 1.0))
         //or an offset possibly?
         encoder.position = 0.0
+
+        controller.enableContinuousInput(0.0, 360.0)
     }
 
     override fun periodic() {
@@ -47,7 +50,7 @@ class RotationalArmSubsystem : ProfiledPIDSubsystem(
         if (setpoint != null) {
             //add feed forward
             val ffscalar = cos(Units.degreesToRadians(setpoint.position)) * Constants.limbs.RotationalArm.kff
-            motor.set(output + ffscalar)
+            motor.setVoltage(output + ffscalar)
         }
     }
 
