@@ -15,11 +15,11 @@ class GripperSubsystem : SubsystemBase() {
     }
 
     fun setIn(): Command{
-        return run{motor.set(-0.7)}
+        return run{motor.set(-1.0)}.withTimeout(1.5).finallyDo({motor.set(0.0)})
     }
 
     fun setOut(): Command {
-        return run{motor.set(0.7)}
+        return run{motor.set(1.0)}.withTimeout(1.5).finallyDo({motor.set(0.0)})
     }
 
     fun stopMotor(): Command{

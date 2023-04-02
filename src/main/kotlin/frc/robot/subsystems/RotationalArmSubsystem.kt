@@ -48,11 +48,15 @@ class RotationalArmSubsystem : Subsystem {
     }
 
     fun up():Command {
-        return run{motor.set(-0.3)}.until({getMeasurement() < 5 }).andThen(stop())
+        return run{motor.set(-0.7)}.until({getMeasurement() < 10 }).andThen(stop())
     }
 
     fun down():Command{
-        return run{motor.set(0.3)}.until({getMeasurement() > 150 }).andThen(stop())
+        return run{motor.set(0.7)}.until({getMeasurement() > 150 }).andThen(stop())
+    }
+
+    fun middle():Command{
+        return run{motor.set(0.7)}.until({getMeasurement() > 25}).andThen(stop())
     }
 
     fun amtn(target:Double):Command{

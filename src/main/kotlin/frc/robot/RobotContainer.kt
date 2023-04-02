@@ -7,16 +7,9 @@ import edu.wpi.first.math.geometry.Translation2d
 import edu.wpi.first.math.geometry.Pose2d
 import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.wpilibj.Joystick
+import frc.robot.commands.*
 
 import frc.robot.subsystems.DriveSubsystem
-import frc.robot.commands.JoystickDriveCommand
-import frc.robot.commands.Autos
-import frc.robot.commands.DriveAmountCommand
-import frc.robot.commands.TurnAmountCommand
-import frc.robot.commands.SetRotAngleCommand
-import frc.robot.commands.AutoBalanceCommand
-import frc.robot.commands.Pickup
-import frc.robot.commands.Dropoff
 import frc.robot.subsystems.GripperSubsystem
 import frc.robot.subsystems.RotationalArmSubsystem
 
@@ -72,21 +65,17 @@ class RobotContainer {
 
         // Schedule exampleMethodCommand when the Xbox controller's B button is pressed,
         // cancelling on release.
-        Trigger {driverController.getRawButtonPressed(3)}.onTrue(rotation.up())
+        Trigger {driverController.getRawButtonPressed(3)}.onTrue(LowerExpellCommand(gripp, rotation))
         
-        Trigger {driverController.getRawButtonPressed(5)}.onTrue(rotation.down())
+        Trigger {driverController.getRawButtonPressed(5)}.onTrue(LowerIntakeCommand(gripp, rotation))
         
         Trigger {driverController.getRawButtonPressed(1)}.onTrue(rotation.stop())
 
-        Trigger {driverController.getRawButtonPressed(6)}.onTrue(gripp.setOut())
+        Trigger {driverController.getRawButtonPressed(4)}.onTrue(rotation.up())
 
-        Trigger {driverController.getRawButtonPressed(4)}.onTrue(gripp.setIn())
+        Trigger {driverController.getRawButtonPressed(6)}.onTrue(ShootMidCommand(gripp, rotation))
 
         Trigger {driverController.getRawButtonPressed(2)}.onTrue(gripp.stopMotor())
-
-        Trigger {driverController.getRawButtonPressed(7)}.onTrue(rotation.unz())
-
-        Trigger {driverController.getRawButtonPressed(8)}.onTrue(rotation.dnz())
 
         Trigger {driverController.getRawButtonPressed(11)}.onTrue(AutoBalanceCommand(drive))
 

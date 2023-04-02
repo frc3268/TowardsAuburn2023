@@ -24,7 +24,7 @@ class AutoBalanceCommand(val drive: DriveSubsystem) : CommandBase() {
         gyroAngle = drive.getPitch()
         drive.drive(
             0.0,
-            Math.sin(Math.abs(gyroAngle) * 180/Math.PI) ,
+            Math.sin(gyroAngle) * 180/Math.PI,
             Constants.DriveMode.ARCADE
         )
     }
