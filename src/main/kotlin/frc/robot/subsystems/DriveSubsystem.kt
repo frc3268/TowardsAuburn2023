@@ -98,6 +98,7 @@ class DriveSubsystem(private val startingPose: Pose2d) : SubsystemBase() {
     }
 
     override fun periodic() {
+        SmartDashboard.putNumber("ahhhh", getPitch())
         camera.frame = camera.limelight.getLatestResult()
         SmartDashboard.putNumber("Encoder Dist", getAverageEncoderDistance())
     }

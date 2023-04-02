@@ -28,7 +28,7 @@ class JoystickDriveCommand(
     override fun execute() { 
         /* Drive */
         drive.drive(
-            y.getAsDouble(),
+            y.getAsDouble()*0.7,
             x.getAsDouble(),
             if (tankMode.getAsBoolean()) Constants.DriveMode.TANK else Constants.DriveMode.ARCADE
         )

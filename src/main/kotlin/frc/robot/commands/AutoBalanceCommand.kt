@@ -1,18 +1,19 @@
 package frc.robot.commands
 
 import edu.wpi.first.wpilibj2.command.CommandBase
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 
 import frc.robot.Constants
 import frc.robot.lib.units.*
 import frc.robot.subsystems.DriveSubsystem
 
 class AutoBalanceCommand(val drive: DriveSubsystem) : CommandBase() {
-    var gyroAngle: Double = 0.rad
+    var gyroAngle: Double = 0.0
 
     init {
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(drive)
-        gyroAngle = drive.getPitch().deg
+        gyroAngle = drive.getPitch()
     }
 
     // Called when the command is initially scheduled.
@@ -20,10 +21,10 @@ class AutoBalanceCommand(val drive: DriveSubsystem) : CommandBase() {
 
     // Called every time the scheduler runs while the command is scheduled.
     override fun execute() {
-        gyroAngle = drive.getPitch().deg
+        gyroAngle = drive.getPitch()
         drive.drive(
-            Math.sin(gyroAngle.rad) * 1.5,
             0.0,
+            Math.sin(Math.abs(gyroAngle) * 180/Math.PI) ,
             Constants.DriveMode.ARCADE
         )
     }
@@ -32,6 +33,7 @@ class AutoBalanceCommand(val drive: DriveSubsystem) : CommandBase() {
     override fun end(interrupted: Boolean) { }
 
     // Returns true when the command should end.
-    override fun isFinished(): Boolean =
-        gyroAngle > 5.deg
+    override fun isFinished(): Boolean {
+        return (Math.abs(gyroAngle) < 5.0)
+    }
 }

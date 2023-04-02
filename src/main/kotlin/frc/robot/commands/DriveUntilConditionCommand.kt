@@ -16,7 +16,7 @@ class DriveUntilConditionCommand(
     val fieldOriented: Boolean,
     forward: Boolean
 ) : CommandBase() {
-    val forward: Int = if (forward) 1 else -1
+    val forward: Double = if (forward) 0.7 else -0.7
 
     init {
         // Use addRequirements() here to declare subsystem dependencies.
@@ -29,11 +29,8 @@ class DriveUntilConditionCommand(
     // Called every time the scheduler runs while the command is scheduled.
     override fun execute() {
         drive.drive(
-            if (fieldOriented)
-                forward.toDouble()
-            else
-                forward * Math.sin(drive.getYaw().deg.rad),
             0.0,
+            0.7,
             Constants.DriveMode.ARCADE
         )
      }
@@ -43,6 +40,6 @@ class DriveUntilConditionCommand(
 
     // Returns true when the command should end.
     override fun isFinished(): Boolean {
-        return condition.getAsBoolean()
+        return false
     }
 }

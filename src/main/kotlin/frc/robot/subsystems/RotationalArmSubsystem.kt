@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem
 import kotlin.math.cos
 
 import frc.robot.Constants
+import java.util.function.DoubleSupplier
 
 class RotationalArmSubsystem : Subsystem {
     val motor: CANSparkMax = CANSparkMax(Constants.limbs.RotationalArm.motorPort, MotorType.kBrushless)
@@ -27,18 +28,39 @@ class RotationalArmSubsystem : Subsystem {
     }
 
     override fun periodic() {
-        SmartDashboard.putNumber("Extension Motor Rotations", getMeasurement())
+        SmartDashboard.putNumber("Extension Motor Rotations", getMeasurement())  
     }
 
     override fun simulationPeriodic() {
     }
 
     fun getMeasurement(): Double {
-        return encoder.position 
+        return encoder.position
     }
 
-    fun useOutput(output: Double, setpoint: TrapezoidProfile.State?) {
-        motor.set(0.1)
+    fun unz():Command{
+        return run{motor.set(-0.3)} 
     }
 
-}
+    fun dnz():Command{
+        return run{motor.set(0.3)}
+    }
+
+    fun up():Command {
+        return run{motor.set(-0.3)}.until({getMeasurement() < 5 }).andThen(stop())
+    }
+
+    fun down():Command{
+        return run{motor.set(0.3)}.until({getMeasurement() > 150 }).andThen(stop())
+    }
+
+    fun amtn(target:Double):Command{
+        val x = getMeasurement()
+        return run{motor.set(0.3)}.until({Math.abs(x+target - getMeasurement()) < 5}).andThen(stop())
+    }
+
+    fun stop():Command{
+        return run{motor.set(0.0)}
+    }
+
+} 

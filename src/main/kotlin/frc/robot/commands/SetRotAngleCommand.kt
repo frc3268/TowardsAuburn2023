@@ -26,10 +26,15 @@ class SetRotAngleCommand(arm: RotationalArmSubsystem, target: Double) : Profiled
         Supplier { TrapezoidProfile.State(target, 0.0) },
         // This uses the output
         BiConsumer { output: Double?, setpoint: TrapezoidProfile.State? -> 
-            arm.useOutput(output!!, setpoint)
+            
         },
         arm
     ) {
+
+    init{
+        getController().setTolerance(5.0)
+        getController().enableContinuousInput(0.0, 360.0)
+    }
 
     // Returns true when the command should end.
     override fun isFinished(): Boolean {

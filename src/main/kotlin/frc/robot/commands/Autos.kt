@@ -35,7 +35,7 @@ class Autos private constructor() {
         }
 
         fun basicAuto(drive: DriveSubsystem) : Command {
-            return DriveUntilConditionCommand(drive, {true}, false, false).withTimeout(5.0).andThen(AutoBalanceCommand(drive))
+            return DriveUntilConditionCommand(drive, {true}, false, false).withTimeout(2.0).andThen(AutoBalanceCommand(drive))
         }
     }
 }

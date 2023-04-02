@@ -63,3 +63,20 @@ To avoid confusion, always use one of the following to specify the unit of a giv
     }
     ]
 }
+
+LEFT:
+3 = arm up
+5 = arm down
+
+RIGHT:
+4 = suck in
+6 = spit out
+
+trigger/1 = EMERGENCY STOP ROTATIONAL
+thumb/2 = stop gripper
+
+pick up:
+4, 2, 6, 1
+
+drop off:
+2, 5, 1, 6

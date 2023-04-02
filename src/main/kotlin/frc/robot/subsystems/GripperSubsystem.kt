@@ -7,7 +7,7 @@ import frc.robot.Constants
 
 class GripperSubsystem : SubsystemBase() {
     val motor: Talon = Talon(Constants.limbs.gripperPort)
-    val maxOutput: Double = 0.5
+    val maxOutput: Double = 0.3
     var direction = -1
 
     init {
@@ -15,15 +15,15 @@ class GripperSubsystem : SubsystemBase() {
     }
 
     fun setIn(): Command{
-        return run{motor.set(maxOutput * direction)}.andThen(stopMotor())
+        return run{motor.set(-0.7)}
     }
 
     fun setOut(): Command {
-        return run{motor.set(1.0)}.andThen(stopMotor())
+        return run{motor.set(0.7)}
     }
 
     fun stopMotor(): Command{
-        return run{motor.set(0.0)}
+        return runOnce{motor.set(0.0)}
     }
 
     override fun periodic() {

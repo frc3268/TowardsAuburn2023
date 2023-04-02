@@ -14,6 +14,9 @@ import frc.robot.commands.Autos
 import frc.robot.commands.DriveAmountCommand
 import frc.robot.commands.TurnAmountCommand
 import frc.robot.commands.SetRotAngleCommand
+import frc.robot.commands.AutoBalanceCommand
+import frc.robot.commands.Pickup
+import frc.robot.commands.Dropoff
 import frc.robot.subsystems.GripperSubsystem
 import frc.robot.subsystems.RotationalArmSubsystem
 
@@ -69,16 +72,26 @@ class RobotContainer {
 
         // Schedule exampleMethodCommand when the Xbox controller's B button is pressed,
         // cancelling on release.
-        Trigger {driverController.getRawButtonPressed(1)}.onTrue(TurnAmountCommand(0.0, drive))
-        Trigger {driverController.getRawButtonPressed(2)}.onTrue(DriveAmountCommand(1.0, drive))
-        Trigger {driverController.getRawButtonPressed(3)}.onTrue(SetRotAngleCommand(rotation, 45.0))
+        Trigger {driverController.getRawButtonPressed(3)}.onTrue(rotation.up())
+        
+        Trigger {driverController.getRawButtonPressed(5)}.onTrue(rotation.down())
+        
+        Trigger {driverController.getRawButtonPressed(1)}.onTrue(rotation.stop())
 
-        /* TODO later change to always activate as long as is pressed -- Weiju */
-        Trigger {driverController.getRawButtonPressed(4)}.onTrue(gripp.setIn().withTimeout(1.0))
+        Trigger {driverController.getRawButtonPressed(6)}.onTrue(gripp.setOut())
 
-        Trigger {driverController.getRawButtonPressed(5)}.onTrue(gripp.setOut().withTimeout(1.0))
+        Trigger {driverController.getRawButtonPressed(4)}.onTrue(gripp.setIn())
 
-        Trigger {driverController.getRawButtonPressed(8)}.onTrue(gripp.stopMotor())
+        Trigger {driverController.getRawButtonPressed(2)}.onTrue(gripp.stopMotor())
+
+        Trigger {driverController.getRawButtonPressed(7)}.onTrue(rotation.unz())
+
+        Trigger {driverController.getRawButtonPressed(8)}.onTrue(rotation.dnz())
+
+        Trigger {driverController.getRawButtonPressed(11)}.onTrue(AutoBalanceCommand(drive))
+
+
+
     }
 
     /**
