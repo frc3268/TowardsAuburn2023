@@ -26,8 +26,6 @@ class RotationalArmSubsystem : Subsystem {
         encoder.setPositionConversionFactor(360 / (147 / 1.0))
         //or an offset possibly?
         encoder.position = 0.0
-
-        controller.enableContinuousInput(0.0, 360.0)
     }
 
     override fun periodic() {
